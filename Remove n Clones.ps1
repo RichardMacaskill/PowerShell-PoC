@@ -1,5 +1,5 @@
 ﻿cls
-$ClonePrefix = '_StackOverflow_Clone_'
+$ClonePrefix = '_SO_Clone'
 $Count = 5
 
 $elapsed = [System.Diagnostics.Stopwatch]::StartNew()
