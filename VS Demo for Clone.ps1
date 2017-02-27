@@ -10,3 +10,5 @@ Show-InstantCloneSnapshots | ft
 Remove-InstantCloneSnapshot -SnapshotName CrazyRates
 # clean up app db after breaking
 Remove-InstantCloneClone -CloneName ForexAppBuild -Verbose
+
+
