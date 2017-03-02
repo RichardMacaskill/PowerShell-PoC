@@ -2,11 +2,11 @@
 
 $SQLCloneServer= "http://rm-win10-sql201.testnet.red-gate.com:14145"
 
-Connect-SqlClone -ServerUrl $myUrl
+Connect-SqlClone -ServerUrl $SQLCloneServer
 
-$SourceDataImage = Get-SqlCloneImage -Name  'StackOverflow 20170117'
+$SourceDataImage = Get-SqlCloneImage -Name  'Forex_20170301'
 
-$CloneName = 'StackOverflow_Latest'
+$CloneName = 'Forex_Latest'
 
 # I have 3 SQL Server instances registered on my SQL Clone Server - I want to deliver a copy to all of them
 $Destinations = Get-SqlCloneSqlServerInstance
@@ -23,8 +23,8 @@ foreach ($Destination in $Destinations)
 {
     $SourceDataImage | New-SqlClone -Name $CloneName -Location $Destination | Wait-SqlCloneOperation
     $ServerInstance = $Destination.Server + '\' +$Destination.Instance 
-    Start-Sleep -s 10
-    Invoke-Sqlcmd -Query $Query -ServerInstance $ServerInstance -Database $CloneName 
+    #Start-Sleep -s 10
+    #Invoke-Sqlcmd -Query $Query -ServerInstance $ServerInstance -Database $CloneName 
     "Created clone in instance {0}" -f $Destination.Server + '\' + $Destination.Instance;   
 }
 

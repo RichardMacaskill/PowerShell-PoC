@@ -2,7 +2,7 @@
 Connect-SqlClone -ServerUrl  'http://rm-win10-sql201.testnet.red-gate.com:14145'
 
 #$image = Get-SqlCloneImage -Name 'ImageName'
-$image = Get-SqlCloneImage -Name 'StackOverflow Jan 2017'
+$image = Get-SqlCloneImage -Name 'Forex_20170301'
 
 $clones = Get-SqlClone -Image $image
 $elapsed = [System.Diagnostics.Stopwatch]::StartNew()
