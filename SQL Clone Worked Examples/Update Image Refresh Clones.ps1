@@ -3,8 +3,8 @@
 #Connect-SqlClone -ServerUrl 'http://sql-clone.example.com:14145'
 Connect-SqlClone -ServerUrl  'http://rm-win10-sql201.testnet.red-gate.com:14145'
 
-$oldImageName = 'Forex_20170301'
-$newImageName = 'Forex_20170302'
+$oldImageName = 'Forex_20170302'
+$newImageName = 'Forex_20170301'
 
 $oldImage = Get-SqlCloneImage -Name $oldImageName
 $newImage = Get-SqlCloneImage -Name $newImageName
@@ -20,4 +20,4 @@ foreach ($clone in $oldClones)
     "Added clone ""{0}"" to instance ""{1}"" " -f $clone.Name , $thisDestination.Server + '\' + $thisDestination.Instance;   
 }
 
-Remove-SqlCloneImage -Image $oldImage;
+#Remove-SqlCloneImage -Image $oldImage;

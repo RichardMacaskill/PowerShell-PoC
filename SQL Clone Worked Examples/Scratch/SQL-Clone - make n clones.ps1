@@ -7,7 +7,7 @@ $sqlServerInstance = Get-SqlCloneSqlServerInstance -MachineName $myLocalAgent -I
 $image = Get-SqlCloneImage -Name 'StackOverflow Jan 2017'
 
 $ClonePrefix = '_SO_Clone'
-$Count = 5
+$Count = 15
 
 $elapsed = [System.Diagnostics.Stopwatch]::StartNew()
 "Started at {0}" -f $(get-date)

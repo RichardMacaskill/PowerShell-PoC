@@ -1,2 +1,2 @@
 # PowerShell-PoC
-Some snippets and proofs
+Some snippets and proofs of concept

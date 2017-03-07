@@ -1,12 +1,14 @@
 ﻿# Script to create a new SQL Clone database on each of my connected machines
 
 $SQLCloneServer= "http://rm-win10-sql201.testnet.red-gate.com:14145"
+$Myservers[3]
+$myserver1="UAT"
 
 Connect-SqlClone -ServerUrl $SQLCloneServer
 
-$SourceDataImage = Get-SqlCloneImage -Name  'Forex_20170301'
+$SourceDataImage = Get-SqlCloneImage -Name  'StackOverflow Jan 2017'
 
-$CloneName = 'Forex_Latest'
+$CloneName = '_SO_Clone_Latest'
 
 # I have 3 SQL Server instances registered on my SQL Clone Server - I want to deliver a copy to all of them
 $Destinations = Get-SqlCloneSqlServerInstance
