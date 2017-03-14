@@ -1,4 +1,9 @@
 ﻿# Script to create a new SQL Clone database on each of my connected machines
+# dot source the invoke-parallel function 
+
+. "C:\Dev\Git\PowerShell-PoC\Utils\PowerShell\Invoke-Parallel.ps1"
+#Get full help details 
+#Get-Help Invoke-Parallel -full 
 
 $SQLCloneServer= "http://rm-win10-sql201.testnet.red-gate.com:14145"
 
@@ -19,13 +24,10 @@ $elapsed = [System.Diagnostics.Stopwatch]::StartNew()
 
 "Started at {0}, creating clone databases for image ""{1}""" -f $(get-date) , $SourceDataImage.Name 
 
-foreach ($Destination in $Destinations)
-{
-    $SourceDataImage | New-SqlClone -Name $CloneName -Location $Destination | Wait-SqlCloneOperation
-    $ServerInstance = $Destination.Server + '\' +$Destination.Instance 
-    Start-Sleep -s 10
-    Invoke-Sqlcmd -Query $Query -ServerInstance $ServerInstance -Database $CloneName 
-    "Created clone in instance {0}" -f $Destination.Server + '\' + $Destination.Instance;   
+Invoke-Parallel -InputObject $Destinations -ImportVariables -ScriptBlock {
+    $SourceDataImage | New-SqlClone -Name $CloneName -Location $_ | Wait-SqlCloneOperation
+    $ServerInstance = $_.Server + '\' +$_.Instance 
+    "Created clone in instance {0}" -f $_.Server + '\' + $_.Instance;   
 }
 
 "Total Elapsed Time: {0}" -f $($elapsed.Elapsed.ToString())  
