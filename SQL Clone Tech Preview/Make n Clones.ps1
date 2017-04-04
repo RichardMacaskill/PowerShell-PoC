@@ -1,7 +1,7 @@
 ﻿# Script to create a new SQL Clone data image from a backup file
 
 $SQLCloneServer= "http://rm-win10-sql201.testnet.red-gate.com:14145"
-$SQLCloneAgent = "rm-iclone1"
+$SQLCloneAgent = "RM-WIN10-CLONE3\, 10006"
 
 Connect-SqlClone -ServerUrl $myUrl
 

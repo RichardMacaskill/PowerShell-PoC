@@ -2,16 +2,16 @@
 
 Connect-SqlClone -ServerUrl $myUrl 
 
-$image = Get-SqlCloneImage -Name 'StackOverflow Jan 2017'
+$image = Get-SqlCloneImage -Name 'Forex_20170327'
 
 $clones = Get-SqlClone -Image $image
 
-$elapsed = [System.Diagnostics.Stopwatch]::StartNew()
 "Started at {0}, removing {1} clones for image ""{2}""" -f $(get-date) , $clones.Count , $image.Name
 
+Measure-Command -Expression {
 $clones | ForEach-Object { # note - '{' needs to be on same line as 'foreach' !
     $_ | Remove-SqlClone | Wait-SqlCloneOperation
     "Removed clone ""{0}""" -f $_.Name ;
                     };
+}  | Select-Object Minutes, Seconds, Milliseconds
 
-"Total Elapsed Time: {0}" -f $($elapsed.Elapsed.ToString())

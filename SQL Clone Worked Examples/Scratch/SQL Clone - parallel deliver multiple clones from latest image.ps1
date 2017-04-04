@@ -12,13 +12,13 @@ Connect-SqlClone -ServerUrl $SQLCloneServer
 
 $SourceDataImage = Get-SqlCloneImage -Name  'StackOverflow Jan 2017'
 
-$CloneName = 'StackOverflow_Latest'
+$CloneName = 'StackOverflow'
 
 # I have several SQL Server instances registered on my SQL Clone Server - I want to deliver a copy to all of them
-$Destinations = Get-SqlCloneSqlServerInstance
+$Destinations = Get-SqlCloneSqlServerInstance | Where-Object -FilterScript { $_.Username -eq 'sa' }
 
 # I'm only going to make a small adjustment to permissions in this example
-$Query = "CREATE USER StackOverflowUser FROM LOGIN [RED-GATE\Richard.Macaskill];ALTER ROLE db_datareader ADD member [StackOverflowUser];"
+#$Query = "CREATE USER StackOverflowUser FROM LOGIN [RED-GATE\Richard.Macaskill];ALTER ROLE db_datareader ADD member [StackOverflowUser];"
 
 # Start a timer
 $elapsed = [System.Diagnostics.Stopwatch]::StartNew()

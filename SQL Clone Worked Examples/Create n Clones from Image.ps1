@@ -1,10 +1,10 @@
 ﻿#Create ‘n’ clones from image;
   
-Connect-SqlClone -ServerUrl 'http://sql-clone.example.com:14145'
+Connect-SqlClone -ServerUrl 'http://rm-win10-sql201.testnet.red-gate.com:14145'
  
-$myLocalAgent = "wks-dev1"
-$myLocalInstance = "Dev"
- 
+$myLocalAgent = "RM-WIN10-CLONE3"
+
+$myLocalInstance = ", 10006"
  
 $sqlServerInstance = Get-SqlCloneSqlServerInstance -MachineName $myLocalAgent -InstanceName $myLocalInstance
   

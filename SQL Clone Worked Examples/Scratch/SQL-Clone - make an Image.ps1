@@ -4,7 +4,7 @@ $myLocalInstance = ""
 
 Connect-SqlClone -ServerUrl $myUrl -Verbose
 
-$sourceDatabaseName = 'StackOverflow'
+$sourceDatabaseName = 'StackOverflow-Obfuscated'
 $imageDestination = Get-SqlCloneImageLocation -Path '\\is-filestore02.testnet.red-gate.com\rm-iclone\RM\SQL Clone Beta Images'
 $sqlServerInstance =  Get-SqlCloneSqlServerInstance -MachineName $myLocalAgent -InstanceName $myLocalInstance
 
