@@ -24,9 +24,9 @@ $SQLCloneServer= "http://rm-win10-sql201.testnet.red-gate.com:14145"
 
 Connect-SqlClone -ServerUrl $SQLCloneServer
 
-$SourceDataImage = Get-SqlCloneImage -Name  'Forex_20170327'
+$SourceDataImage = Get-SqlCloneImage -Name  'StackOverflow Mar 2017'
 
-$CloneName = 'Forex-Hotfix-18554'
+$CloneName = 'StackOverflow-Hotfix-18554'
 
 # I have several SQL Server instances registered on my SQL Clone Server - I want to deliver a copy to all of them
 $Destinations = Get-SqlCloneSqlServerInstance | Where-Object -FilterScript { $_.Username -eq 'sa' }
