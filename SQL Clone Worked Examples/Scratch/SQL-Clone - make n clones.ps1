@@ -4,7 +4,7 @@ $myLocalInstance = "Dev"
 Connect-SqlClone -ServerUrl $myUrl
 $sqlServerInstance = Get-SqlCloneSqlServerInstance -MachineName $myLocalAgent -InstanceName $myLocalInstance
 
-$image = Get-SqlCloneImage -Name 'StackOverflow Jan 2017'
+$image = Get-SqlCloneImage -Name 'StackOverflow Mar 2017'
 
 $ClonePrefix = '_SO_Clone'
 $Count = 15
