@@ -4,10 +4,10 @@ $myLocalInstance = "Dev"
 Connect-SqlClone -ServerUrl $myUrl
 $sqlServerInstance = Get-SqlCloneSqlServerInstance -MachineName $myLocalAgent -InstanceName $myLocalInstance
 
-$image = Get-SqlCloneImage -Name 'StackOverflow Mar 2017'
+$image = Get-SqlCloneImage -Name 'TradesDataMart (Full) - 2017-09-04'#'StackOverflow Mar 2017'
 
-$ClonePrefix = '_SO_Clone'
-$Count = 15
+$ClonePrefix = '_TDM_'
+$Count = 5
 
 $elapsed = [System.Diagnostics.Stopwatch]::StartNew()
 "Started at {0}" -f $(get-date)
@@ -16,7 +16,7 @@ $elapsed = [System.Diagnostics.Stopwatch]::StartNew()
 
 for ($i=0;$i -lt $Count;$i++)
 {
-    $image | New-SqlClone -Name $ClonePrefix$i -Location $sqlServerInstance | Wait-SqlCloneOperation
+    $image | New-SqlClone -Name ($ClonePrefix + $i.ToString("00")) -Location $sqlServerInstance | Wait-SqlCloneOperation
   "Created clone {0}" -f $i;   
 };
 

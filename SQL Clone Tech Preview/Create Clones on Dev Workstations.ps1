@@ -17,9 +17,6 @@ $CloneName = 'TradesDataMart - Dev Clone'
 # I have several SQL Server instances registered on my SQL Clone Server - I want to deliver a copy to all of them
 $Destinations = Get-SqlCloneSqlServerInstance | Where-Object -FilterScript { $_.Server -like '*WKS*' -and $_.Instance -eq 'Dev' }
 
-# I'm only going to make a small adjustment to permissions in this example
-#$Query = "CREATE USER StackOverflowUser FROM LOGIN [RED-GATE\Richard.Macaskill];ALTER ROLE db_datareader ADD member [StackOverflowUser];"
-
 # Start a timer
 $elapsed = [System.Diagnostics.Stopwatch]::StartNew()
 

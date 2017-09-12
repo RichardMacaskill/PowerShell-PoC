@@ -1,4 +1,7 @@
-﻿$elapsed = [ System.Diagnostics.Stopwatch]::StartNew()
+﻿# dot source the invoke-parallel function 
+. "C:\Dev\Git\PowerShell-PoC\Utils\PowerShell\Invoke-Parallel.ps1"
+
+$elapsed = [ System.Diagnostics.Stopwatch]::StartNew()
 "Started at {0}" -f $( get-date)
 
 # Connect my profile and start my VM
@@ -7,13 +10,18 @@
 
 Select-AzureRmProfile -Path "C:\dev\PowerShell\azureprofile.json"
 
-Start-AzureRmVM -ResourceGroupName "SQL-VM-Dev41528789210" -Name "SQL-VM-Dev4"
+#Start-AzureRmVM -ResourceGroupName "RG-Clone" -Name "SQL-VM-Dev4"
+$VMs = Get-AzureRmVM
+
+$VMs | Invoke-Parallel -ImportVariables -ScriptBlock {
+    Start-AzureRmVM -ResourceGroupName $_.ResourceGroupName -Name $_.Name
+}
 
 "Total Elapsed Time: {0}" -f $( $elapsed.Elapsed.ToString())
 
 # Connect a PS Session to the VM
 
-Enter-PSSession -ComputerName 'sql-vm-dev4.westeurope.cloudapp.azure.com' -Port 5986 -Credential cas -UseSSL
+Enter-PSSession -ComputerName 'clonelab1327002761000.westeurope.cloudapp.azure.com' -Port 62584 -Credential cas -UseSSL
 
 # Create new clones from the Azure FS data image repository
 

@@ -1,0 +1,17 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "taskName": "Start Clone VMs in DTL",
+            "command": "Select-AzureRmProfile -Path C:\\dev\\PowerShell\\azureprofile.json ; . C:\\Dev\\Git\\PowerShell-PoC\\Utils\\PowerShell\\Invoke-Parallel.ps1 ; $VMs = Get-AzureRmVM ;  $VMs | Invoke-Parallel -ImportVariables -ScriptBlock { Start-AzureRmVM -ResourceGroupName $_.ResourceGroupName -Name $_.Name }",
+            "type": "shell"
+        },
+        {
+            "taskName": "Stop Clone VMs in DTL",
+            "command": "Select-AzureRmProfile -Path C:\\dev\\PowerShell\\azureprofile.json ; . C:\\Dev\\Git\\PowerShell-PoC\\Utils\\PowerShell\\Invoke-Parallel.ps1 ; $VMs = Get-AzureRmVM ;  $VMs | Invoke-Parallel -ImportVariables -ScriptBlock { Stop-AzureRmVM -ResourceGroupName $_.ResourceGroupName -Name $_.Name }",
+            "type": "shell"
+        }        
+    ]
+}

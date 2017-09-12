@@ -4,21 +4,21 @@ $myLocalInstance = ""
 
 Connect-SqlClone -ServerUrl $myUrl -Verbose
 
-$sourceDatabaseName = 'StackOverflow-Obfuscated'
-$imageDestination = Get-SqlCloneImageLocation -Path '\\is-filestore02.testnet.red-gate.com\rm-iclone\RM\SQL Clone Beta Images'
+$sourceDatabaseName = 'TradesDataMart'
+$imageDestination = Get-SqlCloneImageLocation -Path '\\is-filestore02.testnet.red-gate.com\BigVol2\SQL Clone Images'
 $sqlServerInstance =  Get-SqlCloneSqlServerInstance -MachineName $myLocalAgent -InstanceName $myLocalInstance
+$imageName = ('TradesDataMart (Full) - {0}' -f $((get-date).ToString("yyyy-MM-dd"))) 
 
+"Started at {0}, creating image ""{1}"" from database ""{2}""" -f $(get-date) , $imageName , $sourceDatabaseName
 
-$elapsed = [System.Diagnostics.Stopwatch]::StartNew()
-"Started at {0}" -f $(get-date)
-
-"OK, going to create an image " -f $Count
-
-$imageOperation = New-SqlCloneImage -Name $('StackOverflow {0}' -f $((get-date).ToString("yyyy-MM-dd HH:mm"))) `
+Measure-Command -Expression {
+$imageOperation = New-SqlCloneImage -Name $ImageName `
     -SqlServerInstance $sqlServerInstance `
     -DatabaseName $sourceDatabaseName `
-    -Destination $imageDestination
+    -Destination $imageDestination 
 
 $imageOperation | Wait-SqlCloneOperation
+}  | Select-Object Hours, Minutes, Seconds 
 
-"Total Elapsed Time: {0}" -f $($elapsed.Elapsed.ToString())
+
+"Completed at {0}" -f $(get-date)
