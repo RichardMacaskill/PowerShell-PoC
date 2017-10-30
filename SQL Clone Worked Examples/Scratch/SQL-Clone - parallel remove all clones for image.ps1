@@ -5,7 +5,7 @@
 
 Connect-SqlClone -ServerUrl $myUrl 
 
-$image = Get-SqlCloneImage -Name 'AdventureWorks_20170903'
+$image = Get-SqlCloneImage -Name 'TradesDataMart (Full) - 2017-09-04'
 
 $clones = Get-SqlClone -Image $image
 

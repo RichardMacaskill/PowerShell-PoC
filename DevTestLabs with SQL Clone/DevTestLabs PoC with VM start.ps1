@@ -11,13 +11,20 @@ $elapsed = [ System.Diagnostics.Stopwatch]::StartNew()
 Select-AzureRmProfile -Path "C:\dev\PowerShell\azureprofile.json"
 
 #Start-AzureRmVM -ResourceGroupName "RG-Clone" -Name "SQL-VM-Dev4"
+# clonelab1327002761000
 $VMs = Get-AzureRmVM
-
+$VMs    |   Format-Table
 $VMs | Invoke-Parallel -ImportVariables -ScriptBlock {
     Start-AzureRmVM -ResourceGroupName $_.ResourceGroupName -Name $_.Name
 }
 
 "Total Elapsed Time: {0}" -f $( $elapsed.Elapsed.ToString())
+
+
+$VMs | Invoke-Parallel -ImportVariables -ScriptBlock {
+    Stop-AzureRmVM -ResourceGroupName $_.ResourceGroupName -Name $_.Name 
+
+}
 
 # Connect a PS Session to the VM
 
@@ -29,7 +36,6 @@ $Snapshot = 'StackOverflow'
 $ClonePrefix = '_SO_Clone_'
 $Count = 5
 
-Show-InstantCloneClones | ft
 
 for ($i =0; $i -lt $Count; $i++)
 {

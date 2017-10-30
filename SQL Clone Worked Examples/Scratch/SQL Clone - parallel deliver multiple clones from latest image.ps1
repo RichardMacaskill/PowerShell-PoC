@@ -12,7 +12,7 @@ Connect-SqlClone -ServerUrl $SQLCloneServer
 
 $SourceDataImage = Get-SqlCloneImage -Name  'TradesDataMart (Full) - 2017-09-04'
 
-$CloneName = 'TradesDataMart - Dev Clone'
+$CloneName = 'TradesDataMart-Dev'
 
 # I have several SQL Server instances registered on my SQL Clone Server - I want to deliver a copy to all of them
 $Destinations = Get-SqlCloneSqlServerInstance | Where-Object -FilterScript { $_.Server -like '*WKS*' -and $_.Instance -eq 'Dev' }
@@ -27,7 +27,7 @@ $elapsed = [System.Diagnostics.Stopwatch]::StartNew()
 
  $Destinations | Invoke-Parallel -ImportVariables -ScriptBlock {
     $SourceDataImage | New-SqlClone -Name $CloneName -Location $_ | Wait-SqlCloneOperation
-    "Created clone in instance {0}" -f $_.Server + '\' + $_.Instance;   
+    "Created clone in instance {0}" -f $_.Server + '\' + $_.Instance;
 }
 
 "Total Elapsed Time: {0}" -f $($elapsed.Elapsed.ToString())  

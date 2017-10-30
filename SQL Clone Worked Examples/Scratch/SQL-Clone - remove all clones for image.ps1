@@ -10,7 +10,7 @@ $clones = Get-SqlClone -Image $image
 
 Measure-Command -Expression {
 $clones | ForEach-Object { # note - '{' needs to be on same line as 'foreach' !
-    $_ | Remove-SqlClone | Wait-SqlCloneOperation`
+    $_ | Remove-SqlClone | Wait-SqlCloneOperation 
     "Removed clone ""{0}""" -f $_.Name ;
                     };
 }  | Select-Object Minutes, Seconds, Milliseconds
