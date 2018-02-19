@@ -3,7 +3,7 @@
 #
 Clear-Host
 $myUrl = "http://rm-win10-sql201.testnet.red-gate.com:14145"
-$myLocalAgent = "RM-IClone1"
+$myLocalAgent = "RM-WIN10-SQL201"
 $myLocalInstance = ""
 
 # connect to SQL Clone server (using current credentials)
@@ -13,10 +13,10 @@ Connect-SqlClone -ServerUrl $myUrl
 $sqlServerInstance = Get-SqlCloneSqlServerInstance -MachineName $myLocalAgent -InstanceName $myLocalInstance
 
 # fetch SQL Clone image to use
-$image = Get-SqlCloneImage -Name 'TradesDataMart (Full) - 2017-09-04'#'StackOverflow Mar 2017'
+$image = Get-SqlCloneImage -Name 'StackOverflow - Mar 2017'#'StackOverflow Mar 2017'
 
-$ClonePrefix = '_TDM_Clone_2017-10-26_'
-$Count = 5
+$ClonePrefix = '_SO_Clone_'
+$Count = 8
 
 # Start a timer
 $elapsed = [System.Diagnostics.Stopwatch]::StartNew()

@@ -1,6 +1,6 @@
 ﻿$myUrl = "http://rm-win10-sql201.testnet.red-gate.com:14145"
-$myLocalAgent = "RM-ICLONE1"
-$myLocalInstance = ""
+$myLocalAgent = "PDM-LTRICHARDM"
+$myLocalInstance = "DEV"
 
 Connect-SqlClone -ServerUrl $myUrl -Verbose
 

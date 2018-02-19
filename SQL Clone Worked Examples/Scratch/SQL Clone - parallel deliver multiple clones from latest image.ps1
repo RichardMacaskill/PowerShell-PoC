@@ -10,12 +10,12 @@ $SQLCloneServer= "http://rm-win10-sql201.testnet.red-gate.com:14145"
 
 Connect-SqlClone -ServerUrl $SQLCloneServer
 
-$SourceDataImage = Get-SqlCloneImage -Name  'TradesDataMart (Full) - 2017-09-04'
+$SourceDataImage = Get-SqlCloneImage -Name  'StackOverflow - Original'
 
-$CloneName = 'TradesDataMart-Dev'
+$CloneName = 'StackOverflow'
 
 # I have several SQL Server instances registered on my SQL Clone Server - I want to deliver a copy to all of them
-$Destinations = Get-SqlCloneSqlServerInstance | Where-Object -FilterScript { $_.Server -like '*WKS*' -and $_.Instance -eq 'Dev' }
+$Destinations = Get-SqlCloneSqlServerInstance  | Where-Object -FilterScript { $_.Server -like '*WKS*' -and $_.Instance -eq 'Dev' }
 
 # I'm only going to make a small adjustment to permissions in this example
 #$Query = "CREATE USER StackOverflowUser FROM LOGIN [RED-GATE\Richard.Macaskill];ALTER ROLE db_datareader ADD member [StackOverflowUser];"
@@ -29,5 +29,6 @@ $elapsed = [System.Diagnostics.Stopwatch]::StartNew()
     $SourceDataImage | New-SqlClone -Name $CloneName -Location $_ | Wait-SqlCloneOperation
     "Created clone in instance {0}" -f $_.Server + '\' + $_.Instance;
 }
+
 
 "Total Elapsed Time: {0}" -f $($elapsed.Elapsed.ToString())  
