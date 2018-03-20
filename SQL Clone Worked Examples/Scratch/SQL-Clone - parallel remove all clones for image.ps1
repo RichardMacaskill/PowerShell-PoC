@@ -5,7 +5,7 @@
 
 Connect-SqlClone -ServerUrl $myUrl 
 
-$image = Get-SqlCloneImage -Name 'TradesDataMart (Full) - 2017-09-04'
+$image = Get-SqlCloneImage -Name 'StackOverflow - Mar 2017'#'Forums Redgate Masked v1.2 - 2018-02-21'
 
 $clones = Get-SqlClone -Image $image
 

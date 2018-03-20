@@ -7,11 +7,11 @@ $myLocalAgent = "PDM-LTRICHARDM"
 $myLocalInstance = "Dev"
 Connect-SqlClone -ServerUrl $myUrl
 $sqlServerInstance = Get-SqlCloneSqlServerInstance -MachineName $myLocalAgent -InstanceName $myLocalInstance
-$count = 5
+$count = 10
 
-$image = Get-SqlCloneImage -Name 'TradesDataMart (full)'
+$image = Get-SqlCloneImage -Name 'StackOverflow - Mar 2017'
 
-$ClonePrefix = '_TDM_'
+$ClonePrefix = '_More_SO_Clones_'
 
 $elapsed = [System.Diagnostics.Stopwatch]::StartNew()
 "Started at {0}" -f $(get-date)
