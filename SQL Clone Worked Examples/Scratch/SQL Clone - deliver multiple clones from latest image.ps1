@@ -18,7 +18,6 @@ Measure-Command -Expression {
     foreach ($Destination in $Destinations)
     {
         $SourceDataImage | New-SqlClone -Name $CloneName -Location $Destination | Wait-SqlCloneOperation
-        $ServerInstance = $Destination.Server + '\' +$Destination.Instance 
         "Created clone in instance {0}" -f $Destination.Server + '\' + $Destination.Instance;    
     } 
 } | Select-Object Minutes, Seconds, Milliseconds

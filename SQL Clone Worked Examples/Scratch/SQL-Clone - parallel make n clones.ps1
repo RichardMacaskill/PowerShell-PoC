@@ -21,8 +21,7 @@ $elapsed = [System.Diagnostics.Stopwatch]::StartNew()
 1..$count | Invoke-Parallel -ImportVariables -ScriptBlock {
     $image | New-SqlClone -Name ($ClonePrefix + $_.ToString("00")) -Location $sqlServerInstance | Wait-SqlCloneOperation
   "Created clone {0}" -f $_.ToString("00");   
-
-  
+ 
 };
 
 "Total Elapsed Time: {0}" -f $($elapsed.Elapsed.ToString())
