@@ -6,9 +6,9 @@ $myserver1="UAT"
 
 Connect-SqlClone -ServerUrl $SQLCloneServer
 
-$SourceDataImage = Get-SqlCloneImage -Name  'StackOverflow Jan 2017'
+$SourceDataImage = Get-SqlCloneImage -Name  'AdventureWorks_20180329'
 
-$CloneName = '_SO_Clone_Latest'
+$CloneName = 'AdventureWorks_Latest'
 
 # I have 3 SQL Server instances registered on my SQL Clone Server - I want to deliver a copy to all of them
 $Destinations = Get-SqlCloneSqlServerInstance

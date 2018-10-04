@@ -7,11 +7,11 @@ $myLocalAgent = "PDM-LTRICHARDM"
 $myLocalInstance = "Dev"
 Connect-SqlClone -ServerUrl $myUrl
 $sqlServerInstance = Get-SqlCloneSqlServerInstance -MachineName $myLocalAgent -InstanceName $myLocalInstance
-$count = 10
+$count = 20
 
 $image = Get-SqlCloneImage -Name 'StackOverflow - Mar 2017'
 
-$ClonePrefix = '_More_SO_Clones_'
+$ClonePrefix = 'clone overload at ignite'
 
 $elapsed = [System.Diagnostics.Stopwatch]::StartNew()
 "Started at {0}" -f $(get-date)

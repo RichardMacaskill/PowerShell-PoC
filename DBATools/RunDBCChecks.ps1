@@ -10,5 +10,5 @@ Set-DbcConfig -Name policy.validdbowner  -Value 'sa'
 #Set-DbcConfig -Name agent.dbaoperatorname -Value 'DB eAlert'
 
 # Time to execute against my CMS system
-Invoke-DbcCheck -SqlInstance (Get-DbaRegisteredServer -SqlInstance 'pdm-ltrichardm\dev' -IncludeSelf) -ExcludeCheck TestLastBackup,TestLastBackupVerifyOnly -PassThru| Update-DbcPowerBiDataSource
+Invoke-DbcCheck -SqlInstance (Get-DbaRegisteredServer -SqlInstance 'pdm-ltrichardm\dev' -IncludeSelf) -ExcludeCheck TestLastBackup,TestLastBackupVerifyOnly -PassThru| Out-GridView
 Start-DbcPowerBi

@@ -9,8 +9,8 @@ $machines | ForEach-Object {
     "Testing Disk Speed for databases on {0}" -f $thisInstance;
     Test-DbaDiskSpeed -SqlInstance $thisInstance | `
         Select-Object ComputerName , Database , FileName, ReadPerformance , write-performance | `
-        Sort-Object Database, Filename | `
-        #Format-Table # NOTE - replace this line with the following 2 to change output to db table
-        ConvertTo-DbaDataTable | `
-        Write-DbaDataTable -SQLServer "pdm-ltrichardm\dev" -Table DBATools.dbo.DiskSpeedTest -AutoCreateTable 
+        Sort-Object Database, Filename | ` # Out-GridView
+        Format-Table # NOTE - replace this line with the following 2 to change output to db table
+        #ConvertTo-DbaDataTable | `
+        #Write-DbaDataTable -SQLServer "pdm-ltrichardm\dev" -Table DBATools.dbo.DiskSpeedTest -AutoCreateTable 
 }

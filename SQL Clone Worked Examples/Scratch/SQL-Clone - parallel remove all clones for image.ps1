@@ -3,9 +3,9 @@
 
 . "C:\Dev\Git\PowerShell-PoC\Utils\PowerShell\Invoke-Parallel.ps1"
 
-Connect-SqlClone -ServerUrl $myUrl 
+Connect-SqlClone -ServerUrl $myUrl
 
-$image = Get-SqlCloneImage -Name 'StackOverflow - Mar 2017'#'Forums Redgate Masked v1.2 - 2018-02-21'
+$image = Get-SqlCloneImage -Name 'AdventureWorks 2014 - 2018-01-31'#'Forums Redgate Masked v1.2 - 2018-02-21'
 
 $clones = Get-SqlClone -Image $image
 
