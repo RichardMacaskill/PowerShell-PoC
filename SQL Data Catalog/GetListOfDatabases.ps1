@@ -2,7 +2,9 @@
 
 $ServerRootUrl = 'http://rm-win10-sql201.testnet.red-gate.com:15156'
 $AddUrl = "$ServerRootUrl/api/instances"
- 
+
+$Databases=@("");
+
 $Response = Invoke-RestMethod -Uri $AddUrl `
     -UseDefaultCredentials `
     -Method Get 
@@ -15,10 +17,10 @@ $Response.ForEach{
     -UseDefaultCredentials `
     -Method Get 
     $DbResponse;
-    $databases+= $DbResponse.database[0].name;
+    $Databases.Add( $DbResponse.database[0].name);
             };
 
-
+$Databases.count;
 
 
 Write-Host "Return Status Code: $($Response.StatusCode)"
