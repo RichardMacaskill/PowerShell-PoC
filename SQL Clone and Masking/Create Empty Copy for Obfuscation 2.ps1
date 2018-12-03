@@ -4,7 +4,7 @@ $ServerInstance = "rm-iclone1.testnet.red-gate.com"
 
 $DatabaseName = "StackOverflow"
 
-$EmptyDatabaseName = "StackOverFlow-Obfuscated"
+$EmptyDatabaseName = "StackOverFlow-Obfuscated2"
 
 invoke-Sqlcmd -Query "CREATE DATABASE [$EmptyDatabaseName];" -ServerInstance $ServerInstance 
 
