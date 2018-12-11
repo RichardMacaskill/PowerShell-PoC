@@ -11,7 +11,11 @@ $Headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $Headers.Add("Authorization", "Bearer $AuthToken")
 
 $Response = Invoke-RestMethod -Uri $AddUrl `
+<<<<<<< 2d1afe5cd038033f8e2e866c887eb4353c220853
     -Headers $Headers `
+=======
+    -UseDefaultCredentials `
+>>>>>>> tweaks
     -Method Get `
     -AllowUnencryptedAuthentication
    
@@ -20,11 +24,20 @@ $Response.ForEach{
     Write-Host $_.instance[0].name ;
     $AddUrl = "$ServerRootUrl/api/instances/$InstanceId/databases";
     $DbResponse = Invoke-RestMethod -Uri $AddUrl `
+<<<<<<< 2d1afe5cd038033f8e2e866c887eb4353c220853
     -Headers $Headers `
     -Method Get `
     -AllowUnencryptedAuthentication 
     
     $Databases.Add( $DbResponse.database[0].name);
+=======
+    -UseDefaultCredentials `
+    -Method Get `
+    -AllowUnencryptedAuthentication
+
+    $DbResponse;
+   # $Databases.Add( $DbResponse.database[0].name);
+>>>>>>> tweaks
             };
 
 $Databases.count;

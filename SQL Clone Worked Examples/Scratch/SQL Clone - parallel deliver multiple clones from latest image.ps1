@@ -10,9 +10,9 @@ $SQLCloneServer= "http://rm-win10-sql201.testnet.red-gate.com:14145"
 
 Connect-SqlClone -ServerUrl $SQLCloneServer
 
-$SourceDataImage = Get-SqlCloneImage -Name  'TradesDataMart-20180315152300' 
+$SourceDataImage = Get-SqlCloneImage -Name  'Demo for SQL in the City - Masked AW' 
 
-$CloneName = '_Demo of TDM for Aaron '
+$CloneName = 'AdventureWorks - Masked'
 
 # I have several SQL Server instances registered on my SQL Clone Server - I want to deliver a copy to all of them
 $Destinations = Get-SqlCloneSqlServerInstance | 
