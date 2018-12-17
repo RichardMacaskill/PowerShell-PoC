@@ -11,7 +11,7 @@
 #$dataCatalog = Read-Host -Prompt 'Please enter the FQDN for the Data Catalog server.'
 $dataCatalog =  'http://rm-win10-sql201.testnet.red-gate.com:15156/' #'http://' + $dataCatalog + ':15156/'
 $sqlinstance = 'rm-iclone1.testnet.red-gate.com' #Read-Host -Prompt 'Please enter the SQL instance for the database to classify.'
-$database = 'RedGateMonitor' # Read-Host =-Prompt 'Please enter the database name.'
+$database = 'AdventureWorks2012' # Read-Host =-Prompt 'Please enter the database name.'
 
 <#*************************************************$p************************************#>
 $AuthToken = 'NTE3NjA0OTQ0NjE0Nzg1MDI0Ojc5NzViY2YwLTAyOGUtNGU4My1hZjY4LTJkNWE0ZmI4MmNlMw=='
@@ -19,10 +19,42 @@ $Headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
 $Headers.Add("Authorization", "Bearer $AuthToken")
 
 $instanceid = $null
+$qry = "WITH results
+AS ( SELECT   SCHEMA_NAME(o.schema_id) + '.' AS [SchemaName]
+            , o.[name] AS [TableName]
+            , SUM(p.[rows]) AS [RowCount]
+     FROM     sys.objects AS o
+              INNER JOIN sys.partitions AS p ON o.object_id = p.object_id
+     WHERE    o.[type] = 'U'
+              AND o.is_ms_shipped = 0x0
+              AND index_id < 2 -- 0:Heap, 1:Clustered
+     GROUP BY o.[schema_id]
+            , o.[name] )
+SELECT   r.SchemaName + r.TableName AS [TableName]
+FROM     results r
+WHERE    r.[RowCount] = 0
+         AND r.TableName NOT IN (   SELECT [name]
+                                    FROM   sys.tables
+                                    WHERE  type <> 'U' )
+                                    ORDER BY [TableName];"
+
+$tableList = Invoke-DbaQuery -SqlInstance $sqlinstance -Database $database -Query $qry
 
 $cmd = $DataCatalog + 'api/tagcategories'
 $categories = Invoke-RestMethod -Uri $cmd -Headers $Headers
 
+<#
+    grab the ids/catID for the following items 
+        "informationtype\other"
+        "sensitivity\general"
+        "Internal Data\Unused" <== this is our specific classification for columns in tables that are empty
+#>
+
+<#  
+    find the tag ids for the tags we will be applying from various categories. If the table is
+    empty we will assume it is 'other' and 'general.' A second script can be run from time
+    to time to ensure that unused data columns/tables are in fact empty.    
+#>
 foreach($c in $categories)
 {
     if ($c.name -eq 'Information Type')
@@ -107,5 +139,6 @@ foreach ($t in $tableList)
         $cmd = $dataCatalog + $cmd
         Invoke-RestMethod -Uri $cmd -Headers $Headers `
             -Method Put -Body $postJson -ContentType 'application/json' 
+
     }
 }
