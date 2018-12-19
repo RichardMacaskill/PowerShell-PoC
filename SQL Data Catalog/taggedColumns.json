@@ -1,0 +1,42 @@
+[
+    {
+        "column": {
+            "schemaName": "Person",
+            "tableName": "Person",
+            "columnName": "FirstName"
+        },
+        "tag": "FirstName"
+    },
+    {
+        "column": {
+            "schemaName": "Person",
+            "tableName": "Person",
+            "columnName": "MiddleName"
+        },
+        "tag": "FirstName"
+    },
+    {
+        "column": {
+            "schemaName": "Person",
+            "tableName": "Person",
+            "columnName": "LastName"
+        },
+        "tag": "LastName"
+    },
+    {
+        "column": {
+            "schemaName": "Person",
+            "tableName": "Address",
+            "columnName": "PostalCode"
+        },
+        "tag": "PostCode"
+    },
+    {
+        "column": {
+            "schemaName": "HumanResources",
+            "tableName": "Employee",
+            "columnName": "BirthDate"
+        },
+        "tag": "DateOfBirth"
+    }
+]

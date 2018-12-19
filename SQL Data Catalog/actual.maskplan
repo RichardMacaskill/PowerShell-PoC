@@ -1,0 +1,88 @@
+{
+  "masks": [
+    {
+      "mask": {
+        "type": "RANDOM_FIRST_NAME_MASK",
+        "casing": "ALL_LOWERCASE",
+        "id": "7e14c2d4-869e-4521-803b-55d0277d1666",
+        "synchronised": "false",
+        "name": "Person.Person.FirstName"
+      },
+      "columns": [
+        {
+          "schemaName": "Person",
+          "tableName": "Person",
+          "columnName": "FirstName"
+        }
+      ]
+    },
+    {
+      "mask": {
+        "type": "RANDOM_FIRST_NAME_MASK",
+        "casing": "ALL_LOWERCASE",
+        "id": "62235e7e-18f3-46e2-a621-c70193ea72cf",
+        "synchronised": "false",
+        "name": "Person.Person.MiddleName"
+      },
+      "columns": [
+        {
+          "schemaName": "Person",
+          "tableName": "Person",
+          "columnName": "MiddleName"
+        }
+      ]
+    },
+    {
+      "mask": {
+        "type": "RANDOM_LAST_NAME_MASK",
+        "casing": "ALL_LOWERCASE",
+        "id": "e89db1c8-e66e-4044-86fc-9dd8ea32b46c",
+        "synchronised": "false",
+        "name": "Person.Person.LastName"
+      },
+      "columns": [
+        {
+          "schemaName": "Person",
+          "tableName": "Person",
+          "columnName": "LastName"
+        }
+      ]
+    },
+    {
+      "mask": {
+        "type": "RANDOM_ADDRESS_MASK",
+        "subType": "UK_POSTCODE",
+        "id": "cd0c2ed8-eac3-4543-ab8f-2f5a0b85f75f",
+        "synchronised": "false",
+        "name": "Person.Address.PostalCode"
+      },
+      "columns": [
+        {
+          "schemaName": "Person",
+          "tableName": "Address",
+          "columnName": "PostalCode"
+        }
+      ]
+    },
+    {
+      "mask": {
+        "type": "RANDOM_DATETIME_MASK",
+        "preserveNulls": true,
+        "zeroIsAllowed": false,
+        "varianceInDays": 30,
+        "id": "0f9f282f-fefb-4a75-995a-e456f5e22f2b",
+        "synchronised": "false",
+        "name": "HumanResources.Employee.BirthDate"
+      },
+      "columns": [
+        {
+          "schemaName": "HumanResources",
+          "tableName": "Employee",
+          "columnName": "BirthDate"
+        }
+      ]
+    }
+  ],
+  "version": 1,
+  "customTableLinks": []
+}

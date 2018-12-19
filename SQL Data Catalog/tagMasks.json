@@ -1,0 +1,20 @@
+{
+    "FirstName": {
+        "type": "RANDOM_FIRST_NAME_MASK",
+        "casing": "ALL_LOWERCASE"
+    },
+    "LastName": {
+        "type": "RANDOM_LAST_NAME_MASK",
+        "casing": "ALL_LOWERCASE"
+    },
+    "DateOfBirth": {
+        "type": "RANDOM_DATETIME_MASK",
+        "preserveNulls": true,
+        "zeroIsAllowed": false,
+        "varianceInDays": 30
+    },
+    "PostCode": {
+        "type": "RANDOM_ADDRESS_MASK",
+        "subType": "UK_POSTCODE"
+    }
+}
