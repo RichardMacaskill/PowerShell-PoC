@@ -19,21 +19,26 @@ $Response = Invoke-RestMethod -Uri $AddUrl `
 
 $Instances += $Response.instance
 
-$InstanceId = {$Instances | Where-Object $_.name -eq $InstanceName  } |  Select-Object -property Id
+$Instances | ForEach-Object { `
+    if ($_.name -eq $InstanceName)
+    {
+       $InstanceId = $_.id
+    }
+}
 
-$Response.ForEach{
-    
-    Write-Host $_.instance[0].name ;
-    $AddUrl = "$ServerRootUrl/api/databases/$DatabaseName/columns";
-    $DbResponse = Invoke-RestMethod -Uri $AddUrl `
-    -Headers $Headers `
-    -Method Get `
-    -AllowUnencryptedAuthentication 
-    
-    $Databases += $DbResponse.database;
-            };
+$AddUrl = "$ServerRootUrl/api/instances/" + $InstanceId + "/databases/" + $DatabaseName  `
+    + "/columns?Value=1&skip=0&take=200";
+$ColumnsResponse = Invoke-RestMethod -Uri $AddUrl `
+-Headers $Headers `
+-Method Get `
+-AllowUnencryptedAuthentication 
 
-$Databases;
+$ColumnsResponse.classifiedColumns | ForEach-Object { `
+    "Found column {0} on table {1} on schema {2}" -f $_.columnName, $_.tableName, $_.schemaName ; 
+}
+            
+
+
 
 
 Write-Host "Return Status Code: $($Response.StatusCode)"

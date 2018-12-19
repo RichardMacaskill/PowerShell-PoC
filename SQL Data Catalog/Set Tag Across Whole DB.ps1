@@ -1,14 +1,3 @@
-<#
-    Script to tag all empty tables as general/not used. $authToken should be replaced with
-    a token generated from the appropriate data catalog intallation.
-
-    Created: 2018-11-28
-
-    Author: Josh Smith
-
-#>
-
-#$dataCatalog = Read-Host -Prompt 'Please enter the FQDN for the Data Catalog server.'
 $dataCatalog =  'http://rm-win10-sql201.testnet.red-gate.com:15156/' #'http://' + $dataCatalog + ':15156/'
 $sqlinstance = 'rm-iclone1.testnet.red-gate.com' #Read-Host -Prompt 'Please enter the SQL instance for the database to classify.'
 $database = 'RedGateMonitor' # Read-Host =-Prompt 'Please enter the database name.'
@@ -45,22 +34,9 @@ foreach($c in $categories)
             }
         }
     }
-    <# cusotmize any other categories/tags that need to be added here: #>
-    elseif($c.name -eq 'Internal Data')
-    {
-        foreach($t in $c.tags)
-        {
-            if ($t.name -eq 'Unused')
-            {
-                $unused_id = $t.id
-            }
-        }
-    }
-}
+ 
 
 $postObj = @{tagids = @($it_id, $sens_id)}
-
-if ($null -ne $unused_id) { $postObj.tagids += $unused_id} 
 
 $postJson = $postObj | ConvertTo-Json
 
