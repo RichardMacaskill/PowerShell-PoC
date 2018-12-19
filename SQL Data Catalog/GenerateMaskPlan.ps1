@@ -29,4 +29,4 @@ $maskplan = @{
     customTableLinks = @()
 }
 
-ConvertTo-Json -Depth 100 $maskplan | Set-Content -Path actual.maskplan
+ConvertTo-Json -Depth 100 $maskplan | Set-Content -Path "C:\Users\richard.macaskill\Documents\Data Masker(SqlServer)\Masking Sets\actual.maskplan"
