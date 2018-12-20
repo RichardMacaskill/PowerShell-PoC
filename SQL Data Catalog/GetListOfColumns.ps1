@@ -13,7 +13,7 @@ $Headers.Add("Authorization", "Bearer $AuthToken")
 $Instances =@("")
 
 $Response = Invoke-RestMethod -Uri $AddUrl `
-    -UseDefaultCredentials `
+    -Headers $Headers `
     -Method Get `
     -AllowUnencryptedAuthentication
 
