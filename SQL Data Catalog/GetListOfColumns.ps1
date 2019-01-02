@@ -1,7 +1,7 @@
 
 $ServerRootUrl = 'http://rm-win10-sql201.testnet.red-gate.com:15156'
 $InstanceName  = 'rm-iclone1.testnet.red-gate.com' #Read-Host -Prompt 'Please enter the SQL instance for the database to classify.'
-$DatabaseName = 'AdventureWorks2012' # Read-Host =-Prompt 'Please enter the database name.'
+$DatabaseName = 'Forex' # Read-Host =-Prompt 'Please enter the database name.'
 
 $AuthToken = 'NTE3NjA0OTQ0NjE0Nzg1MDI0Ojc5NzViY2YwLTAyOGUtNGU4My1hZjY4LTJkNWE0ZmI4MmNlMw=='
 
@@ -33,12 +33,13 @@ $ColumnsResponse = Invoke-RestMethod -Uri $AddUrl `
 -Method Get `
 -AllowUnencryptedAuthentication 
 
+
+
 $ColumnsResponse.classifiedColumns | ForEach-Object { `
     "Found column {0} on table {1} on schema {2}" -f $_.columnName, $_.tableName, $_.schemaName ; 
+
 }
             
 
 
 
-
-Write-Host "Return Status Code: $($Response.StatusCode)"
