@@ -30,8 +30,4 @@ $DatabaseName = 'SQLEstateManager' # Read-Host =-Prompt 'Please enter the databa
 $InstanceId = 499137865058353152
 $AuthToken = 'NTE3NjA0OTQ0NjE0Nzg1MDI0Ojc5NzViY2YwLTAyOGUtNGU4My1hZjY4LTJkNWE0ZmI4MmNlMw=='
 
-$count = Get-DataCatalogColumnCount('http://rm-win10-sql201.testnet.red-gate.com:15156','Forex',499137865058353152,'NTE3NjA0OTQ0NjE0Nzg1MDI0Ojc5NzViY2YwLTAyOGUtNGU4My1hZjY4LTJkNWE0ZmI4MmNlMw==')
-
-$count
-
 Get-DataCatalogColumnCount -ServerRootUrl $ServerRootUrl  -InstanceId $InstanceId -DatabaseName $DatabaseName -AuthToken $AuthToken
