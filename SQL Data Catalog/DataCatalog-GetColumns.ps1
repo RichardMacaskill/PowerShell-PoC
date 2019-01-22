@@ -85,7 +85,7 @@ function Read-DataCatalogColumns {
             $x++
         }
     }
-    process {
+    get-process {
         # record the translation from sensitive value to mask value so that data owner can infer correct place to carry out advice/instruction after sensitive log has been reviewed
         $Secrets | Out-File $MaskValues
         Write-Verbose "Mask to Secret settings set in $MaskValues"
