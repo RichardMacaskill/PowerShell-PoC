@@ -33,3 +33,4 @@ $myAuthToken = 'NTE3NjA0OTQ0NjE0Nzg1MDI0Ojc5NzViY2YwLTAyOGUtNGU4My1hZjY4LTJkNWE0
 
 $ret = Get-DataCatalogColumnCount -ServerRootUrl $myServerRootUrl -InstanceId  $myInstanceId -DatabaseName $myDatabaseName -Authtoken $myAuthToken
 $ret
+Get-DataCatalogColumnCount -ServerRootUrl $ServerRootUrl  -InstanceId $InstanceId -DatabaseName $DatabaseName -AuthToken $AuthToken
