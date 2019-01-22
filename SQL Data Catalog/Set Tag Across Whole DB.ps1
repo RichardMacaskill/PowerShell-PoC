@@ -1,6 +1,6 @@
 $dataCatalog =  'http://rm-win10-sql201.testnet.red-gate.com:15156/' #'http://' + $dataCatalog + ':15156/'
-$sqlinstance = 'rm-iclone1.testnet.red-gate.com' #Read-Host -Prompt 'Please enter the SQL instance for the database to classify.'
-$database = 'RedGateMonitor' # Read-Host =-Prompt 'Please enter the database name.'
+$sqlinstance = 'rm-win10-sql201.testnet.red-gate.com' #Read-Host -Prompt 'Please enter the SQL instance for the database to classify.'
+$database = 'SQLEstateManager' # Read-Host =-Prompt 'Please enter the database name.'
 
 <#*************************************************$p************************************#>
 $AuthToken = 'NTE3NjA0OTQ0NjE0Nzg1MDI0Ojc5NzViY2YwLTAyOGUtNGU4My1hZjY4LTJkNWE0ZmI4MmNlMw=='
@@ -34,6 +34,7 @@ foreach($c in $categories)
             }
         }
     }
+}
  
 
 $postObj = @{tagids = @($it_id, $sens_id)}
