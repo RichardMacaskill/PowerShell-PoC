@@ -1,7 +1,7 @@
 # dot source the classification functions (change to where you saved the script)
 
-. "C:\Dev\Git\PowerShell-PoC\SQL Data Catalog\ClassifyColumn.ps1"
-#. "/Users/cas/Dev/PowerShell-PoC/PowerShell-PoC/SQL Data Catalog/ClassifyColumn.ps1"
+#. "C:\Dev\Git\PowerShell-PoC\SQL Data Catalog\ClassifyColumn.ps1"
+. "/Users/cas/Dev/PowerShell-PoC/PowerShell-PoC/SQL Data Catalog/ClassifyColumn.ps1"
 
 $catalogServerName = "rm-win10-sql201.testnet.red-gate.com"
 $instanceName = "rm-iclone1.testnet.red-gate.com"
@@ -46,26 +46,66 @@ $employeeColumns = $allColumns | `
             -or $_.tableName -eq 'Shift' `
             -or $_.columnName -like '*Marital*' }            
             
-# apply tags based on groupings
-$idColumns | Update-ColumnTag -category "Sensitivity" -tags @("System")
+#
+# Apply tags based on groupings. Tags are not overwritten by this method, 
+# so it's best to apply the most sensitive ones first.
+#
 
-$systemColumns | Update-ColumnTag -category "Sensitivity" -tags @("System")
-
-$geoColumns  | Update-ColumnTag -category "Sensitivity" -tags @("General")
-$geoColumns   | Update-ColumnTag -category "Information Type" -tags @("Other")
+$employeeColumns |  Update-ColumnTag -category "Sensitivity" -tags @("Confidential - GDPR")
 
 $emailColumns | Update-ColumnTag -category "Sensitivity" -tags @("Confidential - GDPR")
 $emailColumns | Update-ColumnTag -category "Information Type" -tags @("Contact Info")
 
 $commercialColumns |  Update-ColumnTag -category "Sensitivity" -tags @("Highly Confidential")
-$commercialColumns | Update-ColumnTag -category "Information Type" -tags @("Other")
-
-$employeeColumns |  Update-ColumnTag -category "Sensitivity" -tags @("Confidential - GDPR")
 
 $salesStaffColumns |  Update-ColumnTag -category "Sensitivity" -tags @("Confidential")
 
-# The rest of it is public information. hit the api again to refresh the list, then set to 'Public'
+$idColumns | Update-ColumnTag -category "Sensitivity" -tags @("System")
+$idColumns | Update-ColumnTag -category "Information Type" -tags @("Other")
+
+$geoColumns  | Update-ColumnTag -category "Sensitivity" -tags @("General")
+$geoColumns   | Update-ColumnTag -category "Information Type" -tags @("Other")
+
+$systemColumns | Update-ColumnTag -category "Sensitivity" -tags @("System")
+
+# The rest of it is public information. Hit the api again to refresh the list, 
+# then set remaining columns to sensitivity = 'Public'
+
 $untaggedColumns = Get-Columns -instanceName $instanceName -databaseName $databaseName `
 | Where-Object {-not $_.sensitivitylabel }
 
 $untaggedColumns  | Update-ColumnTag -category "Sensitivity" -tags @("Public") 
+
+# 
+# I also want to set my Ownership tags (which I've added in my taxonomy)
+# This is mostly set by schema. 
+#
+
+# get all columns into a collection
+$allColumns = Get-Columns -instanceName $instanceName -databaseName $databaseName 
+
+$hrColumns  = $allColumns | Where-Object {$_.schemaName -eq "HumanResources"  `
+ -or $_.schemaName -eq "People"}
+
+$hrColumns  | Update-ColumnTag -category "Owner" -tags @("HR Manager") 
+
+$salesColumns  = $allColumns | Where-Object {$_.schemaName -eq "Sales"  `
+ -or $_.schemaName -eq "Purchasing"}
+
+$salesColumns  | Update-ColumnTag -category "Owner" -tags @("Finance Manager") 
+
+
+$salesColumns  = $allColumns | Where-Object {$_.schemaName -eq "Sales"  `
+ -or $_.schemaName -eq "Purchasing"}
+
+$salesColumns  | Update-ColumnTag -category "Owner" -tags @("Finance Manager") 
+
+$prodColumns  = $allColumns | Where-Object {$_.schemaName -eq "Production"}
+
+$prodColumns  | Update-ColumnTag -category "Owner" -tags @("Operations") 
+
+# The dbo schema has deployment and error information, so IT owns those under the CTO.
+
+$itopsColumns  = $allColumns | Where-Object {$_.schemaName -eq "dbo"}
+
+$itopsColumns  | Update-ColumnTag -category "Owner" -tags @("CTO")
