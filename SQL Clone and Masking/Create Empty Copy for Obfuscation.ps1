@@ -1,11 +1,11 @@
 $ServerInstance = "RM-IClone1.testnet.red-gate.com"
 $DatabaseName = "StackOverflow"
-$EmptyDatabaseName = "StackOverflow-Obfuscated"
+$EmptyDatabaseName = "StackOverflow-ObfuscatedCopy"
 invoke-Sqlcmd -Query "CREATE DATABASE [$EmptyDatabaseName];" -ServerInstance $ServerInstance 
-$SourceDB = New-DlmDatabaseConnection -ServerInstance $ServerInstance -Database $DatabaseName
-$TargetDB = New-DlmDatabaseConnection -ServerInstance $ServerInstance -Database $EmptyDatabaseName
-Test-DlmDatabaseConnection $SourceDB 
-Test-DlmDatabaseConnection $TargetDB 
-$Release = New-DlmDatabaseRelease -Source $SourceDB -Target $TargetDB 
-Use-DlmDatabaseRelease -InputObject $Release -DeployTo $TargetDB 
+$SourceDB = New-DatabaseConnection -ServerInstance $ServerInstance -Database $DatabaseName
+$TargetDB = New-DatabaseConnection -ServerInstance $ServerInstance -Database $EmptyDatabaseName
+Test-DatabaseConnection $SourceDB 
+Test-DatabaseConnection $TargetDB 
+$Release = New-DatabaseRelease -Source $SourceDB -Target $TargetDB 
+Use-DatabaseRelease -InputObject $Release -DeployTo $TargetDB 
 

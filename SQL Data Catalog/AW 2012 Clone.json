@@ -1,0 +1,4767 @@
+{
+    "classifiedColumns": [
+        {
+            "columnName": "Database Version",
+            "tableName": "AWBuildVersion",
+            "schemaName": "dbo",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857666140274688",
+                    "name": "CTO",
+                    "isBuiltIn": false,
+                    "description": "Chief Technical Officer",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ModifiedDate",
+            "tableName": "AWBuildVersion",
+            "schemaName": "dbo",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857666140274688",
+                    "name": "CTO",
+                    "isBuiltIn": false,
+                    "description": "Chief Technical Officer",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "SystemInformationID",
+            "tableName": "AWBuildVersion",
+            "schemaName": "dbo",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857666140274688",
+                    "name": "CTO",
+                    "isBuiltIn": false,
+                    "description": "Chief Technical Officer",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "VersionDate",
+            "tableName": "AWBuildVersion",
+            "schemaName": "dbo",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857666140274688",
+                    "name": "CTO",
+                    "isBuiltIn": false,
+                    "description": "Chief Technical Officer",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "DatabaseLogID",
+            "tableName": "DatabaseLog",
+            "schemaName": "dbo",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857666140274688",
+                    "name": "CTO",
+                    "isBuiltIn": false,
+                    "description": "Chief Technical Officer",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "DatabaseUser",
+            "tableName": "DatabaseLog",
+            "schemaName": "dbo",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857666140274688",
+                    "name": "CTO",
+                    "isBuiltIn": false,
+                    "description": "Chief Technical Officer",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Event",
+            "tableName": "DatabaseLog",
+            "schemaName": "dbo",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857666140274688",
+                    "name": "CTO",
+                    "isBuiltIn": false,
+                    "description": "Chief Technical Officer",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Object",
+            "tableName": "DatabaseLog",
+            "schemaName": "dbo",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857666140274688",
+                    "name": "CTO",
+                    "isBuiltIn": false,
+                    "description": "Chief Technical Officer",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "PostTime",
+            "tableName": "DatabaseLog",
+            "schemaName": "dbo",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857666140274688",
+                    "name": "CTO",
+                    "isBuiltIn": false,
+                    "description": "Chief Technical Officer",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Schema",
+            "tableName": "DatabaseLog",
+            "schemaName": "dbo",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857666140274688",
+                    "name": "CTO",
+                    "isBuiltIn": false,
+                    "description": "Chief Technical Officer",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "TSQL",
+            "tableName": "DatabaseLog",
+            "schemaName": "dbo",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857666140274688",
+                    "name": "CTO",
+                    "isBuiltIn": false,
+                    "description": "Chief Technical Officer",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "XmlEvent",
+            "tableName": "DatabaseLog",
+            "schemaName": "dbo",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857666140274688",
+                    "name": "CTO",
+                    "isBuiltIn": false,
+                    "description": "Chief Technical Officer",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ErrorLine",
+            "tableName": "ErrorLog",
+            "schemaName": "dbo",
+            "description": null,
+            "informationType": "Other",
+            "sensitivityLabel": "General",
+            "tags": [
+                {
+                    "id": "491547566912045056",
+                    "name": "General",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491581451368660992",
+                    "name": "Other",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                },
+                {
+                    "id": "507857666140274688",
+                    "name": "CTO",
+                    "isBuiltIn": false,
+                    "description": "Chief Technical Officer",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ErrorLogID",
+            "tableName": "ErrorLog",
+            "schemaName": "dbo",
+            "description": null,
+            "informationType": "Other",
+            "sensitivityLabel": "General",
+            "tags": [
+                {
+                    "id": "491547566912045056",
+                    "name": "General",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491581451368660992",
+                    "name": "Other",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                },
+                {
+                    "id": "507857666140274688",
+                    "name": "CTO",
+                    "isBuiltIn": false,
+                    "description": "Chief Technical Officer",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ErrorMessage",
+            "tableName": "ErrorLog",
+            "schemaName": "dbo",
+            "description": null,
+            "informationType": "Other",
+            "sensitivityLabel": "General",
+            "tags": [
+                {
+                    "id": "491547566912045056",
+                    "name": "General",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491581451368660992",
+                    "name": "Other",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                },
+                {
+                    "id": "507857666140274688",
+                    "name": "CTO",
+                    "isBuiltIn": false,
+                    "description": "Chief Technical Officer",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ErrorNumber",
+            "tableName": "ErrorLog",
+            "schemaName": "dbo",
+            "description": null,
+            "informationType": "Other",
+            "sensitivityLabel": "General",
+            "tags": [
+                {
+                    "id": "491547566912045056",
+                    "name": "General",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491581451368660992",
+                    "name": "Other",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                },
+                {
+                    "id": "507857666140274688",
+                    "name": "CTO",
+                    "isBuiltIn": false,
+                    "description": "Chief Technical Officer",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ErrorProcedure",
+            "tableName": "ErrorLog",
+            "schemaName": "dbo",
+            "description": null,
+            "informationType": "Other",
+            "sensitivityLabel": "General",
+            "tags": [
+                {
+                    "id": "491547566912045056",
+                    "name": "General",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491581451368660992",
+                    "name": "Other",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                },
+                {
+                    "id": "507857666140274688",
+                    "name": "CTO",
+                    "isBuiltIn": false,
+                    "description": "Chief Technical Officer",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ErrorSeverity",
+            "tableName": "ErrorLog",
+            "schemaName": "dbo",
+            "description": null,
+            "informationType": "Other",
+            "sensitivityLabel": "General",
+            "tags": [
+                {
+                    "id": "491547566912045056",
+                    "name": "General",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491581451368660992",
+                    "name": "Other",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                },
+                {
+                    "id": "507857666140274688",
+                    "name": "CTO",
+                    "isBuiltIn": false,
+                    "description": "Chief Technical Officer",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ErrorState",
+            "tableName": "ErrorLog",
+            "schemaName": "dbo",
+            "description": null,
+            "informationType": "Other",
+            "sensitivityLabel": "General",
+            "tags": [
+                {
+                    "id": "491547566912045056",
+                    "name": "General",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491581451368660992",
+                    "name": "Other",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                },
+                {
+                    "id": "507857666140274688",
+                    "name": "CTO",
+                    "isBuiltIn": false,
+                    "description": "Chief Technical Officer",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ErrorTime",
+            "tableName": "ErrorLog",
+            "schemaName": "dbo",
+            "description": null,
+            "informationType": "Other",
+            "sensitivityLabel": "General",
+            "tags": [
+                {
+                    "id": "491547566912045056",
+                    "name": "General",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491581451368660992",
+                    "name": "Other",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                },
+                {
+                    "id": "507857666140274688",
+                    "name": "CTO",
+                    "isBuiltIn": false,
+                    "description": "Chief Technical Officer",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "UserName",
+            "tableName": "ErrorLog",
+            "schemaName": "dbo",
+            "description": null,
+            "informationType": "Other",
+            "sensitivityLabel": "General",
+            "tags": [
+                {
+                    "id": "491547566912045056",
+                    "name": "General",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491581451368660992",
+                    "name": "Other",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                },
+                {
+                    "id": "507857666140274688",
+                    "name": "CTO",
+                    "isBuiltIn": false,
+                    "description": "Chief Technical Officer",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "DepartmentID",
+            "tableName": "Department",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "GroupName",
+            "tableName": "Department",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ModifiedDate",
+            "tableName": "Department",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Name",
+            "tableName": "Department",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "BirthDate",
+            "tableName": "Employee",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": "Date Of Birth",
+            "sensitivityLabel": "Confidential - GDPR",
+            "tags": [
+                {
+                    "id": "491547543646240768",
+                    "name": "Confidential - GDPR",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491547873293369344",
+                    "name": "Date Of Birth",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "BusinessEntityID",
+            "tableName": "Employee",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "CurrentFlag",
+            "tableName": "Employee",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Gender",
+            "tableName": "Employee",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": "Other",
+            "sensitivityLabel": "Confidential",
+            "tags": [
+                {
+                    "id": "491547510913892352",
+                    "name": "Confidential",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491581451368660992",
+                    "name": "Other",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "HireDate",
+            "tableName": "Employee",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "JobTitle",
+            "tableName": "Employee",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": "Name",
+            "sensitivityLabel": "Confidential - GDPR",
+            "tags": [
+                {
+                    "id": "491547543646240768",
+                    "name": "Confidential - GDPR",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491547719131725824",
+                    "name": "Name",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "LoginID",
+            "tableName": "Employee",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "MaritalStatus",
+            "tableName": "Employee",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": "Credentials",
+            "sensitivityLabel": "Confidential - GDPR",
+            "tags": [
+                {
+                    "id": "491547543646240768",
+                    "name": "Confidential - GDPR",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491547823188213760",
+                    "name": "Credentials",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ModifiedDate",
+            "tableName": "Employee",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "NationalIDNumber",
+            "tableName": "Employee",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": "National ID",
+            "sensitivityLabel": "Confidential - GDPR",
+            "tags": [
+                {
+                    "id": "491547543646240768",
+                    "name": "Confidential - GDPR",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491547938401550336",
+                    "name": "National ID",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "OrganizationLevel",
+            "tableName": "Employee",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "OrganizationNode",
+            "tableName": "Employee",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "rowguid",
+            "tableName": "Employee",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "SalariedFlag",
+            "tableName": "Employee",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "SickLeaveHours",
+            "tableName": "Employee",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Confidential - GDPR",
+            "tags": [
+                {
+                    "id": "491547543646240768",
+                    "name": "Confidential - GDPR",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "VacationHours",
+            "tableName": "Employee",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "BusinessEntityID",
+            "tableName": "EmployeeDepartmentHistory",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "DepartmentID",
+            "tableName": "EmployeeDepartmentHistory",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "EndDate",
+            "tableName": "EmployeeDepartmentHistory",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ModifiedDate",
+            "tableName": "EmployeeDepartmentHistory",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ShiftID",
+            "tableName": "EmployeeDepartmentHistory",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "StartDate",
+            "tableName": "EmployeeDepartmentHistory",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "BusinessEntityID",
+            "tableName": "EmployeePayHistory",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ModifiedDate",
+            "tableName": "EmployeePayHistory",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "PayFrequency",
+            "tableName": "EmployeePayHistory",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Confidential - GDPR",
+            "tags": [
+                {
+                    "id": "491547543646240768",
+                    "name": "Confidential - GDPR",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Rate",
+            "tableName": "EmployeePayHistory",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Confidential - GDPR",
+            "tags": [
+                {
+                    "id": "491547543646240768",
+                    "name": "Confidential - GDPR",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "RateChangeDate",
+            "tableName": "EmployeePayHistory",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Confidential - GDPR",
+            "tags": [
+                {
+                    "id": "491547543646240768",
+                    "name": "Confidential - GDPR",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "BusinessEntityID",
+            "tableName": "JobCandidate",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "JobCandidateID",
+            "tableName": "JobCandidate",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ModifiedDate",
+            "tableName": "JobCandidate",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Resume",
+            "tableName": "JobCandidate",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Confidential - GDPR",
+            "tags": [
+                {
+                    "id": "491547543646240768",
+                    "name": "Confidential - GDPR",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "EndTime",
+            "tableName": "Shift",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Confidential - GDPR",
+            "tags": [
+                {
+                    "id": "491547543646240768",
+                    "name": "Confidential - GDPR",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ModifiedDate",
+            "tableName": "Shift",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Name",
+            "tableName": "Shift",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Confidential - GDPR",
+            "tags": [
+                {
+                    "id": "491547543646240768",
+                    "name": "Confidential - GDPR",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ShiftID",
+            "tableName": "Shift",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "StartTime",
+            "tableName": "Shift",
+            "schemaName": "HumanResources",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Confidential - GDPR",
+            "tags": [
+                {
+                    "id": "491547543646240768",
+                    "name": "Confidential - GDPR",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "507857803877023744",
+                    "name": "HR Manager",
+                    "isBuiltIn": false,
+                    "description": "Human Resources manager (or deputy)",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "AddressID",
+            "tableName": "Address",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "AddressLine1",
+            "tableName": "Address",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": "Contact Info",
+            "sensitivityLabel": "Confidential - GDPR",
+            "tags": [
+                {
+                    "id": "491547543646240768",
+                    "name": "Confidential - GDPR",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491547798911582208",
+                    "name": "Contact Info",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "AddressLine2",
+            "tableName": "Address",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": "Contact Info",
+            "sensitivityLabel": "Confidential - GDPR",
+            "tags": [
+                {
+                    "id": "491547543646240768",
+                    "name": "Confidential - GDPR",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491547798911582208",
+                    "name": "Contact Info",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "City",
+            "tableName": "Address",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": "Contact Info",
+            "sensitivityLabel": "Confidential - GDPR",
+            "tags": [
+                {
+                    "id": "491547543646240768",
+                    "name": "Confidential - GDPR",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491547798911582208",
+                    "name": "Contact Info",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ModifiedDate",
+            "tableName": "Address",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "PostalCode",
+            "tableName": "Address",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": "Contact Info",
+            "sensitivityLabel": "Confidential - GDPR",
+            "tags": [
+                {
+                    "id": "491547543646240768",
+                    "name": "Confidential - GDPR",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491547798911582208",
+                    "name": "Contact Info",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "rowguid",
+            "tableName": "Address",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "SpatialLocation",
+            "tableName": "Address",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": "Contact Info",
+            "sensitivityLabel": "Confidential - GDPR",
+            "tags": [
+                {
+                    "id": "491547543646240768",
+                    "name": "Confidential - GDPR",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491547798911582208",
+                    "name": "Contact Info",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "StateProvinceID",
+            "tableName": "Address",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "AddressTypeID",
+            "tableName": "AddressType",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ModifiedDate",
+            "tableName": "AddressType",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Name",
+            "tableName": "AddressType",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "rowguid",
+            "tableName": "AddressType",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "BusinessEntityID",
+            "tableName": "BusinessEntity",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ModifiedDate",
+            "tableName": "BusinessEntity",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "rowguid",
+            "tableName": "BusinessEntity",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "AddressID",
+            "tableName": "BusinessEntityAddress",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "AddressTypeID",
+            "tableName": "BusinessEntityAddress",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "BusinessEntityID",
+            "tableName": "BusinessEntityAddress",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ModifiedDate",
+            "tableName": "BusinessEntityAddress",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "rowguid",
+            "tableName": "BusinessEntityAddress",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "BusinessEntityID",
+            "tableName": "BusinessEntityContact",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ContactTypeID",
+            "tableName": "BusinessEntityContact",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ModifiedDate",
+            "tableName": "BusinessEntityContact",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "PersonID",
+            "tableName": "BusinessEntityContact",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "rowguid",
+            "tableName": "BusinessEntityContact",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ContactTypeID",
+            "tableName": "ContactType",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ModifiedDate",
+            "tableName": "ContactType",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Name",
+            "tableName": "ContactType",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "CountryRegionCode",
+            "tableName": "CountryRegion",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": "Contact Info",
+            "sensitivityLabel": "Confidential - GDPR",
+            "tags": [
+                {
+                    "id": "491547543646240768",
+                    "name": "Confidential - GDPR",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491547798911582208",
+                    "name": "Contact Info",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ModifiedDate",
+            "tableName": "CountryRegion",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": "Other",
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "491581451368660992",
+                    "name": "Other",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                },
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Name",
+            "tableName": "CountryRegion",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": "Other",
+            "sensitivityLabel": "General",
+            "tags": [
+                {
+                    "id": "491547566912045056",
+                    "name": "General",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491581451368660992",
+                    "name": "Other",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "BusinessEntityID",
+            "tableName": "EmailAddress",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "EmailAddress",
+            "tableName": "EmailAddress",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": "Contact Info",
+            "sensitivityLabel": "Confidential - GDPR",
+            "tags": [
+                {
+                    "id": "491547543646240768",
+                    "name": "Confidential - GDPR",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491547798911582208",
+                    "name": "Contact Info",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "EmailAddressID",
+            "tableName": "EmailAddress",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ModifiedDate",
+            "tableName": "EmailAddress",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "rowguid",
+            "tableName": "EmailAddress",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "BusinessEntityID",
+            "tableName": "Password",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ModifiedDate",
+            "tableName": "Password",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "PasswordHash",
+            "tableName": "Password",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": "Credentials",
+            "sensitivityLabel": "Confidential",
+            "tags": [
+                {
+                    "id": "491547510913892352",
+                    "name": "Confidential",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491547823188213760",
+                    "name": "Credentials",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "PasswordSalt",
+            "tableName": "Password",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": "Credentials",
+            "sensitivityLabel": "Confidential",
+            "tags": [
+                {
+                    "id": "491547510913892352",
+                    "name": "Confidential",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491547823188213760",
+                    "name": "Credentials",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "rowguid",
+            "tableName": "Password",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "AdditionalContactInfo",
+            "tableName": "Person",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "BusinessEntityID",
+            "tableName": "Person",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Demographics",
+            "tableName": "Person",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "EmailPromotion",
+            "tableName": "Person",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": "Contact Info",
+            "sensitivityLabel": "Confidential - GDPR",
+            "tags": [
+                {
+                    "id": "491547543646240768",
+                    "name": "Confidential - GDPR",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491547798911582208",
+                    "name": "Contact Info",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "FirstName",
+            "tableName": "Person",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": "Name",
+            "sensitivityLabel": "Confidential - GDPR",
+            "tags": [
+                {
+                    "id": "491547543646240768",
+                    "name": "Confidential - GDPR",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491547719131725824",
+                    "name": "Name",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "LastName",
+            "tableName": "Person",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": "Name",
+            "sensitivityLabel": "Confidential - GDPR",
+            "tags": [
+                {
+                    "id": "491547543646240768",
+                    "name": "Confidential - GDPR",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491547719131725824",
+                    "name": "Name",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "MiddleName",
+            "tableName": "Person",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ModifiedDate",
+            "tableName": "Person",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "NameStyle",
+            "tableName": "Person",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "PersonType",
+            "tableName": "Person",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "rowguid",
+            "tableName": "Person",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Suffix",
+            "tableName": "Person",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Title",
+            "tableName": "Person",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": "Name",
+            "sensitivityLabel": "Confidential - GDPR",
+            "tags": [
+                {
+                    "id": "491547543646240768",
+                    "name": "Confidential - GDPR",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491547719131725824",
+                    "name": "Name",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "BusinessEntityID",
+            "tableName": "PersonPhone",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ModifiedDate",
+            "tableName": "PersonPhone",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "PhoneNumber",
+            "tableName": "PersonPhone",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": "Contact Info",
+            "sensitivityLabel": "Confidential - GDPR",
+            "tags": [
+                {
+                    "id": "491547543646240768",
+                    "name": "Confidential - GDPR",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491547798911582208",
+                    "name": "Contact Info",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "PhoneNumberTypeID",
+            "tableName": "PersonPhone",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": "Contact Info",
+            "sensitivityLabel": "Confidential - GDPR",
+            "tags": [
+                {
+                    "id": "491547543646240768",
+                    "name": "Confidential - GDPR",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491547798911582208",
+                    "name": "Contact Info",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ModifiedDate",
+            "tableName": "PhoneNumberType",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Name",
+            "tableName": "PhoneNumberType",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "PhoneNumberTypeID",
+            "tableName": "PhoneNumberType",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": "Contact Info",
+            "sensitivityLabel": "Confidential - GDPR",
+            "tags": [
+                {
+                    "id": "491547543646240768",
+                    "name": "Confidential - GDPR",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491547798911582208",
+                    "name": "Contact Info",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "CountryRegionCode",
+            "tableName": "StateProvince",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": "Contact Info",
+            "sensitivityLabel": "Confidential - GDPR",
+            "tags": [
+                {
+                    "id": "491547543646240768",
+                    "name": "Confidential - GDPR",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491547798911582208",
+                    "name": "Contact Info",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "IsOnlyStateProvinceFlag",
+            "tableName": "StateProvince",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": "Contact Info",
+            "sensitivityLabel": "Confidential - GDPR",
+            "tags": [
+                {
+                    "id": "491547543646240768",
+                    "name": "Confidential - GDPR",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491547798911582208",
+                    "name": "Contact Info",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ModifiedDate",
+            "tableName": "StateProvince",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Name",
+            "tableName": "StateProvince",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "rowguid",
+            "tableName": "StateProvince",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "StateProvinceCode",
+            "tableName": "StateProvince",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": "Contact Info",
+            "sensitivityLabel": "Confidential - GDPR",
+            "tags": [
+                {
+                    "id": "491547543646240768",
+                    "name": "Confidential - GDPR",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491547798911582208",
+                    "name": "Contact Info",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "StateProvinceID",
+            "tableName": "StateProvince",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "TerritoryID",
+            "tableName": "StateProvince",
+            "schemaName": "Person",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "BillOfMaterialsID",
+            "tableName": "BillOfMaterials",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "BOMLevel",
+            "tableName": "BillOfMaterials",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ComponentID",
+            "tableName": "BillOfMaterials",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "EndDate",
+            "tableName": "BillOfMaterials",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ModifiedDate",
+            "tableName": "BillOfMaterials",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "PerAssemblyQty",
+            "tableName": "BillOfMaterials",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ProductAssemblyID",
+            "tableName": "BillOfMaterials",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "StartDate",
+            "tableName": "BillOfMaterials",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "UnitMeasureCode",
+            "tableName": "BillOfMaterials",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "CultureID",
+            "tableName": "Culture",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ModifiedDate",
+            "tableName": "Culture",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Name",
+            "tableName": "Culture",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ChangeNumber",
+            "tableName": "Document",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Document",
+            "tableName": "Document",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "DocumentLevel",
+            "tableName": "Document",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "DocumentNode",
+            "tableName": "Document",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "DocumentSummary",
+            "tableName": "Document",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "FileExtension",
+            "tableName": "Document",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "FileName",
+            "tableName": "Document",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "FolderFlag",
+            "tableName": "Document",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ModifiedDate",
+            "tableName": "Document",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Owner",
+            "tableName": "Document",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Revision",
+            "tableName": "Document",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "rowguid",
+            "tableName": "Document",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Status",
+            "tableName": "Document",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Title",
+            "tableName": "Document",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": "Name",
+            "sensitivityLabel": "Confidential - GDPR",
+            "tags": [
+                {
+                    "id": "491547543646240768",
+                    "name": "Confidential - GDPR",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "491547719131725824",
+                    "name": "Name",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951104"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Diagram",
+            "tableName": "Illustration",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "IllustrationID",
+            "tableName": "Illustration",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ModifiedDate",
+            "tableName": "Illustration",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Availability",
+            "tableName": "Location",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "CostRate",
+            "tableName": "Location",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "LocationID",
+            "tableName": "Location",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ModifiedDate",
+            "tableName": "Location",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Name",
+            "tableName": "Location",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Class",
+            "tableName": "Product",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Color",
+            "tableName": "Product",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "DaysToManufacture",
+            "tableName": "Product",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "DiscontinuedDate",
+            "tableName": "Product",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "FinishedGoodsFlag",
+            "tableName": "Product",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ListPrice",
+            "tableName": "Product",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "MakeFlag",
+            "tableName": "Product",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ModifiedDate",
+            "tableName": "Product",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Name",
+            "tableName": "Product",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ProductID",
+            "tableName": "Product",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ProductLine",
+            "tableName": "Product",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ProductModelID",
+            "tableName": "Product",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ProductNumber",
+            "tableName": "Product",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ProductSubcategoryID",
+            "tableName": "Product",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ReorderPoint",
+            "tableName": "Product",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "rowguid",
+            "tableName": "Product",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "SafetyStockLevel",
+            "tableName": "Product",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "SellEndDate",
+            "tableName": "Product",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "SellStartDate",
+            "tableName": "Product",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Size",
+            "tableName": "Product",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "SizeUnitMeasureCode",
+            "tableName": "Product",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "StandardCost",
+            "tableName": "Product",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Style",
+            "tableName": "Product",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Weight",
+            "tableName": "Product",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "WeightUnitMeasureCode",
+            "tableName": "Product",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ModifiedDate",
+            "tableName": "ProductCategory",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Name",
+            "tableName": "ProductCategory",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ProductCategoryID",
+            "tableName": "ProductCategory",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "rowguid",
+            "tableName": "ProductCategory",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "EndDate",
+            "tableName": "ProductCostHistory",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ModifiedDate",
+            "tableName": "ProductCostHistory",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "ProductID",
+            "tableName": "ProductCostHistory",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "System",
+            "tags": [
+                {
+                    "id": "502041990993543168",
+                    "name": "System",
+                    "isBuiltIn": false,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "StandardCost",
+            "tableName": "ProductCostHistory",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "StartDate",
+            "tableName": "ProductCostHistory",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        },
+        {
+            "columnName": "Description",
+            "tableName": "ProductDescription",
+            "schemaName": "Production",
+            "description": null,
+            "informationType": null,
+            "sensitivityLabel": "Public",
+            "tags": [
+                {
+                    "id": "491547674902790144",
+                    "name": "Public",
+                    "isBuiltIn": true,
+                    "description": null,
+                    "categoryId": "491288012315951105"
+                },
+                {
+                    "id": "537191719481901056",
+                    "name": "Operations",
+                    "isBuiltIn": false,
+                    "description": "",
+                    "categoryId": "507857453518422016"
+                }
+            ],
+            "freeTextAttributes": []
+        }
+    ],
+    "totalClassifiedColumnsCount": 486
+}
