@@ -4,7 +4,7 @@ if ($PSVersionTable.OS -like "*Windows*")
     . "C:\Dev\Git\PowerShell-PoC\SQL Data Catalog\ClassifyColumn.ps1"
 }
 else {
-    . "/Users/cas/Dev/PowerShell-PoC/PowerShell-PoC/SQL Data Catalog/ClassifyColumn.ps1"   
+    . "/Users/richard.macaskill/Dev/Github/PowerShell-PoC/SQL Data Catalog/ClassifyColumn.ps1"   
 }
 #. "/Users/cas/Dev/PowerShell-PoC/PowerShell-PoC/SQL Data Catalog/ClassifyColumn.ps1"
 
@@ -20,4 +20,3 @@ Use-Classification -ClassificationServer $catalogServerName -ClassificationAuthT
 
 # get all columns into a collection
 $allColumns = Get-Columns -instanceName $instanceName -databaseName $databaseName `
-| Where-Object {- }
