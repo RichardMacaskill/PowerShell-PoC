@@ -10,7 +10,7 @@ $SQLCloneServer= "http://rm-win10-sql201.testnet.red-gate.com:14145"
 
 Connect-SqlClone -ServerUrl $SQLCloneServer
 
-$SourceDataImage = Get-SqlCloneImage -Name  'Demo for SQL in the City - Masked AW' 
+$SourceDataImage = Get-SqlCloneImage -Name  'AdventureWorks Masked - Leeds UG 2019-02-06' 
 
 $CloneName = 'AdventureWorks - Masked'
 
@@ -18,13 +18,16 @@ $CloneName = 'AdventureWorks - Masked'
 $Destinations = Get-SqlCloneSqlServerInstance | 
 Where-Object -FilterScript { $_.Server -like '*WKS*' -and $_.Instance -eq 'Dev' }
 
+$Template = Get-SqlCloneTemplate -Image $SourceDataImage -Name "Update permissions for Dev"
+
+
 # Start a timer
 $elapsed = [System.Diagnostics.Stopwatch]::StartNew()
 
 "Started at {0}, creating clone databases for image ""{1}""" -f $(get-date) , $SourceDataImage.Name 
 
  $Destinations | Invoke-Parallel -ImportVariables -ScriptBlock {
-    $SourceDataImage | New-SqlClone -Name $CloneName  -Location $_  | Wait-SqlCloneOperation
+    $SourceDataImage | New-SqlClone -Name $CloneName -Template $Template -Location $_  | Wait-SqlCloneOperation
     "Created clone in instance {0}" -f $_.Server + '\' + $_.Instance;
 }
 

@@ -16,7 +16,5 @@ $authToken = "NTM2OTUxMTYyNzA4OTUxMDQwOmRiNjIyYWMxLWI1NDYtNDQzNi04OTE2LWQ1MzkxNG
 # connect to your SQL Data Catalog instance - you'll need to generate an auth token in the UI
 Use-Classification -ClassificationServer $catalogServerName -ClassificationAuthToken $authToken 
 
-
-
 # get all columns into a collection
-$allColumns = Get-Columns -instanceName $instanceName -databaseName $databaseName `
+$allColumns = Get-Columns -instanceName $instanceName -databaseName $databaseName 

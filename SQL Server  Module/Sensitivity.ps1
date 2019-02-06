@@ -1,0 +1,6 @@
+Import-Module SqlServer
+Get-SqlSensitivityClassification 
+
+Get-InstalledModule
+
+Get-SqlSensitivityRecommendations
