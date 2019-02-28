@@ -1,4 +1,4 @@
-﻿function Use-Classification {
+function Use-Classification {
     param(
         [Parameter(Mandatory = $true)] $ClassificationServer,
         [Parameter(Mandatory = $true)] $ClassificationAuthToken
@@ -162,21 +162,32 @@ function Update-ColumnTag {
     param(
         [Parameter(ValueFromPipeline)] [object] $column,
         [Parameter(Mandatory = $true)] [string] $category,
-        [Parameter(Mandatory = $true)] [string[]] $tags
+        [string[]] $tags,
+        [switch] $forceUpdate
     )
 
     process {
         $columnTags = $column | Get-ColumnTag
         $columnTagIds = $columnTags.Tags
 
-        $tagCategory = $allTagCategories[$category]
-        $tagIds = @( $columnTagIds | ForEach-Object {$_.id} )
+        $tagCategory = $allTagCategories[$category]     
 
-        if ($tagCategory.IsMultiValued -eq $true) {
+        $tagIds = New-Object System.Collections.ArrayList(,@( $columnTagIds | ForEach-Object {$_.id} ))
+
+        if ($tagCategory.IsMultiValued -eq $true) {   
+            # clear tag category for multi tag         
+            if($forceUpdate) {
+                foreach($tagIdToRemove in $tagCategory.Tags.Values) {
+                    if ($tagIds -contains $tagIdToRemove) {
+                        $tagIds.Remove($tagIdToRemove)
+                    }
+                }
+            }
+
             foreach ($tag in $tags) {
                 $tagId = $tagCategory.Tags[$tag]
                 if ( -Not ($columnTagIds.id -contains $tagId)) {
-                    $tagIds += $tagId
+                    $tagIds.Add($tagId)
                 }
             }
             if ($tagIds.Count -le 0) {
@@ -184,7 +195,7 @@ function Update-ColumnTag {
             }
         }
         else {
-            if ($tags.Count -ne 1) {
+            if ($tags.Count -gt 1) {
                 $errorMessage = "Tag category: " + $tagCategory.Name + " can accept only one tag"
                 Write-Error -Message $errorMessage -Category InvalidArgument
                 return
@@ -196,18 +207,24 @@ function Update-ColumnTag {
                     return
                 }
                 else {
-                    $errorMessage = "Error :" +
-                    " database: " + $column.databaseName +
-                    " schema: " + $column.schemaName +
-                    " table: " + $column.tableName +
-                    " column: " + $column.columnName +
-                    " Has already been assigned to " + $tagCategory.Name
-                    Write-Error -Message $errorMessage -Category InvalidArgument
-                    return
+                    if($forceUpdate) {
+                        $tagIds.Remove($singleValueCategory.id)
+                        $tagIds.AddRange($tagId)
+                    }
+                    else {
+                        $errorMessage = "Error :" +
+                        " database: " + $column.databaseName +
+                        " schema: " + $column.schemaName +
+                        " table: " + $column.tableName +
+                        " column: " + $column.columnName +
+                        " Has already been assigned to " + $tagCategory.Name
+                        Write-Error -Message $errorMessage -Category InvalidArgument
+                        return
+                    }
                 }
             }
             else {
-                $tagIds += $tagId
+                $tagIds.AddRange($tagId)
             }
         }
 
@@ -220,7 +237,7 @@ function Update-ColumnTag {
         "/columns/" + $column.columnName +
         "/tags"
         $body = @{
-            TagIds = $tagIds
+            TagIds = $tagIds.ToArray()
         }
         $body = $body | ConvertTo-Json;
         Invoke-RestMethod -Uri $url  -ContentType "application/json" -Method PUT -Headers $ClassificationAuthHeader -Body $body
@@ -237,6 +254,8 @@ function Update-ColumnTag {
     # - SensitivityLabel
     # - Tags
     # - FreeTextAttributes
+    # - TableRowCount
+    # - DataType
 
     Import-Module .\ClassifyColumn.ps1
     Use-Classification -ClassificationServer "fqdn-server-name" -ClassificationAuthToken "auth-token"
