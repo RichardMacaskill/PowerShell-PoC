@@ -1,7 +1,7 @@
 # dot source the classification functions (change to where you saved the script)
 
 #. "C:\Dev\Git\PowerShell-PoC\SQL Data Catalog\ClassifyColumn.ps1"
-. "/Users/cas/Dev/PowerShell-PoC/PowerShell-PoC/SQL Data Catalog/ClassifyColumn.ps1"
+. "/Users/richard.macaskill/Dev/Github/PowerShell-PoC/SQL Data Catalog/ClassifyColumn.ps1"
 
 $catalogServerName = "rm-win10-sql201.testnet.red-gate.com"
 $instanceName = "rm-iclone1.testnet.red-gate.com"

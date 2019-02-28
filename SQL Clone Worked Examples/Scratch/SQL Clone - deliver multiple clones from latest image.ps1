@@ -5,7 +5,7 @@ $SQLCloneServer= "http://rm-win10-sql201.testnet.red-gate.com:14145"
 
 Connect-SqlClone -ServerUrl $SQLCloneServer
 
-$SourceDataImage = Get-SqlCloneImage -Name  'Forex_20170327'
+$SourceDataImage = Get-SqlCloneImage -Name  'AdventureWorks Masked for Demos Feb 2019'
 
 $CloneName = 'AdventureWorks - Masked'
 
