@@ -1,0 +1,576 @@
+[
+    {
+        "id": "491288012315951104",
+        "name": "Information Type",
+        "description": null,
+        "isBuiltIn": true,
+        "isReadOnly": true,
+        "isMultiValued": false,
+        "isMicrosoftCategory": true,
+        "tags": [
+            {
+                "id": "491547719131725824",
+                "name": "Name",
+                "isBuiltIn": true,
+                "description": null,
+                "categoryId": "491288012315951104"
+            },
+            {
+                "id": "491547741063741440",
+                "name": "Banking",
+                "isBuiltIn": true,
+                "description": null,
+                "categoryId": "491288012315951104"
+            },
+            {
+                "id": "491547798911582208",
+                "name": "Contact Info",
+                "isBuiltIn": true,
+                "description": null,
+                "categoryId": "491288012315951104"
+            },
+            {
+                "id": "491547823188213760",
+                "name": "Credentials",
+                "isBuiltIn": true,
+                "description": null,
+                "categoryId": "491288012315951104"
+            },
+            {
+                "id": "491547844759519232",
+                "name": "Credit Card",
+                "isBuiltIn": true,
+                "description": null,
+                "categoryId": "491288012315951104"
+            },
+            {
+                "id": "491547873293369344",
+                "name": "Date Of Birth",
+                "isBuiltIn": true,
+                "description": null,
+                "categoryId": "491288012315951104"
+            },
+            {
+                "id": "491547892515864576",
+                "name": "Financial",
+                "isBuiltIn": true,
+                "description": null,
+                "categoryId": "491288012315951104"
+            },
+            {
+                "id": "491547916419203072",
+                "name": "Health",
+                "isBuiltIn": true,
+                "description": null,
+                "categoryId": "491288012315951104"
+            },
+            {
+                "id": "491547938401550336",
+                "name": "National ID",
+                "isBuiltIn": true,
+                "description": null,
+                "categoryId": "491288012315951104"
+            },
+            {
+                "id": "491581422016921600",
+                "name": "Networking",
+                "isBuiltIn": true,
+                "description": null,
+                "categoryId": "491288012315951104"
+            },
+            {
+                "id": "491581451368660992",
+                "name": "Other",
+                "isBuiltIn": true,
+                "description": null,
+                "categoryId": "491288012315951104"
+            },
+            {
+                "id": "491581510365741056",
+                "name": "SSN",
+                "isBuiltIn": true,
+                "description": null,
+                "categoryId": "491288012315951104"
+            }
+        ],
+        "assetTypes": [
+            {
+                "id": "498944976537780224",
+                "name": "Column",
+                "description": "A column is a set of data values of a particular simple type, one value for each row of the database."
+            }
+        ]
+    },
+    {
+        "id": "491288012315951105",
+        "name": "Sensitivity",
+        "description": null,
+        "isBuiltIn": true,
+        "isReadOnly": true,
+        "isMultiValued": false,
+        "isMicrosoftCategory": true,
+        "tags": [
+            {
+                "id": "491547510913892352",
+                "name": "Confidential",
+                "isBuiltIn": true,
+                "description": null,
+                "categoryId": "491288012315951105"
+            },
+            {
+                "id": "491547543646240768",
+                "name": "Confidential - GDPR",
+                "isBuiltIn": true,
+                "description": null,
+                "categoryId": "491288012315951105"
+            },
+            {
+                "id": "491547566912045056",
+                "name": "General",
+                "isBuiltIn": true,
+                "description": null,
+                "categoryId": "491288012315951105"
+            },
+            {
+                "id": "491547631131033600",
+                "name": "Highly Confidential",
+                "isBuiltIn": true,
+                "description": null,
+                "categoryId": "491288012315951105"
+            },
+            {
+                "id": "491547653042077696",
+                "name": "Highly Confidential - GDPR",
+                "isBuiltIn": true,
+                "description": null,
+                "categoryId": "491288012315951105"
+            },
+            {
+                "id": "491547674902790144",
+                "name": "Public",
+                "isBuiltIn": true,
+                "description": null,
+                "categoryId": "491288012315951105"
+            },
+            {
+                "id": "502041990993543168",
+                "name": "System",
+                "isBuiltIn": false,
+                "description": null,
+                "categoryId": "491288012315951105"
+            }
+        ],
+        "assetTypes": [
+            {
+                "id": "498944976537780224",
+                "name": "Column",
+                "description": "A column is a set of data values of a particular simple type, one value for each row of the database."
+            }
+        ]
+    },
+    {
+        "id": "491288012315951106",
+        "name": "Environment",
+        "description": null,
+        "isBuiltIn": true,
+        "isReadOnly": false,
+        "isMultiValued": false,
+        "isMicrosoftCategory": false,
+        "tags": [
+            {
+                "id": "491547674902790243",
+                "name": "Development",
+                "isBuiltIn": true,
+                "description": null,
+                "categoryId": "491288012315951106"
+            },
+            {
+                "id": "491547674902790442",
+                "name": "Test",
+                "isBuiltIn": true,
+                "description": null,
+                "categoryId": "491288012315951106"
+            },
+            {
+                "id": "491547674902790512",
+                "name": "Production",
+                "isBuiltIn": true,
+                "description": null,
+                "categoryId": "491288012315951106"
+            },
+            {
+                "id": "516917791844990976",
+                "name": "UAT",
+                "isBuiltIn": false,
+                "description": "",
+                "categoryId": "491288012315951106"
+            }
+        ],
+        "assetTypes": [
+            {
+                "id": "498944777027321856",
+                "name": "SQL Server Instance",
+                "description": "An instance of the Database Engine is a copy of the sqlservr.exe executable that runs as an operating system service. Each instance manages several system databases and one or more user databases."
+            },
+            {
+                "id": "498944864776355840",
+                "name": "Database",
+                "description": "An organized organized collection of data within a collection of tables with typed columns. A SQL Server Database is managed by an instance of the Database Engine."
+            }
+        ]
+    },
+    {
+        "id": "502040711906983936",
+        "name": "Geography",
+        "description": null,
+        "isBuiltIn": false,
+        "isReadOnly": false,
+        "isMultiValued": false,
+        "isMicrosoftCategory": false,
+        "tags": [
+            {
+                "id": "502040751081783296",
+                "name": "London",
+                "isBuiltIn": false,
+                "description": null,
+                "categoryId": "502040711906983936"
+            },
+            {
+                "id": "502040766877532160",
+                "name": "Liverpool",
+                "isBuiltIn": false,
+                "description": null,
+                "categoryId": "502040711906983936"
+            },
+            {
+                "id": "502040783130460160",
+                "name": "Manchester",
+                "isBuiltIn": false,
+                "description": null,
+                "categoryId": "502040711906983936"
+            }
+        ],
+        "assetTypes": [
+            {
+                "id": "498944777027321856",
+                "name": "SQL Server Instance",
+                "description": "An instance of the Database Engine is a copy of the sqlservr.exe executable that runs as an operating system service. Each instance manages several system databases and one or more user databases."
+            }
+        ]
+    },
+    {
+        "id": "502040866496446464",
+        "name": "HIPAA Status",
+        "description": null,
+        "isBuiltIn": false,
+        "isReadOnly": false,
+        "isMultiValued": false,
+        "isMicrosoftCategory": false,
+        "tags": [
+            {
+                "id": "502041018971979776",
+                "name": "N/A",
+                "isBuiltIn": false,
+                "description": null,
+                "categoryId": "502040866496446464"
+            },
+            {
+                "id": "502041059761586176",
+                "name": "Mental Health Record",
+                "isBuiltIn": false,
+                "description": null,
+                "categoryId": "502040866496446464"
+            },
+            {
+                "id": "502041194725900288",
+                "name": "Health Private",
+                "isBuiltIn": false,
+                "description": null,
+                "categoryId": "502040866496446464"
+            }
+        ],
+        "assetTypes": [
+            {
+                "id": "498944976537780224",
+                "name": "Column",
+                "description": "A column is a set of data values of a particular simple type, one value for each row of the database."
+            }
+        ]
+    },
+    {
+        "id": "507857453518422016",
+        "name": "Owner",
+        "description": "The responsible business function.",
+        "isBuiltIn": false,
+        "isReadOnly": false,
+        "isMultiValued": false,
+        "isMicrosoftCategory": false,
+        "tags": [
+            {
+                "id": "507857577724346368",
+                "name": "Finance Manager",
+                "isBuiltIn": false,
+                "description": "",
+                "categoryId": "507857453518422016"
+            },
+            {
+                "id": "507857666140274688",
+                "name": "CTO",
+                "isBuiltIn": false,
+                "description": "Chief Technical Officer",
+                "categoryId": "507857453518422016"
+            },
+            {
+                "id": "507857803877023744",
+                "name": "HR Manager",
+                "isBuiltIn": false,
+                "description": "Human Resources manager (or deputy)",
+                "categoryId": "507857453518422016"
+            },
+            {
+                "id": "537191719481901056",
+                "name": "Operations",
+                "isBuiltIn": false,
+                "description": "",
+                "categoryId": "507857453518422016"
+            }
+        ],
+        "assetTypes": [
+            {
+                "id": "498944976537780224",
+                "name": "Column",
+                "description": "A column is a set of data values of a particular simple type, one value for each row of the database."
+            }
+        ]
+    },
+    {
+        "id": "509783032010375168",
+        "name": "Treatment Intent",
+        "description": "How should this data be protected?",
+        "isBuiltIn": false,
+        "isReadOnly": false,
+        "isMultiValued": false,
+        "isMicrosoftCategory": false,
+        "tags": [
+            {
+                "id": "509783149266337792",
+                "name": "Static masking",
+                "isBuiltIn": false,
+                "description": "Use Redgate tools to mask",
+                "categoryId": "509783032010375168"
+            },
+            {
+                "id": "509783964223799296",
+                "name": "Encryption",
+                "isBuiltIn": false,
+                "description": "",
+                "categoryId": "509783032010375168"
+            },
+            {
+                "id": "509784102178652160",
+                "name": "Dynamic data masking",
+                "isBuiltIn": false,
+                "description": "",
+                "categoryId": "509783032010375168"
+            },
+            {
+                "id": "526987913720758272",
+                "name": "Row-level security",
+                "isBuiltIn": false,
+                "description": "Some rows are sensitive so granular control required.",
+                "categoryId": "509783032010375168"
+            }
+        ],
+        "assetTypes": [
+            {
+                "id": "498944976537780224",
+                "name": "Column",
+                "description": "A column is a set of data values of a particular simple type, one value for each row of the database."
+            }
+        ]
+    },
+    {
+        "id": "510561922119106560",
+        "name": "Primary Jurisdiction",
+        "description": "State or country of legal ",
+        "isBuiltIn": false,
+        "isReadOnly": false,
+        "isMultiValued": false,
+        "isMicrosoftCategory": false,
+        "tags": [
+            {
+                "id": "519200170026467328",
+                "name": "EU",
+                "isBuiltIn": false,
+                "description": "European Union",
+                "categoryId": "510561922119106560"
+            },
+            {
+                "id": "519200210564415488",
+                "name": "UK",
+                "isBuiltIn": false,
+                "description": "United Kingdom",
+                "categoryId": "510561922119106560"
+            },
+            {
+                "id": "519200254197760000",
+                "name": "US",
+                "isBuiltIn": false,
+                "description": "United States",
+                "categoryId": "510561922119106560"
+            }
+        ],
+        "assetTypes": [
+            {
+                "id": "498944976537780224",
+                "name": "Column",
+                "description": "A column is a set of data values of a particular simple type, one value for each row of the database."
+            }
+        ]
+    },
+    {
+        "id": "516899297720008704",
+        "name": "Where Used",
+        "description": "Systems and access methods by which this data is used",
+        "isBuiltIn": false,
+        "isReadOnly": false,
+        "isMultiValued": true,
+        "isMicrosoftCategory": false,
+        "tags": [
+            {
+                "id": "516899369560047616",
+                "name": "WebOrders",
+                "isBuiltIn": false,
+                "description": "The WebOrders service",
+                "categoryId": "516899297720008704"
+            },
+            {
+                "id": "516941083804958720",
+                "name": "Pricing",
+                "isBuiltIn": false,
+                "description": "",
+                "categoryId": "516899297720008704"
+            },
+            {
+                "id": "516941105950883840",
+                "name": "Promotions",
+                "isBuiltIn": false,
+                "description": "",
+                "categoryId": "516899297720008704"
+            },
+            {
+                "id": "516941197910999040",
+                "name": "System-DBA",
+                "isBuiltIn": false,
+                "description": "",
+                "categoryId": "516899297720008704"
+            }
+        ],
+        "assetTypes": [
+            {
+                "id": "498944976537780224",
+                "name": "Column",
+                "description": "A column is a set of data values of a particular simple type, one value for each row of the database."
+            }
+        ]
+    },
+    {
+        "id": "517601617361502208",
+        "name": "Classification Scope",
+        "description": "Whether this should be classified, and reason if not.",
+        "isBuiltIn": false,
+        "isReadOnly": false,
+        "isMultiValued": false,
+        "isMicrosoftCategory": false,
+        "tags": [
+            {
+                "id": "517601880377917440",
+                "name": "In-scope",
+                "isBuiltIn": false,
+                "description": "This should have a classification",
+                "categoryId": "517601617361502208"
+            },
+            {
+                "id": "517696981687074816",
+                "name": "Out of scope - Unused",
+                "isBuiltIn": false,
+                "description": "",
+                "categoryId": "517601617361502208"
+            },
+            {
+                "id": "519200451418128384",
+                "name": "Out of scope - System",
+                "isBuiltIn": false,
+                "description": "This column is only used in internal operations; does not hold other data",
+                "categoryId": "517601617361502208"
+            }
+        ],
+        "assetTypes": [
+            {
+                "id": "498944976537780224",
+                "name": "Column",
+                "description": "A column is a set of data values of a particular simple type, one value for each row of the database."
+            }
+        ]
+    },
+    {
+        "id": "519900521658580992",
+        "name": "Applicable Regulation",
+        "description": "",
+        "isBuiltIn": false,
+        "isReadOnly": false,
+        "isMultiValued": true,
+        "isMicrosoftCategory": false,
+        "tags": [
+            {
+                "id": "532894926292123648",
+                "name": "GDPR",
+                "isBuiltIn": false,
+                "description": "EU General Data Protection Regulation\n",
+                "categoryId": "519900521658580992"
+            },
+            {
+                "id": "532894993958830080",
+                "name": "HIPAA",
+                "isBuiltIn": false,
+                "description": "",
+                "categoryId": "519900521658580992"
+            },
+            {
+                "id": "532895041312522240",
+                "name": "CaCPA",
+                "isBuiltIn": false,
+                "description": "",
+                "categoryId": "519900521658580992"
+            },
+            {
+                "id": "532895071964495872",
+                "name": "PCI",
+                "isBuiltIn": false,
+                "description": "",
+                "categoryId": "519900521658580992"
+            },
+            {
+                "id": "532895097553944576",
+                "name": "SOX",
+                "isBuiltIn": false,
+                "description": "",
+                "categoryId": "519900521658580992"
+            },
+            {
+                "id": "532895153581457408",
+                "name": "DPA",
+                "isBuiltIn": false,
+                "description": "",
+                "categoryId": "519900521658580992"
+            }
+        ],
+        "assetTypes": [
+            {
+                "id": "498944976537780224",
+                "name": "Column",
+                "description": "A column is a set of data values of a particular simple type, one value for each row of the database."
+            }
+        ]
+    }
+]

@@ -1,3 +1,6 @@
+import-module "C:\Program Files\WindowsPowerShell\Modules\Pester"
+ "C:\Program Files\WindowsPowerShell\Modules\PSFramework"
+import-module "C:\Program Files\WindowsPowerShell\Modules\dbachecks"
 # Set the configuration of dbachecks
 #Set-DbcConfig -Name agent.failsafeoperator -Value 'DB eAlert'
 Set-DbcConfig -Name domain.name -Value 'testnet.red-gate.com'
