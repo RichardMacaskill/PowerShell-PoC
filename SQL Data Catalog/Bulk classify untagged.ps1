@@ -1,9 +1,9 @@
 $authToken = "NTM2OTUxMTYyNzA4OTUxMDQwOmRiNjIyYWMxLWI1NDYtNDQzNi04OTE2LWQ1MzkxNGIzYzI5MQ=="
 $instanceName = "rm-iclone1.testnet.red-gate.com"
-$databaseName = "AW 2012 Clone"
+$databaseName = "StackOverflow2010"
 
 # Get the modules. Extra cost, but keeps versions current
-Invoke-WebRequest -Uri 'http://rm-win10-sql201.testnet.red-gate.com:15156/powershell' `
+Invoke-WebRequest -Uri 'http://sql-data-catalog.testnet.red-gate.com:15156/powershell' `
  -OutFile 'data-catalog.psm1' -Headers @{"Authorization"="Bearer $authToken"}
  
 Import-Module .\data-catalog.psm1
@@ -14,13 +14,15 @@ Use-Classification -ClassificationAuthToken $authToken
 # get all columns into a collection
 $allColumns = Get-Columns -instanceName $instanceName -databaseName $databaseName 
 
+$untaggedColumns = $allColumns | Where-Object {! $_.tags }
+
 $allColumns.Count
 
-$peopleTableColumns = $allColumns | Where-Object {$_.SchemaName -eq "Person" -and $_.TableName -eq "Person" }
-  $categories = @{
-    "Sensitivity" =  @("Confidential - GDPR")
-    "Information Type" = @("Contact Info")
+$categories = @{
+    "Sensitivity" =  @("Public")
+    "Classification Scope" = @("In-scope")
+    "Owner" = @("CTO")
   }
-  Import-ColumnsTags -columns $peopleTableColumns -categories $categories
+  Import-ColumnsTags -columns $untaggedColumns -categories $categories
 
   $allColumns | Format-Table

@@ -1,9 +1,8 @@
 $authToken = "NTM2OTUxMTYyNzA4OTUxMDQwOmRiNjIyYWMxLWI1NDYtNDQzNi04OTE2LWQ1MzkxNGIzYzI5MQ=="
 
-Invoke-WebRequest -Uri 'http://rm-win10-sql201.testnet.red-gate.com:15156/powershell' `
-    -OutFile 'data-catalog.psm1' -Headers @{"Authorization" = "Bearer $authToken" }
+Invoke-WebRequest -Uri 'http://rm-win10-sql201.testnet.red-gate.com:15156/powershell' -OutFile 'data-catalog.psm1' -Headers @{"Authorization" = "Bearer $authToken" }
  
-Import-Module .\data-catalog.psm1 -Force
+Import-Module .\data-catalog.psm1 
 
 $instanceName = "rm-iclone3.testnet.red-gate.com"
 $databaseName = "AW Clone"
@@ -142,7 +141,11 @@ $prodCategories = @{
                             
 Import-ColumnsTags -columns $prodColumns -categories $prodCategories
 
-# The dbo schema has deployment and error information, so IT owns those under the CTO.
+$itopsCategories = @{
+    "Owner" = @("Operations")
+}
+                            
+Import-ColumnsTags -columns $itopsColumns -categories $itopsCategories
 
 $itopsColumns = $allColumns | Where-Object { $_.schemaName -eq "dbo" }
 

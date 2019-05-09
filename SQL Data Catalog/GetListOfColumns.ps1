@@ -1,7 +1,7 @@
 
 $ServerRootUrl = 'http://rm-win10-sql201.testnet.red-gate.com:15156'
-$InstanceName  = 'rm-iclone1.testnet.red-gate.com' #Read-Host -Prompt 'Please enter the SQL instance for the database to classify.'
-$DatabaseName = 'Forex' # Read-Host =-Prompt 'Please enter the database name.'
+$InstanceName  = 'rm-iclone3.testnet.red-gate.com' #Read-Host -Prompt 'Please enter the SQL instance for the database to classify.'
+$DatabaseName = 'Masking_SG_OLAP_DATA_20180304' # Read-Host =-Prompt 'Please enter the database name.'
 
 $AuthToken = 'NTE3NjA0OTQ0NjE0Nzg1MDI0Ojc5NzViY2YwLTAyOGUtNGU4My1hZjY4LTJkNWE0ZmI4MmNlMw=='
 

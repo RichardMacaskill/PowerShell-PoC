@@ -14,15 +14,23 @@ Measure-Command -Expression {    $allColumns = Get-Columns -instanceName $instan
 
 #$allColumns | Format-Table
 
-"Columns returned: "+  $allColumns.Count
-<# 
-$columnsOnEmptyTables = $allColumns | Where-Object {$_.tableRowCount -eq 0}
-#Import-ColumnsCategories -columns $allUnTaggedColumns -categories $allUnTaggedCategories
-$allUnTaggedCategories = @{
-    "Sensitivity" = @("General")
-    "Information Type" = @("Other")
-    }
-    
-Import-ColumnsCategories -columns $columnsOnEmptyTables -categories $allUnTaggedCategories #>
+"Columns returned: "+  $allColumns.Count #17443
 
-$columnsToMask = $allColumns | Where-Object ($_.tags{})
+$maskableColumns = $allColumns | Where-Object {$_.tags.name -like "*Masked *" } # 722
+
+$specificMaskableColumns = $maskableColumns | Where-Object {$_.tags.name  -notcontains  "Masked TBD"} #173
+
+$specificMaskableColumns.schemaName | Select-Object -Unique    
+<# 
+OLAP
+Release
+Reporting
+Staging
+Transform 
+#>
+$specificMaskableColumns.tags.name | Select-string  "Masked" | Select-Object -Unique
+<# 
+Masked EmailAddress
+Masked ForeName
+Masked DateOfBirth #>
+
