@@ -97,6 +97,17 @@ $employeeCategories = @{
 Import-ColumnsTags -columns $employeeColumns -categories $employeeCategories 
         
 
+# The rest of it is public information. Hit the api again to refresh the list, 
+# then set remaining columns to sensitivity = 'Public'
+
+$untaggedColumns = Get-Columns -instanceName $instanceName -databaseName $databaseName `
+| Where-Object { -not $_.sensitivitylabel }
+
+$untaggedCategories = @{
+    "Sensitivity" = @("Public")
+}
+            
+Import-ColumnsTags -columns $untaggedColumns -categories $untaggedCategories
 
 # 
 # I also want to set my Ownership tags (which I've added in my taxonomy)
@@ -130,7 +141,11 @@ $prodCategories = @{
                             
 Import-ColumnsTags -columns $prodColumns -categories $prodCategories
 
-# The dbo schema has deployment and error information, so IT owns those under the CTO.
+$itopsCategories = @{
+    "Owner" = @("Operations")
+}
+                            
+Import-ColumnsTags -columns $itopsColumns -categories $itopsCategories
 
 $itopsColumns = $allColumns | Where-Object { $_.schemaName -eq "dbo" }
 
@@ -140,15 +155,3 @@ $itopsCategories = @{
 }
                             
 Import-ColumnsTags -columns $itopsColumns -categories $itopsCategories
-
-# The rest of it is public information. Hit the api again to refresh the list, 
-# then set remaining columns to sensitivity = 'Public'
-
-$untaggedColumns = Get-Columns -instanceName $instanceName -databaseName $databaseName `
-| Where-Object { -not $_.sensitivitylabel }
-
-$untaggedCategories = @{
-    "Sensitivity" = @("Public")
-}
-            
-Import-ColumnsTags -columns $untaggedColumns -categories $untaggedCategories
