@@ -1,1 +1,0 @@
-Get-DbaCmsRegServer -SqlInstance ".\dev" -IncludeSelf

@@ -10,7 +10,7 @@ $databaseName = "AW Clone"
 # connect to your SQL Data Catalog instance - you'll need to generate an auth token in the UI
 Use-Classification  -ClassificationAuthToken $authToken 
 
-# get all columns into a collection
+# get all $lumns into a collection
 $allColumns = Get-Columns -instanceName $instanceName -databaseName $databaseName 
 
 # create group of columns for email
