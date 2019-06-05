@@ -1,9 +1,9 @@
-Invoke-WebRequest -Uri 'http://sql-data-catalog.testnet.red-gate.com:15156/powershell' -OutFile 'data-catalog.psm1' -Headers @{"Authorization"="Bearer NTM2OTUxMTYyNzA4OTUxMDQwOmRiNjIyYWMxLWI1NDYtNDQzNi04OTE2LWQ1MzkxNGIzYzI5MQ=="}
+Invoke-WebRequest -Uri 'https://rm-win10-sql201.testnet.red-gate.com:15156/powershell' -OutFile 'data-catalog.psm1' -Headers @{"Authorization" = "Bearer NTM2OTUxMTYyNzA4OTUxMDQwOmRiNjIyYWMxLWI1NDYtNDQzNi04OTE2LWQ1MzkxNGIzYzI5MQ==" }
  
 Import-Module .\data-catalog.psm1 -Force
 
 $instanceName = "rm-iclone3.testnet.red-gate.com"
-$databaseName = "Masking_SG_OLAP_DATA_20180304"
+$databaseName = "StackOverflow for Masking"
 $authToken = "NTM2OTUxMTYyNzA4OTUxMDQwOmRiNjIyYWMxLWI1NDYtNDQzNi04OTE2LWQ1MzkxNGIzYzI5MQ=="
 
 # connect to your SQL Data Catalog instance - you'll need to generate an auth token in the UI

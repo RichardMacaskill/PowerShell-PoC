@@ -22,7 +22,7 @@ function Use-Classification {
         [Parameter(Mandatory = $true)] $ClassificationAuthToken
     )
 
-    $classificationURL = 'http://rm-win10-sql201.testnet.red-gate.com:15156/'
+    $classificationURL = 'https://rm-win10-sql201.testnet.red-gate.com:15156/'
     $authHeader = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
     $authHeader.Add("Authorization", "Bearer $ClassificationAuthToken")
 
@@ -83,8 +83,7 @@ function Add-RegisteredSqlServerInstance {
     )
 
     process {
-        $ServerRootUrl = $ClassificationURL
-        $AddUrl = $ServerRootUrl + "api/instances"
+        $AddUrl = "api/instances"
 
         $PostData = @{
             InstanceFqdn = $FullyQualifiedInstanceName
@@ -93,46 +92,8 @@ function Add-RegisteredSqlServerInstance {
         }
         $PostJson = $PostData | ConvertTo-Json
 
-        try {
-            $Response = Invoke-RestMethod -Uri $AddUrl -Headers $ClassificationAuthHeader -Method Post -Body $PostJson -ContentType 'application/json; charset=utf-8'
-            Write-Host "Instance $FullyQualifiedInstanceName added successfully."
-        }
-        catch {
-            $ErrorObject = $_.Exception
-            $Response = $_.Exception.Response
-            if ($Response) {
-                $StatusCode = $Response.StatusCode
-                if ($StatusCode) {
-                    $StatusCodeValue = $StatusCode.value__
-                    if ($StatusCodeValue) {
-                        switch ($StatusCode.value__) {
-                            401 {
-                                $ErrorObject = 'Provided auth token is not valid.'
-                            }
-                            417 {
-                                $ErrorObject = 'The application encountered an error connecting to the database.'
-                            }
-                            409 {
-                                if ($Force.IsPresent) {
-                                    Write-Host "$FullyQualifiedInstanceName was already added."
-                                    $ErrorObject = $Null
-                                }
-                                else {
-                                    $ErrorObject = 'A name conflict occured when adding this instance. Please check if it has already been added.'
-                                }
-                            }
-                            default {
-                                $ErrorObject = "Response code: $StatusCodeValue"
-                            }
-                        }
-                    }
-                }
-            }
-
-            if ($ErrorObject) {
-                Write-Error $ErrorObject
-            }
-        }
+        Invoke-ApiCall -Uri $AddUrl -Method Post -Body $PostJson
+        Write-Host "Instance $FullyQualifiedInstanceName added successfully."
     }
 }
 
@@ -158,53 +119,30 @@ function Add-RegisteredSqlServerInstance {
 #>
 
 function Update-RegisteredSqlServerInstance {
-  [CmdletBinding()]
-  param (
-      [Parameter(Mandatory = $True, Position = 0, ValueFromPipeLine = $True)]
-      [string] $FullyQualifiedInstanceName,
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $True, Position = 0, ValueFromPipeLine = $True)]
+        [string] $FullyQualifiedInstanceName,
 
-      [string] $UserId = $null,
-      [string] $Password = $null
-  )
+        [string] $UserId = $null,
+        [string] $Password = $null
+    )
 
-  process {
-      $instances = Get-RegisteredInstances
-      if(!$instances.ContainsKey($FullyQualifiedInstanceName)){
-        Write-Error "Instance $FullyQualifiedInstanceName not found."
-        return
-      }
-      $instanceId = $instances[$FullyQualifiedInstanceName]
-      $url = $ClassificationURL +
-      "api/instances/" + $instanceId +
-      "/update"
+    process {
+        $instanceId = Get-InstanceIdByName $FullyQualifiedInstanceName
+        $url =
+        "api/instances/" + $instanceId +
+        "/update"
 
-      $PostData = @{
-          UserId       = $UserId
-          Password     = $Password
-      }
-      $PostJson = $PostData | ConvertTo-Json
+        $PostData = @{
+            UserId   = $UserId
+            Password = $Password
+        }
+        $PostJson = $PostData | ConvertTo-Json
 
-      try {
-          $Response = Invoke-RestMethod -Uri $url -Headers $ClassificationAuthHeader -Method Post -Body $PostJson -ContentType 'application/json; charset=utf-8'
-          Write-Host "Instance $FullyQualifiedInstanceName updated successfully."
-      }
-      catch {
-          $ErrorObject = $_.Exception
-          $Response = $_.Exception.Response
-          if ($Response) {
-                $result = $_.Exception.Response.GetResponseStream()
-                $reader = New-Object System.IO.StreamReader($result)
-                $reader.BaseStream.Position = 0
-                $reader.DiscardBufferedData()
-                $responseBody = $reader.ReadToEnd();
-                Write-Error $responseBody
-          }
-
-          if ($ErrorObject) {
-              Write-Error $ErrorObject
-          }
-      }
-  }
+        Invoke-ApiCall -Uri $url -Method Post -Body $PostJson
+        Write-Host "Instance $FullyQualifiedInstanceName updated successfully."
+    }
 }
 
 
@@ -215,7 +153,7 @@ function Get-HashResult {
         $value
     )
 
-    $hash = @{}
+    $hash = @{ }
 
     foreach ($item in $array) {
         $hash.Add($item.$key, $item.$value)
@@ -224,11 +162,48 @@ function Get-HashResult {
 }
 
 
-function Get-TagCategories {
-    $url = $ClassificationURL + "api/tagcategories"
-    $tagcategories = Invoke-RestMethod -Uri $url -Method Get -Headers $ClassificationAuthHeader
+function Invoke-ApiCall {
+    param(
+        $Uri,
+        $Method,
+        $Body,
+        $OutFile
+    )
 
-    $hash = @{}
+    if ($null -eq $ClassificationURL) {
+        throw 'Run Use-Classification before using any other cmdlet. For help run: Get-Help Use-Classification'
+    }
+
+    $Uri = $ClassificationURL + $Uri
+
+    try {
+        return Invoke-RestMethod -Uri $Uri -Method $Method -Headers $ClassificationAuthHeader `
+            -Body $Body -ContentType 'application/json; charset=utf-8' -OutFile $OutFile
+    }
+    catch {
+        $ErrorObject = $_.Exception
+        $Response = $_.Exception.Response
+        if ($Response) {
+            $result = $_.Exception.Response.GetResponseStream()
+            $reader = New-Object System.IO.StreamReader($result)
+            $reader.BaseStream.Position = 0
+            $reader.DiscardBufferedData()
+            $responseBody = $reader.ReadToEnd();
+            Write-Error $responseBody
+        }
+
+        if ($ErrorObject) {
+            Write-Error $ErrorObject
+        }
+    }
+}
+
+
+function Get-TagCategories {
+    $url = "api/tagcategories"
+    $tagcategories = Invoke-ApiCall -Uri $url -Method Get
+
+    $hash = @{ }
 
     foreach ($tagcategory in $tagcategories) {
         $tags = Get-Tags -tagCategoryId $tagcategory.id
@@ -250,23 +225,35 @@ function Get-Tags {
         [Parameter(ValueFromPipeline)] [string] $tagCategoryId
     )
 
-    $url = $ClassificationURL + "api/tagcategories/" + $tagCategoryId + '/tags'
-    $tags = Invoke-RestMethod -Uri $url -Method Get -Headers $ClassificationAuthHeader
+    $url = "api/tagcategories/" + $tagCategoryId + '/tags'
+    $tags = Invoke-ApiCall -Uri $url -Method Get
     return  Get-HashResult -array $tags -key 'name' -value 'id'
 }
 
-
 function Get-RegisteredInstances {
-    $url = $ClassificationURL + "api/instances"
-    $instances = Invoke-RestMethod -Uri $url -Method Get -Headers $ClassificationAuthHeader
+    $url = "api/instances"
+    $instances = Invoke-ApiCall -Uri $url -Method Get
 
-    $hash = @{}
+    $hash = @{ }
 
     foreach ($instance in $instances) {
         $hash.Add($instance.instance.name, $instance.instance.id)
     }
     return  $hash
 }
+
+function Get-InstanceIdByName {
+    param(
+        $instanceName
+    )
+    $instances = Get-RegisteredInstances
+    if (!$instances.ContainsKey($instanceName)) {
+        Write-Error "Instance $instanceName not found."
+        return
+    }
+    return $instances[$instanceName]
+}
+
 
 <#
 .SYNOPSIS
@@ -301,21 +288,20 @@ function Get-Columns {
         [Parameter(ValueFromPipeline)] [string] $instanceName,
         [Parameter(ValueFromPipeline)] [string] $databaseName
     )
-    $instances = Get-RegisteredInstances
-    $instanceId = $instances[$instanceName]
-    $url = $ClassificationURL +
+    $instanceId = Get-InstanceIdByName $instanceName
+
+    $url =
     "api/instances/" + $instanceId +
     "/databases/" + [uri]::EscapeDataString($databaseName) +
     "/columns"
-    $columnResult = Invoke-RestMethod -Uri $url -Method Get -Headers $ClassificationAuthHeader	
-    
-    foreach ($classifiedColumn in $columnResult.ClassifiedColumns) {	
-        $classifiedColumn | Add-Member NoteProperty 'InstanceId' $instanceId	
-        $classifiedColumn | Add-Member NoteProperty 'DatabaseName' $databaseName	
+    $columnResult = Invoke-ApiCall -Uri $url -Method Get
+
+    foreach ($classifiedColumn in $columnResult.ClassifiedColumns) {
+        $classifiedColumn | Add-Member NoteProperty 'InstanceId' $instanceId
+        $classifiedColumn | Add-Member NoteProperty 'DatabaseName' $databaseName
     }
     return $columnResult.ClassifiedColumns
 }
-
 
 function Get-ColumnTags {
     [CmdletBinding()]
@@ -323,7 +309,7 @@ function Get-ColumnTags {
         [Parameter(ValueFromPipeline)] [object] $column
     )
 
-    $url = $ClassificationURL +
+    $url =
     "api/instances/" + $column.instanceId +
     "/databases/" + [uri]::EscapeDataString($column.databaseName) +
     "/schemas/" + [uri]::EscapeDataString($column.schemaName) +
@@ -331,7 +317,7 @@ function Get-ColumnTags {
     "/columns/" + [uri]::EscapeDataString($column.columnName) +
     "/tags"
 
-    return Invoke-RestMethod -Uri $url  -ContentType "application/json" -Method GET -Headers $ClassificationAuthHeader
+    return Invoke-ApiCall -Uri $url -Method GET
 }
 
 <#
@@ -349,7 +335,7 @@ function Get-ColumnTags {
 .PARAMETER ForceUpdate
   Switch to force update column tag.
   When used: will remove any existing tags in that category on that column before assigning the given tags.
-  When not used: 
+  When not used:
      For sigle tag category, if a tag is provided, will throw error if the column has been assigned with different tag.
      For multi tag category, tags provided will be added to existing assigned tags.
 .EXAMPLE
@@ -378,7 +364,7 @@ function Update-ColumnTags {
 
         $tagCategory = $allTagCategories[$category]
 
-        $tagIds = New-Object System.Collections.ArrayList(, @( $columnTagIds | ForEach-Object {$_.id} ))
+        $tagIds = New-Object System.Collections.ArrayList(, @( $columnTagIds | ForEach-Object { $_.id } ))
 
         if ($tagCategory.IsMultiValued -eq $true) {
             # clear tag category for multi tag
@@ -406,7 +392,7 @@ function Update-ColumnTags {
                 Write-Error -Message $errorMessage -Category InvalidArgument
                 return
             }
-            $singleValueCategory = $columnTagIds | Where-Object {$_.categoryId -eq $tagCategory.id}
+            $singleValueCategory = $columnTagIds | Where-Object { $_.categoryId -eq $tagCategory.id }
             $tagId = $tagCategory.Tags[$tags]
             if ($singleValueCategory) {
                 if ($singleValueCategory.id -eq $tagId ) {
@@ -445,7 +431,7 @@ function Update-ColumnWithTagIds {
         [string[]] $tagIds
     )
     process {
-        $url = $ClassificationURL +
+        $url =
         "api/instances/" + $column.instanceId +
         "/databases/" + [uri]::EscapeDataString($column.databaseName) +
         "/schemas/" + [uri]::EscapeDataString($column.schemaName) +
@@ -456,7 +442,7 @@ function Update-ColumnWithTagIds {
             TagIds = $tagIds
         }
         $body = $body | ConvertTo-Json;
-        Invoke-RestMethod -Uri $url  -ContentType "application/json; charset=utf-8" -Method PUT -Headers $ClassificationAuthHeader -Body $body
+        Invoke-ApiCall -Uri $url -Method PUT -Body $body
     }
 }
 
@@ -476,7 +462,7 @@ function Update-ColumnWithTagIds {
 .EXAMPLE
   Import-Module .\RedgateDataCatalog.psm1
   Use-Classification -ClassificationAuthToken "auth-token"
-  
+
   Copy-DatabaseClassification -sourceInstanceName "(local)\MSSQL2017" -sourceDatabaseName "sourceDB" -destinationInstanceName "(local)\MSSQL2017" -destinationDatabaseName "destinationDB"
 #>
 function Copy-DatabaseClassification {
@@ -488,8 +474,7 @@ function Copy-DatabaseClassification {
         [Parameter(Mandatory = $true)] [string] $destinationDatabaseName
     )
     $classifiedColumns = Get-Columns -instanceName $sourceInstanceName -databaseName $sourceDatabaseName
-    $instances = Get-RegisteredInstances 
-    $destinationInstanceId = $instances[$destinationInstanceName]
+    $destinationInstanceId = Get-InstanceIdByName $instanceName
     foreach ($column in $classifiedColumns) {
         $column.instanceId = $destinationInstanceId
         $column.databaseName = $destinationDatabaseName
@@ -515,7 +500,7 @@ function Copy-DatabaseClassification {
   Import-Module .\RedgateDataCatalog.psm1
   Use-Classification -ClassificationAuthToken "auth-token"
   $allColumns = Get-Columns -instanceName "sqlserver\sql2016" -databaseName "WideWorldImporters"
-  
+
   $peopleTableColumns = $allColumns | Where-Object {$_.SchemaName -eq "Application" -and $_.TableName -eq "People" }
   $categories = @{
     "Sensitivity" =  @("Confidential - GDPR")
@@ -554,14 +539,14 @@ function Import-ColumnsTags {
             $tagIds.AddRange($tagId)
         }
     }
-    $url = $ClassificationURL + 'api/columns/bulk-classification'
+    $url = 'api/columns/bulk-classification'
     $body = @{
         ColumnIdentifiers  = $columns
         TagIds             = $tagIds.ToArray()
-        FreeTextAttributes = @{}
+        FreeTextAttributes = @{ }
     }
     $body = $body | ConvertTo-Json;
-    Invoke-RestMethod -Uri $url  -ContentType "application/json; charset=utf-8" -Method PUT -Headers $ClassificationAuthHeader -Body $body
+    Invoke-ApiCall -Uri $url -Method PUT -Body $body
 }
 
 <#
@@ -583,38 +568,35 @@ function Import-ColumnsTags {
 function Export-ClassificationCsv {
     [CmdletBinding()]
     param(
-      [Parameter(Mandatory = $true)] [string] $instanceName,
-      [string] $databaseName,
-      [Parameter(Mandatory = $true)] [string] $exportFile
+        [Parameter(Mandatory = $true)] [string] $instanceName,
+        [string] $databaseName,
+        [Parameter(Mandatory = $true)] [string] $exportFile
     )
-    $instances = Get-RegisteredInstances
-    $instanceId = $instances[$instanceName]
-	if($databaseName) 
-	{
-		$url = $ClassificationURL +
-		"api/instances/" + $instanceId +
-		"/databases/" + [uri]::EscapeDataString($databaseName) +
-		"/columns/all?format=csv"
-	}
-	else 
-	{
-		$url = $ClassificationURL +
-		"api/instances/" + $instanceId +
-		"/columns/all?format=csv"
-	}
-    Invoke-RestMethod -Uri $url -Method Get -Headers $ClassificationAuthHeader -OutFile $exportFile
+    $instanceId = Get-InstanceIdByName $instanceName
+    if ($databaseName) {
+        $url =
+        "api/instances/" + $instanceId +
+        "/databases/" + [uri]::EscapeDataString($databaseName) +
+        "/columns/all?format=csv"
+    }
+    else {
+        $url =
+        "api/instances/" + $instanceId +
+        "/columns/all?format=csv"
+    }
+    Invoke-ApiCall -Uri $url -Method Get -OutFile $exportFile
 }
 
 function Update-Classification {
     [CmdletBinding()]
     param(
-        [Parameter(ValueFromPipeline=$True,ValueFromPipelineByPropertyName=$True)] $cmd,
+        [Parameter(ValueFromPipeline = $True, ValueFromPipelineByPropertyName = $True)] $cmd,
         [string] $name,
         [string] $value = $null
     )
     try {
         $cmd.Parameters["@name"].Value = $name
-        if([string]::IsNullOrEmpty($value)) {
+        if ([string]::IsNullOrEmpty($value)) {
             if ($cmd.Parameters.Contains("@value")) {
                 $cmd.Parameters.RemoveAt("@value")
             }
@@ -625,15 +607,15 @@ function Update-Classification {
             $cmd.Parameters["@value"].Value = $value
             $cmd.CommandType = [System.Data.CommandType]::Text
             $cmd.CommandText = "IF EXISTS (SELECT 1
-            FROM sys.columns c 
+            FROM sys.columns c
             INNER JOIN sys.objects o ON c.object_id = o.object_id
             INNER JOIN sys.schemas s ON o.schema_id = s.schema_id
             INNER JOIN sys.extended_properties xp ON xp.major_id = o.object_id AND xp.minor_id = c.column_id
             WHERE xp.name = @name AND c.name = @level2name AND o.name = @level1name AND s.name = @level0name)
-              EXEC sp_updateextendedproperty @name = @name, @level0type = 'schema', @level0name = @level0name, @level1type = 'table', 
+              EXEC sp_updateextendedproperty @name = @name, @level0type = 'schema', @level0name = @level0name, @level1type = 'table',
                   @level1name = @level1name, @level2type = 'column', @level2name = @level2name, @value = @value
             ELSE
-              EXEC sp_addextendedproperty @name = @name, @level0type = 'schema', @level0name = @level0name, @level1type = 'table', 
+              EXEC sp_addextendedproperty @name = @name, @level0type = 'schema', @level0name = @level0name, @level1type = 'table',
                   @level1name = @level1name, @level2type = 'column', @level2name = @level2name, @value = @value"
         }
         $cmd.ExecuteNonQuery()
@@ -655,7 +637,7 @@ function Update-Classification {
 .PARAMETER password
   Password. Do not use this parameter for Windows Authentication
 .PARAMETER forceUpdate
-  Use this flag to overwrite any existing classification stored in extended properties by the classification from the SQL Data Catalog. 
+  Use this flag to overwrite any existing classification stored in extended properties by the classification from the SQL Data Catalog.
   Note that any unassigned classifications in Data Catalog will also remove the classifications in extended properties.
 .EXAMPLE
   Import-Module .\RedgateDataCatalog.psm1
@@ -693,7 +675,7 @@ function Export-ClassificationExtendedProperties {
     $sensitivityLabels.Add("Confidential - GDPR", "989ADC05-3F3F-0588-A635-F475B994915B")
     $sensitivityLabels.Add("Highly Confidential", "B82CE05B-60A9-4CF3-8A8A-D6A0BB76E903")
     $sensitivityLabels.Add("Highly Confidential - GDPR", "3302AE7F-B8AC-46BC-97F8-378828781EFD")
-	
+
     $credentials = ""
     if ([string]::IsNullOrEmpty($userName)) {
         $credentials = "Integrated Security=True"
@@ -706,9 +688,9 @@ function Export-ClassificationExtendedProperties {
     $connection = New-Object System.Data.SqlClient.SqlConnection
     $connection.ConnectionString = "Server=$instanceName; Database=$databaseName; $credentials"
     $connection.Open()
-	
+
     $cmd = New-Object System.Data.SqlClient.SqlCommand
-	
+
     $cmd.Connection = $connection
     $cmd.CommandText = "SELECT 1 FROM sys.all_objects WHERE type = 'P' AND name = 'sp_addextendedproperty'"
     $exists = $cmd.ExecuteScalar()
@@ -730,25 +712,25 @@ function Export-ClassificationExtendedProperties {
         $cmd.Parameters["@level0name"].Value = $col.schemaName
         $cmd.Parameters["@level1name"].Value = $col.tableName
         $cmd.Parameters["@level2name"].Value = $col.columnName
-        
+
         if ($forceUpdate -eq $true) {
             Update-Classification -cmd $cmd -name 'sys_information_type_name' -value $col.informationType
-            if([string]::IsNullOrEmpty($col.informationType)) {
-              Update-Classification -cmd $cmd -name 'sys_information_type_id' 
+            if ([string]::IsNullOrEmpty($col.informationType)) {
+                Update-Classification -cmd $cmd -name 'sys_information_type_id'
             }
             else {
                 Update-Classification -cmd $cmd -name 'sys_information_type_id' -value $infoTypes[$col.informationType]
             }
             Update-Classification -cmd $cmd -name 'sys_sensitivity_label_name' -value $col.sensitivityLabel
-            if([string]::IsNullOrEmpty($col.sensitivityLabel)) {
+            if ([string]::IsNullOrEmpty($col.sensitivityLabel)) {
                 Update-Classification -cmd $cmd -name 'sys_sensitivity_label_id'
-            } 
+            }
             else {
                 Update-Classification -cmd $cmd -name 'sys_sensitivity_label_id' -value $sensitivityLabels[$col.sensitivityLabel]
             }
         }
         else {
-            if(-Not [string]::IsNullOrEmpty($col.InformationType)) {
+            if (-Not [string]::IsNullOrEmpty($col.InformationType)) {
                 try {
                     $cmd.CommandType = [System.Data.CommandType]::StoredProcedure
                     $cmd.Parameters["@value"].Value = $infoTypes[$col.informationType]
@@ -756,6 +738,7 @@ function Export-ClassificationExtendedProperties {
                     $cmd.CommandText = "sys.sp_addextendedproperty"
                     $cmd.ExecuteNonQuery()
 
+                    $cmd.Parameters["@value"].Value = $col.informationType
                     $cmd.Parameters["@name"].Value = 'sys_information_type_name'
                     $cmd.CommandText = "sys.sp_addextendedproperty"
                     $cmd.ExecuteNonQuery()
@@ -764,8 +747,8 @@ function Export-ClassificationExtendedProperties {
                     Write-Host $_.Exception.Message
                 }
             }
-            
-            if(-Not [string]::IsNullOrEmpty($col.SensitivityLabel)) {
+
+            if (-Not [string]::IsNullOrEmpty($col.SensitivityLabel)) {
                 try {
                     $cmd.CommandType = [System.Data.CommandType]::StoredProcedure
                     $cmd.Parameters["@value"].Value = $sensitivityLabels[$col.sensitivityLabel]
@@ -773,6 +756,7 @@ function Export-ClassificationExtendedProperties {
                     $cmd.CommandText = "sys.sp_addextendedproperty"
                     $cmd.ExecuteNonQuery()
 
+                    $cmd.Parameters["@value"].Value = $col.sensitivityLabel
                     $cmd.Parameters["@name"].Value = 'sys_sensitivity_label_name'
                     $cmd.CommandText = "sys.sp_addextendedproperty"
                     $cmd.ExecuteNonQuery()
@@ -786,6 +770,30 @@ function Export-ClassificationExtendedProperties {
     $connection.Close()
 }
 
+<#
+.SYNOPSIS
+  Enables authorization using Active Directory groups.
+.PARAMETER fullAccessActiveDirectoryGroup
+  Active Directory group that will be granted full access to the Data Catalog.
+.EXAMPLE
+  Import-Module .\RedgateDataCatalog.psm1
+  Use-Classification -ClassificationAuthToken "auth-token"
+  Enable-Authorization -fullAccessActiveDirectoryGroup "SqlDataCatalog-FullAccess"
+#>
+function Enable-Authorization {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)] [string] $fullAccessActiveDirectoryGroup
+    )
+
+    $url = "api/permissions"
+    $body = @{
+        ActiveDirectoryGroup = $fullAccessActiveDirectoryGroup
+		AccessLevel = 1
+    } | ConvertTo-Json
+    Invoke-ApiCall -Uri $url -Method PUT -Body $body
+}
+
 Export-ModuleMember -Function Use-Classification
 Export-ModuleMember -Function Add-RegisteredSqlServerInstance
 Export-ModuleMember -Function Update-RegisteredSqlServerInstance
@@ -795,3 +803,4 @@ Export-ModuleMember -Function Import-ColumnsTags
 Export-ModuleMember -Function Copy-DatabaseClassification
 Export-ModuleMember -Function Export-ClassificationCsv
 Export-ModuleMember -Function Export-ClassificationExtendedProperties
+Export-ModuleMember -Function Enable-Authorization
