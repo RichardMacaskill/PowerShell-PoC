@@ -83,7 +83,7 @@ function Add-RegisteredSqlServerInstance {
     )
 
     process {
-        $AddUrl = "api/instances"
+        $AddUrl = "api/v1.0/instances"
 
         $PostData = @{
             InstanceFqdn = $FullyQualifiedInstanceName
@@ -131,7 +131,7 @@ function Update-RegisteredSqlServerInstance {
     process {
         $instanceId = Get-InstanceIdByName $FullyQualifiedInstanceName
         $url =
-        "api/instances/" + $instanceId +
+        "api/v1.0/instances/" + $instanceId +
         "/update"
 
         $PostData = @{
@@ -200,7 +200,7 @@ function Invoke-ApiCall {
 
 
 function Get-TagCategories {
-    $url = "api/tagcategories"
+    $url = "api/v1.0/tagcategories"
     $tagcategories = Invoke-ApiCall -Uri $url -Method Get
 
     $hash = @{ }
@@ -225,13 +225,13 @@ function Get-Tags {
         [Parameter(ValueFromPipeline)] [string] $tagCategoryId
     )
 
-    $url = "api/tagcategories/" + $tagCategoryId + '/tags'
+    $url = "api/v1.0/tagcategories/" + $tagCategoryId + '/tags'
     $tags = Invoke-ApiCall -Uri $url -Method Get
     return  Get-HashResult -array $tags -key 'name' -value 'id'
 }
 
 function Get-RegisteredInstances {
-    $url = "api/instances"
+    $url = "api/v1.0/instances"
     $instances = Invoke-ApiCall -Uri $url -Method Get
 
     $hash = @{ }
@@ -291,7 +291,7 @@ function Get-Columns {
     $instanceId = Get-InstanceIdByName $instanceName
 
     $url =
-    "api/instances/" + $instanceId +
+    "api/v1.0/instances/" + $instanceId +
     "/databases/" + [uri]::EscapeDataString($databaseName) +
     "/columns"
     $columnResult = Invoke-ApiCall -Uri $url -Method Get
@@ -310,7 +310,7 @@ function Get-ColumnTags {
     )
 
     $url =
-    "api/instances/" + $column.instanceId +
+    "api/v1.0/instances/" + $column.instanceId +
     "/databases/" + [uri]::EscapeDataString($column.databaseName) +
     "/schemas/" + [uri]::EscapeDataString($column.schemaName) +
     "/tables/" + [uri]::EscapeDataString($column.tableName) +
@@ -432,7 +432,7 @@ function Update-ColumnWithTagIds {
     )
     process {
         $url =
-        "api/instances/" + $column.instanceId +
+        "api/v1.0/instances/" + $column.instanceId +
         "/databases/" + [uri]::EscapeDataString($column.databaseName) +
         "/schemas/" + [uri]::EscapeDataString($column.schemaName) +
         "/tables/" + [uri]::EscapeDataString($column.tableName) +
@@ -539,7 +539,7 @@ function Import-ColumnsTags {
             $tagIds.AddRange($tagId)
         }
     }
-    $url = 'api/columns/bulk-classification'
+    $url = 'api/v1.0/columns/bulk-classification'
     $body = @{
         ColumnIdentifiers  = $columns
         TagIds             = $tagIds.ToArray()
@@ -575,13 +575,13 @@ function Export-ClassificationCsv {
     $instanceId = Get-InstanceIdByName $instanceName
     if ($databaseName) {
         $url =
-        "api/instances/" + $instanceId +
+        "api/v1.0/instances/" + $instanceId +
         "/databases/" + [uri]::EscapeDataString($databaseName) +
         "/columns/all?format=csv"
     }
     else {
         $url =
-        "api/instances/" + $instanceId +
+        "api/v1.0/instances/" + $instanceId +
         "/columns/all?format=csv"
     }
     Invoke-ApiCall -Uri $url -Method Get -OutFile $exportFile
@@ -786,7 +786,7 @@ function Enable-Authorization {
         [Parameter(Mandatory = $true)] [string] $fullAccessActiveDirectoryUserOrGroup
     )
 
-    $url = "api/permissions"
+    $url = "api/v1.0/permissions"
     $body = @{
         ActiveDirectoryPrincipal = $fullAccessActiveDirectoryUserOrGroup
 		Role = 1
