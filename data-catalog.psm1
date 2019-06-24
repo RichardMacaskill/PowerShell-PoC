@@ -83,7 +83,7 @@ function Add-RegisteredSqlServerInstance {
     )
 
     process {
-        $AddUrl = "api/v1.0/instances"
+        $AddUrl = "api/instances"
 
         $PostData = @{
             InstanceFqdn = $FullyQualifiedInstanceName
@@ -131,7 +131,7 @@ function Update-RegisteredSqlServerInstance {
     process {
         $instanceId = Get-InstanceIdByName $FullyQualifiedInstanceName
         $url =
-        "api/v1.0/instances/" + $instanceId +
+        "api/instances/" + $instanceId +
         "/update"
 
         $PostData = @{
@@ -200,7 +200,7 @@ function Invoke-ApiCall {
 
 
 function Get-TagCategories {
-    $url = "api/v1.0/tagcategories"
+    $url = "api/tagcategories"
     $tagcategories = Invoke-ApiCall -Uri $url -Method Get
 
     $hash = @{ }
@@ -225,13 +225,13 @@ function Get-Tags {
         [Parameter(ValueFromPipeline)] [string] $tagCategoryId
     )
 
-    $url = "api/v1.0/tagcategories/" + $tagCategoryId + '/tags'
+    $url = "api/tagcategories/" + $tagCategoryId + '/tags'
     $tags = Invoke-ApiCall -Uri $url -Method Get
     return  Get-HashResult -array $tags -key 'name' -value 'id'
 }
 
 function Get-RegisteredInstances {
-    $url = "api/v1.0/instances"
+    $url = "api/instances"
     $instances = Invoke-ApiCall -Uri $url -Method Get
 
     $hash = @{ }
@@ -291,7 +291,7 @@ function Get-Columns {
     $instanceId = Get-InstanceIdByName $instanceName
 
     $url =
-    "api/v1.0/instances/" + $instanceId +
+    "api/instances/" + $instanceId +
     "/databases/" + [uri]::EscapeDataString($databaseName) +
     "/columns"
     $columnResult = Invoke-ApiCall -Uri $url -Method Get
@@ -310,7 +310,7 @@ function Get-ColumnTags {
     )
 
     $url =
-    "api/v1.0/instances/" + $column.instanceId +
+    "api/instances/" + $column.instanceId +
     "/databases/" + [uri]::EscapeDataString($column.databaseName) +
     "/schemas/" + [uri]::EscapeDataString($column.schemaName) +
     "/tables/" + [uri]::EscapeDataString($column.tableName) +
@@ -432,7 +432,7 @@ function Update-ColumnWithTagIds {
     )
     process {
         $url =
-        "api/v1.0/instances/" + $column.instanceId +
+        "api/instances/" + $column.instanceId +
         "/databases/" + [uri]::EscapeDataString($column.databaseName) +
         "/schemas/" + [uri]::EscapeDataString($column.schemaName) +
         "/tables/" + [uri]::EscapeDataString($column.tableName) +
@@ -539,7 +539,7 @@ function Import-ColumnsTags {
             $tagIds.AddRange($tagId)
         }
     }
-    $url = 'api/v1.0/columns/bulk-classification'
+    $url = 'api/columns/bulk-classification'
     $body = @{
         ColumnIdentifiers  = $columns
         TagIds             = $tagIds.ToArray()
@@ -575,13 +575,13 @@ function Export-ClassificationCsv {
     $instanceId = Get-InstanceIdByName $instanceName
     if ($databaseName) {
         $url =
-        "api/v1.0/instances/" + $instanceId +
+        "api/instances/" + $instanceId +
         "/databases/" + [uri]::EscapeDataString($databaseName) +
         "/columns/all?format=csv"
     }
     else {
         $url =
-        "api/v1.0/instances/" + $instanceId +
+        "api/instances/" + $instanceId +
         "/columns/all?format=csv"
     }
     Invoke-ApiCall -Uri $url -Method Get -OutFile $exportFile
@@ -772,24 +772,23 @@ function Export-ClassificationExtendedProperties {
 
 <#
 .SYNOPSIS
-  Enables authorization using Active Directory groups and users.
-.PARAMETER fullAccessActiveDirectoryUserOrGroup
-  Active Directory user or group that will be granted full access to the Data Catalog.
+  Enables authorization using Active Directory groups.
+.PARAMETER fullAccessActiveDirectoryGroup
+  Active Directory group that will be granted full access to the Data Catalog.
 .EXAMPLE
   Import-Module .\RedgateDataCatalog.psm1
   Use-Classification -ClassificationAuthToken "auth-token"
-  Enable-Authorization -fullAccessActiveDirectoryUserOrGroup "SqlDataCatalog-FullAccess"
+  Enable-Authorization -fullAccessActiveDirectoryGroup "SqlDataCatalog-FullAccess"
 #>
 function Enable-Authorization {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory = $true)] [string] $fullAccessActiveDirectoryUserOrGroup
+        [Parameter(Mandatory = $true)] [string] $fullAccessActiveDirectoryGroup
     )
 
-    $url = "api/v1.0/permissions"
+    $url = "api/permissions"
     $body = @{
-        ActiveDirectoryPrincipal = $fullAccessActiveDirectoryUserOrGroup
-		Role = 1
+        FullAccessActiveDirectoryGroup = $fullAccessActiveDirectoryGroup
     } | ConvertTo-Json
     Invoke-ApiCall -Uri $url -Method PUT -Body $body
 }
