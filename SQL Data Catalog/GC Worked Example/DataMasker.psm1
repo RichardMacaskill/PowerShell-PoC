@@ -190,7 +190,7 @@ function Update-PlanInformation{
         } elseif($Sensitivity -like '*public*') {
             $planType = 'WANTMASK_NO'
         } else {
-            $planType = 'WANTMASK_UNKNOWN'
+            $planType = 'WANTMASK_NO'
         }
         $MaskingSet.SelectSingleNode("DMSSetContainer_MaskingSet/DMSSetContainer/DMSRuleBindingList/RuleController/DMSSchemaEntity_Login/N2KSQLServerEntity_Login[SchemaName/@Value = `"$Schema`"]/SchemaTables/DMSSchemaEntity_Table/N2KSQLServerEntity_Table[TableName/@Value = `"$Table`"]/N2KSQLServerCollection_Column/DMSSchemaEntity_Column[N2KSQLServerEntity_Column/ColumnName/@Value = `"$Column`"]/PlanType/@Value").Value = $planType
         $MaskingSet.SelectSingleNode("DMSSetContainer_MaskingSet/DMSSetContainer/DMSRuleBindingList/RuleController/DMSSchemaEntity_Login/N2KSQLServerEntity_Login[SchemaName/@Value = `"$Schema`"]/SchemaTables/DMSSchemaEntity_Table/N2KSQLServerEntity_Table[TableName/@Value = `"$Table`"]/N2KSQLServerCollection_Column/DMSSchemaEntity_Column[N2KSQLServerEntity_Column/ColumnName/@Value = `"$Column`"]/PlanComments/@Value").Value = $Sensitivity
