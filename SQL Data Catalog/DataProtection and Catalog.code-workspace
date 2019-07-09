@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "/Users/richard.macaskill/Dev/Github/PowerShell-PoC"
+		},
+		{
+			"path": "/Users/richard.macaskill/Dev/Github/DataProtectionIntegrations"
+		}
+	],
+	"settings": {
+		"git.ignoreLimitWarning": true
+	}
+}

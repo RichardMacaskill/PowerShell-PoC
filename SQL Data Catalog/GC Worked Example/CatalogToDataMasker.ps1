@@ -3,10 +3,12 @@
 $dataCatalogAuthToken = "NTM2OTUxMTYyNzA4OTUxMDQwOmRiNjIyYWMxLWI1NDYtNDQzNi04OTE2LWQ1MzkxNGIzYzI5MQ=="
 $instanceName = 'rm-iclone3.testnet.red-gate.com'
 $databaseName = 'Masking_SG_OLAP_DATA_20180304'
-$inputMaskingSetPath = 'C:\Users\richard.macaskill\Documents\Data Masker(SqlServer)\Masking Sets\GC_Olap_Data_Auto.DMSMaskSet'
-$outputMaskingSetPath = 'C:\Users\richard.macaskill\Documents\Data Masker(SqlServer)\Masking Sets\GC_Olap_Data_Generated v2.DMSMaskSet'
+$inputMaskingSetPath = '/Users/richard.macaskill/Dev/Masking and Config Scripts/GC_Olap_Data_Auto.DMSMaskSet'
+ #'C:\Users\richard.macaskill\Documents\Data Masker(SqlServer)\Masking Sets\GC_Olap_Data_Auto.DMSMaskSet'
+$outputMaskingSetPath = '/Users/richard.macaskill/Dev/Masking and Config Scripts/output 3.DMSMaskSet' 
+#'C:\Users\richard.macaskill\Documents\Data Masker(SqlServer)\Masking Sets\GC_Olap_Data_Generated v2.DMSMaskSet'
 
-#load data from catalog and data masker file
+#load data from catalog and data masker file   
 Import-Module .\DataCatalogWithTagCategories.psm1 -Force
 Import-Module .\DataMasker.psm1 -Force
 

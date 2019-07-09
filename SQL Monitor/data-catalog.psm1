@@ -2,7 +2,6 @@
   For more information and a worked example refer to https://www.red-gate.com/data-catalog/classify-with-powershell .
 #>
 
-#Requires -Version 5.1
 
 <#
 .SYNOPSIS
@@ -84,17 +83,17 @@ function Add-RegisteredSqlServerInstance {
     )
 
     process {
-        $AddUrl = "api/v1.0/instances"
+        $AddUrl = "api/instances"
 
         $PostData = @{
-            InstanceFqdn   = $FullyQualifiedInstanceName
-            DatabaseEngine = 'SqlServer'
-            UserId         = $UserId
-            Password       = $Password
+            InstanceFqdn = $FullyQualifiedInstanceName
+            UserId       = $UserId
+            Password     = $Password
         }
         $PostJson = $PostData | ConvertTo-Json
 
         Invoke-ApiCall -Uri $AddUrl -Method Post -Body $PostJson
+        Write-Host "Instance $FullyQualifiedInstanceName added successfully."
     }
 }
 
@@ -131,7 +130,9 @@ function Update-RegisteredSqlServerInstance {
 
     process {
         $instanceId = Get-InstanceIdByName $FullyQualifiedInstanceName
-        $url = "api/v1.0/instances/" + $instanceId + "/update"
+        $url =
+        "api/instances/" + $instanceId +
+        "/update"
 
         $PostData = @{
             UserId   = $UserId
@@ -140,6 +141,7 @@ function Update-RegisteredSqlServerInstance {
         $PostJson = $PostData | ConvertTo-Json
 
         Invoke-ApiCall -Uri $url -Method Post -Body $PostJson
+        Write-Host "Instance $FullyQualifiedInstanceName updated successfully."
     }
 }
 
@@ -198,7 +200,7 @@ function Invoke-ApiCall {
 
 
 function Get-TagCategories {
-    $url = "api/v1.0/tagcategories"
+    $url = "api/tagcategories"
     $tagcategories = Invoke-ApiCall -Uri $url -Method Get
 
     $hash = @{ }
@@ -223,25 +225,13 @@ function Get-Tags {
         [Parameter(ValueFromPipeline)] [string] $tagCategoryId
     )
 
-    $url = "api/v1.0/tagcategories/" + $tagCategoryId + '/tags'
+    $url = "api/tagcategories/" + $tagCategoryId + '/tags'
     $tags = Invoke-ApiCall -Uri $url -Method Get
     return  Get-HashResult -array $tags -key 'name' -value 'id'
 }
 
-
-<#
-.SYNOPSIS
-  Gets all registered SQL Server instance.
-.DESCRIPTION
-  Gets all registered SQL Server instance as hashtable with fully-qualified name of the SQL Server instance as key and id as value.
-.EXAMPLE
-  Get-RegisteredInstances
-
-  Gets all registered SQL Server instance.
-
-#>
 function Get-RegisteredInstances {
-    $url = "api/v1.0/instances"
+    $url = "api/instances"
     $instances = Invoke-ApiCall -Uri $url -Method Get
 
     $hash = @{ }
@@ -264,32 +254,6 @@ function Get-InstanceIdByName {
     return $instances[$instanceName]
 }
 
-<#
-.SYNOPSIS
-  Gets the databases for a given instance.
-.DESCRIPTION
-  Gets all databases for a given instance.
-
-.PARAMETER InstanceName
-  The fully-qualified name of the SQL Server instance. For a named instance, this should take the form 'fully-qualified-host-name\instance-name' (e.g. "myserver.mydomain.com\myinstance"). For the default instance on a machine, just the fully-qualified name of the machine will suffice (e.g. "myserver.mydomain.com").
-.EXAMPLE
-  Get-Databases -instanceName "sqlserver\sql2016"
-
-  Fetches all databases from instance "sqlserver\sql2016".
-#>
-function Get-Databases {
-    [CmdletBinding()]
-    param(
-        [Parameter(ValueFromPipeline)] [string] $instanceName
-    )
-    $instanceId = Get-InstanceIdByName $instanceName
-
-    $url =
-    "api/v1.0/instances/" + $instanceId +
-    "/databases"
-    $databaseResult = Invoke-ApiCall -Uri $url -Method Get
-    return $databaseResult.database
-}
 
 <#
 .SYNOPSIS
@@ -327,7 +291,7 @@ function Get-Columns {
     $instanceId = Get-InstanceIdByName $instanceName
 
     $url =
-    "api/v1.0/instances/" + $instanceId +
+    "api/instances/" + $instanceId +
     "/databases/" + [uri]::EscapeDataString($databaseName) +
     "/columns"
     $columnResult = Invoke-ApiCall -Uri $url -Method Get
@@ -346,7 +310,7 @@ function Get-ColumnTags {
     )
 
     $url =
-    "api/v1.0/instances/" + $column.instanceId +
+    "api/instances/" + $column.instanceId +
     "/databases/" + [uri]::EscapeDataString($column.databaseName) +
     "/schemas/" + [uri]::EscapeDataString($column.schemaName) +
     "/tables/" + [uri]::EscapeDataString($column.tableName) +
@@ -468,7 +432,7 @@ function Update-ColumnWithTagIds {
     )
     process {
         $url =
-        "api/v1.0/instances/" + $column.instanceId +
+        "api/instances/" + $column.instanceId +
         "/databases/" + [uri]::EscapeDataString($column.databaseName) +
         "/schemas/" + [uri]::EscapeDataString($column.schemaName) +
         "/tables/" + [uri]::EscapeDataString($column.tableName) +
@@ -510,16 +474,11 @@ function Copy-DatabaseClassification {
         [Parameter(Mandatory = $true)] [string] $destinationDatabaseName
     )
     $classifiedColumns = Get-Columns -instanceName $sourceInstanceName -databaseName $sourceDatabaseName
-    $destinationInstanceId = Get-InstanceIdByName $destinationInstanceName
+    $destinationInstanceId = Get-InstanceIdByName $instanceName
     foreach ($column in $classifiedColumns) {
         $column.instanceId = $destinationInstanceId
         $column.databaseName = $destinationDatabaseName
-        if ($null -eq $column.tags.id) {
-            $tagIds = New-Object System.Collections.ArrayList(, @()) 
-        }
-        else {
-            $tagIds = $column.tags.id
-        }
+        $tagIds = $column.tags.id
         Update-ColumnWithTagIds -column $column -tagIds $tagIds
     }
 }
@@ -580,7 +539,7 @@ function Import-ColumnsTags {
             $tagIds.AddRange($tagId)
         }
     }
-    $url = 'api/v1.0/columns/bulk-classification'
+    $url = 'api/columns/bulk-classification'
     $body = @{
         ColumnIdentifiers  = $columns
         TagIds             = $tagIds.ToArray()
@@ -616,13 +575,13 @@ function Export-ClassificationCsv {
     $instanceId = Get-InstanceIdByName $instanceName
     if ($databaseName) {
         $url =
-        "api/v1.0/instances/" + $instanceId +
+        "api/instances/" + $instanceId +
         "/databases/" + [uri]::EscapeDataString($databaseName) +
         "/columns/all?format=csv"
     }
     else {
         $url =
-        "api/v1.0/instances/" + $instanceId +
+        "api/instances/" + $instanceId +
         "/columns/all?format=csv"
     }
     Invoke-ApiCall -Uri $url -Method Get -OutFile $exportFile
@@ -813,63 +772,31 @@ function Export-ClassificationExtendedProperties {
 
 <#
 .SYNOPSIS
-  Enables authorization using Active Directory groups and users.
-.PARAMETER fullAccessActiveDirectoryUserOrGroup
-  Active Directory user or group that will be granted full access to the Data Catalog.
+  Enables authorization using Active Directory groups.
+.PARAMETER fullAccessActiveDirectoryGroup
+  Active Directory group that will be granted full access to the Data Catalog.
 .EXAMPLE
   Import-Module .\RedgateDataCatalog.psm1
   Use-Classification -ClassificationAuthToken "auth-token"
-  Enable-Authorization -fullAccessActiveDirectoryUserOrGroup "SqlDataCatalog-FullAccess"
+  Enable-Authorization -fullAccessActiveDirectoryGroup "SqlDataCatalog-FullAccess"
 #>
 function Enable-Authorization {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory = $true)] [string] $fullAccessActiveDirectoryUserOrGroup
+        [Parameter(Mandatory = $true)] [string] $fullAccessActiveDirectoryGroup
     )
 
-    $url = "api/v1.0/permissions"
+    $url = "api/permissions"
     $body = @{
-        ActiveDirectoryPrincipal = $fullAccessActiveDirectoryUserOrGroup
-        Role                     = 1
+        ActiveDirectoryGroup = $fullAccessActiveDirectoryGroup
+		AccessLevel = 1
     } | ConvertTo-Json
     Invoke-ApiCall -Uri $url -Method PUT -Body $body
-}
-
-
-<#
-.SYNOPSIS
-  Start scan of a registered instance.
-.DESCRIPTION
-  Scans the instance for new databases.
-.PARAMETER FullyQualifiedInstanceName
-  The fully-qualified name of the SQL Server instance to be registered. For a named instance, this should take the form 'fully-qualified-host-name\instance-name' (e.g. "myserver.mydomain.com\myinstance"). For the default instance on a machine, just the fully-qualified name of the machine will suffice (e.g. "myserver.mydomain.com").
-.EXAMPLE
-  Start-InstanceScan -FullyQualifiedInstanceName 'mysqlserver.mydomain.com\myinstancename'
-
-  Update instance "myinstancename" running on the "mysqlserver.mydomain.com" machine. Windows Authentication will be used to connect to this intance.
-#>
-
-function Start-InstanceScan {
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory = $True, Position = 0, ValueFromPipeLine = $True)]
-        [string] $FullyQualifiedInstanceName
-    )
-
-    process {
-        $instanceId = Get-InstanceIdByName $FullyQualifiedInstanceName
-        $url = "api/v1.0/instances/" + $instanceId + "/scan"
-
-        Invoke-ApiCall -Uri $url -Method Post
-    }
 }
 
 Export-ModuleMember -Function Use-Classification
 Export-ModuleMember -Function Add-RegisteredSqlServerInstance
 Export-ModuleMember -Function Update-RegisteredSqlServerInstance
-Export-ModuleMember -Function Start-InstanceScan
-Export-ModuleMember -Function Get-RegisteredInstances
-Export-ModuleMember -Function Get-Databases
 Export-ModuleMember -Function Get-Columns
 Export-ModuleMember -Function Update-ColumnTags
 Export-ModuleMember -Function Import-ColumnsTags
