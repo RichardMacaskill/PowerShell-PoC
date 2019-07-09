@@ -4,11 +4,11 @@ $dataCatalogAuthToken = "NTM2OTUxMTYyNzA4OTUxMDQwOmRiNjIyYWMxLWI1NDYtNDQzNi04OTE
 $instanceName = 'rm-iclone1.testnet.red-gate.com'
 $databaseName = 'StackoverFlow2010'
 $inputMaskingSetPath = "\\rm-iclone1\Masking Set Files\Shell\StackOverflow2010 Automation.DMSMaskSet"
-$outputMaskingSetPath = "\\rm-iclone1\Masking Set Files\Generated\StackOverflow2010 Generated.DMSMaskSet"
+$outputMaskingSetPath = "\\rm-iclone1\Masking Set Files\Generated\StackOverflow2010 Generated 2.DMSMaskSet"
 
 #load data from catalog and data masker file
 Import-Module .\DataCatalogWithTagCategories.psm1 -Force
-Import-Module .\DataMasker.psm1 -Force
+Import-Module .\DataMasker.psm1 -Force   
 
 Use-Classification -ClassificationAuthToken $dataCatalogAuthToken 
 
@@ -21,7 +21,7 @@ $allColumns = Get-Columns -instanceName $instanceName -databaseName $databaseNam
 $maskableColumns = $allColumns | Where-Object { $_.sensitivityLabel -like "*GDPR*" }
 
 $allColumns = $maskableColumns
-
+  
 Write-Output "Finished getting columns"
 [xml]$maskingSet = Get-Content -Path $inputMaskingSetPath
 
