@@ -12,13 +12,13 @@ $SqlServerInstance = Get-SqlCloneSqlServerInstance -MachineName 'rm-iclone1' -In
 
 $ImageDestination = Get-SqlCloneImageLocation -Path '\\rm-iclone1.testnet.red-gate.com\SQL Clone Images'
 
-$MaskingSet = New-SqlCloneMask -Path "\\rm-iclone1.testnet.red-gate.com\Masking Set Files\Generated\StackOverflow2010 Generated.DMSMaskSet"
+$MaskingSet = New-SqlCloneMask -Path "\\rm-iclone1\Masking Set Files\Generated\StackOverflow2010 Generated 5.DMSMaskSet"
  
 $ImageOperation = New-SqlCloneImage -Name "StackOverflow2010-$(Get-Date -Format yyyyMMddHHmmss)-Cleansed" `
     -SqlServerInstance $SqlServerInstance `
     -DatabaseName 'StackOverflow2010' `
     -Destination $ImageDestination `
-    -Modifications @($MaskingSet)
+    -Modifications $MaskingSet
  
 Measure-Command -Expression { Wait-SqlCloneOperation -Operation $ImageOperation } | Select-Object Minutes, Seconds
 
