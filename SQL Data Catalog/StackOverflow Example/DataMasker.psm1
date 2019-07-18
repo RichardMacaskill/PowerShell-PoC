@@ -190,7 +190,7 @@ function Update-PlanInformation{
         } elseif($Sensitivity -like '*public*') {
             $planType = 'WANTMASK_NO'
         } else {
-            $planType = 'WANTMASK_NO'
+            $planType = 'WANTMASK_UNKNOWN'
         }
         $MaskingSet.SelectSingleNode("DMSSetContainer_MaskingSet/DMSSetContainer/DMSRuleBindingList/RuleController/DMSSchemaEntity_Login/N2KSQLServerEntity_Login[SchemaName/@Value = `"$Schema`"]/SchemaTables/DMSSchemaEntity_Table/N2KSQLServerEntity_Table[TableName/@Value = `"$Table`"]/N2KSQLServerCollection_Column/DMSSchemaEntity_Column[N2KSQLServerEntity_Column/ColumnName/@Value = `"$Column`"]/PlanType/@Value").Value = $planType
         $MaskingSet.SelectSingleNode("DMSSetContainer_MaskingSet/DMSSetContainer/DMSRuleBindingList/RuleController/DMSSchemaEntity_Login/N2KSQLServerEntity_Login[SchemaName/@Value = `"$Schema`"]/SchemaTables/DMSSchemaEntity_Table/N2KSQLServerEntity_Table[TableName/@Value = `"$Table`"]/N2KSQLServerCollection_Column/DMSSchemaEntity_Column[N2KSQLServerEntity_Column/ColumnName/@Value = `"$Column`"]/PlanComments/@Value").Value = $Sensitivity
@@ -204,7 +204,7 @@ function Get-DataSet{
         [string]$DataSetLabel
     )
 
-    if($DataSetLabel -eq 'Masked ForeName'){
+    if($DataSetLabel -eq 'ForeName'){
         [xml]$dataSetXml = '
             <DataSet_MFNAME NS="DMS_DataSets" AS="DMSD">
                 <UpperCaseText Value="False" />
@@ -228,7 +228,7 @@ function Get-DataSet{
             </DataSet_NAMFLX>'
     }
 
-    if($DataSetLabel -eq 'Masked EmailAddress'){
+    if($DataSetLabel -eq 'EmailAddress'){
         [xml]$dataSetXml = '
             <DataSet_EMADDR NS="DMS_DataSets" AS="DMSD">
                 <UpperCase Value="False" />
@@ -245,7 +245,7 @@ function Get-DataSet{
             </DataSet_UKTELE>'
     }
 
-    if($DataSetLabel -eq 'Masked DateOfBirth'){
+    if($DataSetLabel -eq 'DateOfBirth'){
         [xml]$dataSetXml = '
             <DataSet_RNDDAX NS="DMS_DataSets" AS="DMSD">
                 <ForceTimesToZero Value="True" />
@@ -271,7 +271,7 @@ function Get-DataSet{
             </DataSet_UKBKST>'
     }
 
-    if($DataSetLabel -eq 'Masked BankNumber'){
+    if($DataSetLabel -eq 'BankNumber'){
         [xml]$dataSetXml = '
             <DataSet_RNDALN NS="DMS_DataSets" AS="DMSD">
                 <TemplateString Value="%n%n%n%n%n%n%n%n" />

@@ -2,6 +2,7 @@
   For more information and a worked example refer to https://www.red-gate.com/data-catalog/classify-with-powershell .
 #>
 
+#Requires -Version 5.1
 
 <#
 .SYNOPSIS
@@ -22,7 +23,7 @@ function Use-Classification {
         [Parameter(Mandatory = $true)] $ClassificationAuthToken
     )
 
-    $classificationURL = 'https://rm-win10-sql201.testnet.red-gate.com:15156/'
+    $classificationURL = 'http://rm-win10-sql201.testnet.red-gate.com:15156/'
     $authHeader = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
     $authHeader.Add("Authorization", "Bearer $ClassificationAuthToken")
 
@@ -86,9 +87,10 @@ function Add-RegisteredSqlServerInstance {
         $AddUrl = "api/v1.0/instances"
 
         $PostData = @{
-            InstanceFqdn = $FullyQualifiedInstanceName
-            UserId       = $UserId
-            Password     = $Password
+            InstanceFqdn   = $FullyQualifiedInstanceName
+            DatabaseEngine = 'SqlServer'
+            UserId         = $UserId
+            Password       = $Password
         }
         $PostJson = $PostData | ConvertTo-Json
 
@@ -195,6 +197,16 @@ function Invoke-ApiCall {
 }
 
 
+<#
+.SYNOPSIS
+  Gets all tag catrgories and its tags.
+.DESCRIPTION
+  Gets all tag catrgories and its tags hashtable with tagcategory name as key and its id, name and tags as value.
+.EXAMPLE
+  Get-TagCategories
+
+  Gets all tag catrgories and its tags.
+#>
 function Get-TagCategories {
     $url = "api/v1.0/tagcategories"
     $tagcategories = Invoke-ApiCall -Uri $url -Method Get
@@ -202,15 +214,7 @@ function Get-TagCategories {
     $hash = @{ }
 
     foreach ($tagcategory in $tagcategories) {
-        $tags = Get-Tags -tagCategoryId $tagcategory.id
-
-        $tagcategoryWithTags = New-Object PSObject -Property @{
-            Id            = $tagcategory.id
-            Name          = $tagcategory.name
-            IsMultiValued = $tagcategory.IsMultiValued
-            Tags          = $tags
-        }
-        $hash.Add($tagcategory.name, $tagcategoryWithTags)
+        $hash.Add($tagcategory.name, $tagcategory)
     }
     return  $hash
 }
@@ -875,3 +879,4 @@ Export-ModuleMember -Function Copy-DatabaseClassification
 Export-ModuleMember -Function Export-ClassificationCsv
 Export-ModuleMember -Function Export-ClassificationExtendedProperties
 Export-ModuleMember -Function Enable-Authorization
+Export-ModuleMember -Function Get-TagCategories

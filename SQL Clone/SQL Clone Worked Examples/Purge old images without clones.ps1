@@ -1,8 +1,8 @@
 ﻿Connect-SqlClone -ServerUrl  'http://rm-win10-sql201.testnet.red-gate.com:14145'
 
 
-$imageTimeToLiveDays = 7;
-$oldImages = Get-SqlCloneImage | Where-Object {$_.CreatedDate -le (Get-Date).AddDays(0-$imageTimeToLiveDays)}
+$imageTimeToLiveDays = 60;
+$oldImages = Get-SqlCloneImage | Where-Object {$_.CreatedDate -ge (Get-Date).AddDays(0-$imageTimeToLiveDays)}
 
 foreach ($image in $oldImages)
 {

@@ -16,29 +16,34 @@ Connect-SqlClone -ServerUrl $SQLCloneServer
 # Reference to image
 $ForumsImage = Get-SqlCloneImage -Name  'Redgate Forums Masked'
 
+$ForumsImageSourceInstance = $ForumsImage.OriginServerName
+$ForumsImageSourceDatabase = $ForumsImage.OriginDatabaseName
+
 # I have several SQL Server instances registered on my SQL Clone Server - I want to deliver a copy to all of them
-$Destinations = Get-SqlCloneSqlServerInstance | 
-Where-Object -FilterScript { $_.Server -like '*WKS*' -and $_.Instance -eq 'Dev' }
+$Destinations = Get-SqlCloneSqlServerInstance | Where-Object -FilterScript { $_.Server -like '*WKS*' -and $_.Instance -eq 'Dev' }
 
 $Template = Get-SqlCloneTemplate -Image $ForumsImage -Name "Update permissions for Dev"
 
 # Create clone Dbs for Devs 
 $ForumsCloneName = 'Forums Masked for Dev - TEST'
 
-# Start a timer
-$elapsed = [System.Diagnostics.Stopwatch]::StartNew()
-
 "Started at {0}, creating clone databases for image ""{1}""" -f $(get-date) , $ForumsImage.Name 
 
 $Destinations | Invoke-Parallel -ImportModules -ImportVariables -ScriptBlock {
     $ForumsImage | New-SqlClone -Name $ForumsCloneName -Template $Template -Location $_ | Wait-SqlCloneOperation
 }
-    # Register clones in Data Catalog
-
-
-    # Copy classification for clones
-
-    # Push into extended properties
+# Push into extended properties
 Use-Classification -ClassificationAuthToken $dataCatalogAuthToken     
 
-Update-RegisteredSqlServerInstanceDatabases -FullyQualifiedInstanceName "rm-dev-wks02\dev"
+# Register clones in Data Catalog by updating the instance (forcing a scan)
+$Destinations | ForEach-Object { $machineInstance = $_.Machine.MachineName.ToString() + "\" + $_.Instance.ToString(); `
+Update-RegisteredSqlServerInstance  -FullyQualifiedInstanceName $machineInstance }
+
+# Copy classification for clones
+$Destinations | ForEach-Object `
+{ $machineInstance = $_.Machine.MachineName.ToString() + "\" + `
+$_.Instance.ToString(); Copy-DatabaseClassification -sourceInstanceName $ForumsImageSourceInstance `
+-sourceDatabaseName $ForumsImageSourceDatabase -destinationInstanceName $machineInstance -destinationDatabaseName $ForumsCloneName}
+
+
+

@@ -1,26 +1,29 @@
 ﻿#config
 
 $dataCatalogAuthToken = "NTM2OTUxMTYyNzA4OTUxMDQwOmRiNjIyYWMxLWI1NDYtNDQzNi04OTE2LWQ1MzkxNGIzYzI5MQ=="
-$instanceName = 'rm-iclone3.testnet.red-gate.com'
-$databaseName = 'Masking_SG_OLAP_DATA_20180304'
-$inputMaskingSetPath = 'C:\Dev\Data Masking Scripts\GC_Olap_Data_Auto.DMSMaskSet'
-$outputMaskingSetPath = 'C:\Dev\Data Masking Scripts\GC_Olap_Data_Generated - delete me.DMSMaskSet'
+$instanceName = 'rm-iclone1.testnet.red-gate.com'
+$databaseName = 'StackoverFlow2010'
+$inputMaskingSetPath = "\\rm-iclone1\Masking Set Files\Shell\StackOverflow2010 Automation.DMSMaskSet"
+$outputMaskingSetPath = "\\rm-iclone1\Masking Set Files\Generated\StackOverflow2010 Generated 5.DMSMaskSet"
 
-#load data from catalog and data masker file   
-Import-Module .\DataCatalogWithTagCategories.psm1 -Force
-Import-Module .\DataMasker.psm1 -Force
+#load data from catalog and data masker file
+Invoke-WebRequest -Uri 'http://rm-win10-sql201.testnet.red-gate.com:15156/powershell' -OutFile 'datacatalog.psm1' -Headers @{"Authorization" = "Bearer $dataCatalogAuthToken" }
+ 
+Import-Module .\datacatalog.psm1 -Force
+Import-Module .\DataMasker.psm1 -Force   
 
 Use-Classification -ClassificationAuthToken $dataCatalogAuthToken 
 
-$maskingDataSetTagCategoryId = (Get-TagCategories)["GCMasked"].Id
+$maskingDataSetTagCategoryId = (Get-TagCategories)["Masking Data Set"].Id
 Write-Output "Getting columns"
+
 $allColumns = Get-Columns -instanceName $instanceName -databaseName $databaseName
 
-$maskableColumns = $allColumns | Where-Object {$_.tags.name -like "*Masked *" } # 722
-$specificMaskableColumns = $maskableColumns | Where-Object {$_.tags.name  -notcontains  "Masked TBD"} #173
+# Filter on sensitivity label text match for GDPR 
+#$maskableColumns = $allColumns | Where-Object { $_.sensitivityLabel -like "*GDPR*" }
 
-$allColumns = $specificMaskableColumns
-
+#$allColumns = $maskableColumns
+  
 Write-Output "Finished getting columns"
 [xml]$maskingSet = Get-Content -Path $inputMaskingSetPath
 
