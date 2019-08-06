@@ -2,3 +2,6 @@
 Utils/PowerShell
 SQL Data Catalog/StackOverflow Example/CatalogToDataMasker.zip
 SQL Data Catalog/data-catalog.psm1
+*.psm1
+*.zip
+SQL Data Catalog/.DS_Store
