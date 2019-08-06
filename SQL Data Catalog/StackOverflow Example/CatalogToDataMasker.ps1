@@ -4,7 +4,7 @@ $dataCatalogAuthToken = "NTM2OTUxMTYyNzA4OTUxMDQwOmRiNjIyYWMxLWI1NDYtNDQzNi04OTE
 $instanceName = 'rm-iclone1.testnet.red-gate.com'
 $databaseName = 'StackoverFlow2010'
 $inputMaskingSetPath = "\\rm-iclone1\Masking Set Files\Shell\StackOverflow2010 Automation.DMSMaskSet"
-$outputMaskingSetPath = "\\rm-iclone1\Masking Set Files\Generated\StackOverflow2010 Generated 5.DMSMaskSet"
+$outputMaskingSetPath = "\\rm-iclone1\Masking Set Files\Generated\StackOverflow2010 Generated 6.DMSMaskSet"
 
 #load data from catalog and data masker file
 Invoke-WebRequest -Uri 'http://rm-win10-sql201.testnet.red-gate.com:15156/powershell' -OutFile 'datacatalog.psm1' -Headers @{"Authorization" = "Bearer $dataCatalogAuthToken" }

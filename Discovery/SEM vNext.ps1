@@ -35,7 +35,7 @@
       )
       
       function addInstanceRequest($instanceFqdn) {
-          $addUrl = 'http://localhost:15156/api/instances'
+          $addUrl = 'http://rm-win10-sql201.testnet.red-gate.com:15156/api/instances'
           $postData = @{
               InstanceFqdn=$instanceFqdn
           }
