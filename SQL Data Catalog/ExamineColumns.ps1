@@ -10,13 +10,13 @@ $authToken = "NTM2OTUxMTYyNzA4OTUxMDQwOmRiNjIyYWMxLWI1NDYtNDQzNi04OTE2LWQ1MzkxNG
 Use-Classification -ClassificationAuthToken $authToken 
 
 # get all columns into a collection
-Measure-Command -Expression {    $allColumns = Get-Columns -instanceName $instanceName -databaseName $databaseName } | Select-Object Minutes, Seconds, Milliseconds
+$allColumns = Get-Columns -instanceName $instanceName -databaseName $databaseName 
 
 #$allColumns | Format-Table
 
 "Columns returned: "+  $allColumns.Count #17443
 
-$maskableColumns = $allColumns | Where-Object {$_.tags.name -like "*Masked *" } # 722
+$emptyTableColumns = $allColumns | Where-Object {$_.tableRowCount -eq 0 } # 722
 
 $specificMaskableColumns = $maskableColumns | Where-Object {$_.tags.name  -notcontains  "Masked TBD"} #173
 

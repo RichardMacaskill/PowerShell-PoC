@@ -1,3 +1,4 @@
 .vscode/settings.json
 Utils/PowerShell
 SQL Data Catalog/StackOverflow Example/CatalogToDataMasker.zip
+SQL Data Catalog/data-catalog.psm1

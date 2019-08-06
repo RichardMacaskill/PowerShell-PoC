@@ -53,7 +53,7 @@ function Use-Classification {
 .EXAMPLE
   Add-RegisteredSqlServerInstance -FullyQualifiedInstanceName 'mysqlserver.mydomain.com'
 
-  Registers the default instance of SQL Server running on the "mysqlserver.mydomain.com" machine. Windows Authentication will be used to connect to this intance.
+  Registers the default instance of SQL Server running on the "mysqlserver.mydom\ain.com" machine. Windows Authentication will be used to connect to this intance.
 .EXAMPLE
   Add-RegisteredSqlServerInstance -FullyQualifiedInstanceName 'mysqlserver.mydomain.com\myinstancename' -UserId 'somebody' -Password 'myPassword'
 

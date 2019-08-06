@@ -6,7 +6,7 @@ $databaseName = 'Masking_SG_OLAP_DATA_20180304'
 $inputMaskingSetPath = 'C:\Dev\Data Masking Scripts\GC_Olap_Data_Auto.DMSMaskSet'
 $outputMaskingSetPath = 'C:\Dev\Data Masking Scripts\GC_Olap_Data_Generated - delete me.DMSMaskSet'
 
-#load data from catalog and data masker file
+#load data from catalog and data masker file   
 Import-Module .\DataCatalogWithTagCategories.psm1 -Force
 Import-Module .\DataMasker.psm1 -Force
 
