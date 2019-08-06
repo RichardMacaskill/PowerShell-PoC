@@ -17,12 +17,11 @@ if (-Not (Get-Module -ListAvailable -Name dbatools)) {Install-Module dbatools }
 $output = Find-DbaInstance -DiscoveryType DataSourceEnumeration -ScanType Browser, TCPPort  | Select-Object  ComputerName,InstanceName
        
 foreach ($line in $output) {
-    if ($line.InstanceName.ToLower() -eq "mssqlserver" -Or $line.InstanceName.ToLower() -eq "default") {
+        if (!$line.InstanceName -or $line.InstanceName.ToLower() -eq "mssqlserver" -Or $line.InstanceName.ToLower() -eq "default") {
         $foundInstanceFqdn = $line.ComputerName
     } else {
         $foundInstanceFqdn = ($line.ComputerName + "\" + $line.InstanceName).ToLower()
     }
-    Write-Host "Adding instance:" $foundInstanceFqdn
-    Add-RegisteredSqlServerInstance -FullyQualifiedInstanceName $foundInstanceFqdn
+Write-Host "Adding instance:" $foundInstanceFqdn
+Add-RegisteredSqlServerInstance -FullyQualifiedInstanceName $foundInstanceFqdn           
 }
-      
