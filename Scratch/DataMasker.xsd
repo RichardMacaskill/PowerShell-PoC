@@ -1,0 +1,883 @@
+<?xml version="1.0" encoding="UTF-8"?>
+   <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+         <!-- XML Schema Generated from XML Document on Mon Sep 09 2019 17:03:34 GMT+0100 (British Summer Time) -->
+         <!-- with XmlGrid.net Free Online Service http://xmlgrid.net -->
+         <xs:element name="DMSSetContainer_MaskingSet">
+               <xs:complexType>
+                     <xs:sequence>
+                           <xs:element name="DMSVersion">
+                                 <xs:complexType>
+                                       <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                 </xs:complexType>
+                           </xs:element>
+                           <xs:element name="MaskingSetOptions">
+                                 <xs:complexType>
+                                       <xs:sequence>
+                                             <xs:element name="maskingSetNotesTitle">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="maskingSetNotesComments">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="ShowNotesOnSetLoad">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="NoShowRhino">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="NoShowSaveFeedback">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="TestConnBeforeRunningSet">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="EnableANDClausesOnT2TRules">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="EnableAdvancedRuleTools">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="SuppressNoRowsInStage2Warnings">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="PermitCrossInstanceRules">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="PermitCrossSchemaSyncMgrRules">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="PermitCrossSchemaT2TRules">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="Treat19000101AsEmptyDate">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="AutoCreateStatsTables">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="AutoTruncateStatsTables">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="EnableDeltaMarkers">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="PutSetNameInWindowTitle">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="CreateNewLogFileOnEachRun">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="PermitIsNullsToBeForcedOff">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="numWorkerThreads">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="Value" type="xs:int"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="SpeedOrMemoryTradeoff">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="DoNotUseTransactions">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="AutoEmitRuleStatisticsReportToLog">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="AutoEmitRuleStatisticsReportToFile">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="AutoEmitRuleStatisticsReportDirectory">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="AutoEmitTableStatsReportToLog">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="AutoEmitTableStatsReportToFile">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                             <xs:element name="AutoEmitTableStatsReportDirectory">
+                                                   <xs:complexType>
+                                                         <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                       </xs:sequence>
+                                 </xs:complexType>
+                           </xs:element>
+                           <xs:element name="DMSSetContainer">
+                                 <xs:complexType>
+                                       <xs:sequence>
+                                             <xs:element name="DMSRuleBindingList">
+                                                   <xs:complexType>
+                                                         <xs:sequence>
+                                                               <xs:element name="RuleController">
+                                                                     <xs:complexType>
+                                                                           <xs:sequence>
+                                                                                 <xs:element name="DMSRule">
+                                                                                       <xs:complexType>
+                                                                                             <xs:sequence>
+                                                                                                   <xs:element name="RuleBlock">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:int"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="RuleNumber">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:int"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="RuleSubscript">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:int"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="IsDisabled">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="IsBulk">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="WantMultipleActiveResultSets">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="IsManagedRule">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="SerializedParentRuleID">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="Description">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="ExpandedState">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="ForceIsNullsOff">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="UserSpecifiedRIDIndexEnabled">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="UserSpecifiedRIDIndex">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                             </xs:sequence>
+                                                                                       </xs:complexType>
+                                                                                 </xs:element>
+                                                                                 <xs:element name="DMSSchemaEntity_Login">
+                                                                                       <xs:complexType>
+                                                                                             <xs:sequence>
+                                                                                                   <xs:element name="N2KSQLServerEntity_Login">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:sequence>
+                                                                                                                     <xs:element name="N2KSQLServerEntity"></xs:element>
+                                                                                                                     <xs:element name="ServerName">
+                                                                                                                           <xs:complexType>
+                                                                                                                                 <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                           </xs:complexType>
+                                                                                                                     </xs:element>
+                                                                                                                     <xs:element name="AuthenticationMode">
+                                                                                                                           <xs:complexType>
+                                                                                                                                 <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                           </xs:complexType>
+                                                                                                                     </xs:element>
+                                                                                                                     <xs:element name="UserName">
+                                                                                                                           <xs:complexType>
+                                                                                                                                 <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                           </xs:complexType>
+                                                                                                                     </xs:element>
+                                                                                                                     <xs:element name="RememberPassword">
+                                                                                                                           <xs:complexType>
+                                                                                                                                 <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                           </xs:complexType>
+                                                                                                                     </xs:element>
+                                                                                                                     <xs:element name="WantCloudConnection">
+                                                                                                                           <xs:complexType>
+                                                                                                                                 <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                           </xs:complexType>
+                                                                                                                     </xs:element>
+                                                                                                                     <xs:element name="ConnectionTimeout">
+                                                                                                                           <xs:complexType>
+                                                                                                                                 <xs:attribute name="Value" type="xs:int"></xs:attribute>
+                                                                                                                           </xs:complexType>
+                                                                                                                     </xs:element>
+                                                                                                                     <xs:element name="DatabaseName">
+                                                                                                                           <xs:complexType>
+                                                                                                                                 <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                           </xs:complexType>
+                                                                                                                     </xs:element>
+                                                                                                                     <xs:element name="SchemaName">
+                                                                                                                           <xs:complexType>
+                                                                                                                                 <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                           </xs:complexType>
+                                                                                                                     </xs:element>
+                                                                                                                     <xs:element name="DBVersion">
+                                                                                                                           <xs:complexType>
+                                                                                                                                 <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                           </xs:complexType>
+                                                                                                                     </xs:element>
+                                                                                                                     <xs:element name="OnlyTablesWithRowsWereFetched">
+                                                                                                                           <xs:complexType>
+                                                                                                                                 <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                           </xs:complexType>
+                                                                                                                     </xs:element>
+                                                                                                                     <xs:element name="SchemaTables">
+                                                                                                                           <xs:complexType>
+                                                                                                                                 <xs:sequence>
+                                                                                                                                       <xs:element name="DMSSchemaEntity_Table" maxOccurs="unbounded">
+                                                                                                                                             <xs:complexType>
+                                                                                                                                                   <xs:sequence>
+                                                                                                                                                         <xs:element name="N2KSQLServerEntity_Table">
+                                                                                                                                                               <xs:complexType>
+                                                                                                                                                                     <xs:sequence>
+                                                                                                                                                                           <xs:element name="N2KSQLServerEntity"></xs:element>
+                                                                                                                                                                           <xs:element name="TableName">
+                                                                                                                                                                                 <xs:complexType>
+                                                                                                                                                                                       <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                                                                 </xs:complexType>
+                                                                                                                                                                           </xs:element>
+                                                                                                                                                                           <xs:element name="RowCountInDB">
+                                                                                                                                                                                 <xs:complexType>
+                                                                                                                                                                                       <xs:attribute name="Value" type="xs:int"></xs:attribute>
+                                                                                                                                                                                 </xs:complexType>
+                                                                                                                                                                           </xs:element>
+                                                                                                                                                                           <xs:element name="IsTmp">
+                                                                                                                                                                                 <xs:complexType>
+                                                                                                                                                                                       <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                                                                 </xs:complexType>
+                                                                                                                                                                           </xs:element>
+                                                                                                                                                                           <xs:element name="IsGTmp">
+                                                                                                                                                                                 <xs:complexType>
+                                                                                                                                                                                       <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                                                                 </xs:complexType>
+                                                                                                                                                                           </xs:element>
+                                                                                                                                                                           <xs:element name="N2KSQLServerCollection_Column">
+                                                                                                                                                                                 <xs:complexType>
+                                                                                                                                                                                       <xs:sequence>
+                                                                                                                                                                                             <xs:element name="DMSSchemaEntity_Column" maxOccurs="unbounded">
+                                                                                                                                                                                                   <xs:complexType>
+                                                                                                                                                                                                         <xs:sequence>
+                                                                                                                                                                                                               <xs:element name="N2KSQLServerEntity_Column">
+                                                                                                                                                                                                                     <xs:complexType>
+                                                                                                                                                                                                                           <xs:sequence>
+                                                                                                                                                                                                                                 <xs:element name="N2KSQLServerEntity"></xs:element>
+                                                                                                                                                                                                                                 <xs:element name="ColumnName">
+                                                                                                                                                                                                                                       <xs:complexType>
+                                                                                                                                                                                                                                             <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                                                                                                                       </xs:complexType>
+                                                                                                                                                                                                                                 </xs:element>
+                                                                                                                                                                                                                                 <xs:element name="IsNullable">
+                                                                                                                                                                                                                                       <xs:complexType>
+                                                                                                                                                                                                                                             <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                                                                                                                       </xs:complexType>
+                                                                                                                                                                                                                                 </xs:element>
+                                                                                                                                                                                                                                 <xs:element name="IsIdentity">
+                                                                                                                                                                                                                                       <xs:complexType>
+                                                                                                                                                                                                                                             <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                                                                                                                       </xs:complexType>
+                                                                                                                                                                                                                                 </xs:element>
+                                                                                                                                                                                                                                 <xs:element name="ColumnDefault">
+                                                                                                                                                                                                                                       <xs:complexType>
+                                                                                                                                                                                                                                             <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                                                                                                                       </xs:complexType>
+                                                                                                                                                                                                                                 </xs:element>
+                                                                                                                                                                                                                                 <xs:element name="DataType">
+                                                                                                                                                                                                                                       <xs:complexType>
+                                                                                                                                                                                                                                             <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                                                                                                                       </xs:complexType>
+                                                                                                                                                                                                                                 </xs:element>
+                                                                                                                                                                                                                                 <xs:element name="OrdinalPosition">
+                                                                                                                                                                                                                                       <xs:complexType>
+                                                                                                                                                                                                                                             <xs:attribute name="Value" type="xs:int"></xs:attribute>
+                                                                                                                                                                                                                                       </xs:complexType>
+                                                                                                                                                                                                                                 </xs:element>
+                                                                                                                                                                                                                           </xs:sequence>
+                                                                                                                                                                                                                     </xs:complexType>
+                                                                                                                                                                                                               </xs:element>
+                                                                                                                                                                                                               <xs:element name="PlanType">
+                                                                                                                                                                                                                     <xs:complexType>
+                                                                                                                                                                                                                           <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                                                                                                     </xs:complexType>
+                                                                                                                                                                                                               </xs:element>
+                                                                                                                                                                                                               <xs:element name="PlanComments">
+                                                                                                                                                                                                                     <xs:complexType>
+                                                                                                                                                                                                                           <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                                                                                                     </xs:complexType>
+                                                                                                                                                                                                               </xs:element>
+                                                                                                                                                                                                         </xs:sequence>
+                                                                                                                                                                                                         <xs:attribute name="NS" type="xs:string"></xs:attribute>
+                                                                                                                                                                                                         <xs:attribute name="AS" type="xs:string"></xs:attribute>
+                                                                                                                                                                                                   </xs:complexType>
+                                                                                                                                                                                             </xs:element>
+                                                                                                                                                                                       </xs:sequence>
+                                                                                                                                                                                 </xs:complexType>
+                                                                                                                                                                           </xs:element>
+                                                                                                                                                                     </xs:sequence>
+                                                                                                                                                               </xs:complexType>
+                                                                                                                                                         </xs:element>
+                                                                                                                                                         <xs:element name="PlanType">
+                                                                                                                                                               <xs:complexType>
+                                                                                                                                                                     <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                                               </xs:complexType>
+                                                                                                                                                         </xs:element>
+                                                                                                                                                         <xs:element name="PlanComments">
+                                                                                                                                                               <xs:complexType>
+                                                                                                                                                                     <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                                               </xs:complexType>
+                                                                                                                                                         </xs:element>
+                                                                                                                                                   </xs:sequence>
+                                                                                                                                                   <xs:attribute name="NS" type="xs:string"></xs:attribute>
+                                                                                                                                                   <xs:attribute name="AS" type="xs:string"></xs:attribute>
+                                                                                                                                             </xs:complexType>
+                                                                                                                                       </xs:element>
+                                                                                                                                 </xs:sequence>
+                                                                                                                           </xs:complexType>
+                                                                                                                     </xs:element>
+                                                                                                                     <xs:element name="ExcludedTables"></xs:element>
+                                                                                                                     <xs:element name="SchemaIndexes">
+                                                                                                                           <xs:complexType>
+                                                                                                                                 <xs:sequence>
+                                                                                                                                       <xs:element name="DMSSchemaEntity_Index" maxOccurs="unbounded">
+                                                                                                                                             <xs:complexType>
+                                                                                                                                                   <xs:sequence>
+                                                                                                                                                         <xs:element name="N2KSQLServerEntity_Index">
+                                                                                                                                                               <xs:complexType>
+                                                                                                                                                                     <xs:sequence>
+                                                                                                                                                                           <xs:element name="N2KSQLServerEntity"></xs:element>
+                                                                                                                                                                           <xs:element name="IndexName">
+                                                                                                                                                                                 <xs:complexType>
+                                                                                                                                                                                       <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                                                                 </xs:complexType>
+                                                                                                                                                                           </xs:element>
+                                                                                                                                                                           <xs:element name="IndexTableName">
+                                                                                                                                                                                 <xs:complexType>
+                                                                                                                                                                                       <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                                                                 </xs:complexType>
+                                                                                                                                                                           </xs:element>
+                                                                                                                                                                           <xs:element name="IsUnique">
+                                                                                                                                                                                 <xs:complexType>
+                                                                                                                                                                                       <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                                                                 </xs:complexType>
+                                                                                                                                                                           </xs:element>
+                                                                                                                                                                           <xs:element name="IsPrimaryKey">
+                                                                                                                                                                                 <xs:complexType>
+                                                                                                                                                                                       <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                                                                 </xs:complexType>
+                                                                                                                                                                           </xs:element>
+                                                                                                                                                                           <xs:element name="N2KSQLServerCollection_Column">
+                                                                                                                                                                                 <xs:complexType>
+                                                                                                                                                                                       <xs:sequence>
+                                                                                                                                                                                             <xs:element name="DMSSchemaEntity_Column">
+                                                                                                                                                                                                   <xs:complexType>
+                                                                                                                                                                                                         <xs:sequence>
+                                                                                                                                                                                                               <xs:element name="N2KSQLServerEntity_Column">
+                                                                                                                                                                                                                     <xs:complexType>
+                                                                                                                                                                                                                           <xs:sequence>
+                                                                                                                                                                                                                                 <xs:element name="N2KSQLServerEntity"></xs:element>
+                                                                                                                                                                                                                                 <xs:element name="ColumnName">
+                                                                                                                                                                                                                                       <xs:complexType>
+                                                                                                                                                                                                                                             <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                                                                                                                       </xs:complexType>
+                                                                                                                                                                                                                                 </xs:element>
+                                                                                                                                                                                                                                 <xs:element name="IsNullable">
+                                                                                                                                                                                                                                       <xs:complexType>
+                                                                                                                                                                                                                                             <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                                                                                                                       </xs:complexType>
+                                                                                                                                                                                                                                 </xs:element>
+                                                                                                                                                                                                                                 <xs:element name="IsIdentity">
+                                                                                                                                                                                                                                       <xs:complexType>
+                                                                                                                                                                                                                                             <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                                                                                                                       </xs:complexType>
+                                                                                                                                                                                                                                 </xs:element>
+                                                                                                                                                                                                                                 <xs:element name="ColumnDefault">
+                                                                                                                                                                                                                                       <xs:complexType>
+                                                                                                                                                                                                                                             <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                                                                                                                       </xs:complexType>
+                                                                                                                                                                                                                                 </xs:element>
+                                                                                                                                                                                                                                 <xs:element name="DataType">
+                                                                                                                                                                                                                                       <xs:complexType>
+                                                                                                                                                                                                                                             <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                                                                                                                       </xs:complexType>
+                                                                                                                                                                                                                                 </xs:element>
+                                                                                                                                                                                                                                 <xs:element name="OrdinalPosition">
+                                                                                                                                                                                                                                       <xs:complexType>
+                                                                                                                                                                                                                                             <xs:attribute name="Value" type="xs:int"></xs:attribute>
+                                                                                                                                                                                                                                       </xs:complexType>
+                                                                                                                                                                                                                                 </xs:element>
+                                                                                                                                                                                                                           </xs:sequence>
+                                                                                                                                                                                                                     </xs:complexType>
+                                                                                                                                                                                                               </xs:element>
+                                                                                                                                                                                                               <xs:element name="PlanType">
+                                                                                                                                                                                                                     <xs:complexType>
+                                                                                                                                                                                                                           <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                                                                                                     </xs:complexType>
+                                                                                                                                                                                                               </xs:element>
+                                                                                                                                                                                                               <xs:element name="PlanComments">
+                                                                                                                                                                                                                     <xs:complexType>
+                                                                                                                                                                                                                           <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                                                                                                     </xs:complexType>
+                                                                                                                                                                                                               </xs:element>
+                                                                                                                                                                                                         </xs:sequence>
+                                                                                                                                                                                                         <xs:attribute name="NS" type="xs:string"></xs:attribute>
+                                                                                                                                                                                                         <xs:attribute name="AS" type="xs:string"></xs:attribute>
+                                                                                                                                                                                                   </xs:complexType>
+                                                                                                                                                                                             </xs:element>
+                                                                                                                                                                                       </xs:sequence>
+                                                                                                                                                                                 </xs:complexType>
+                                                                                                                                                                           </xs:element>
+                                                                                                                                                                     </xs:sequence>
+                                                                                                                                                               </xs:complexType>
+                                                                                                                                                         </xs:element>
+                                                                                                                                                   </xs:sequence>
+                                                                                                                                                   <xs:attribute name="NS" type="xs:string"></xs:attribute>
+                                                                                                                                                   <xs:attribute name="AS" type="xs:string"></xs:attribute>
+                                                                                                                                             </xs:complexType>
+                                                                                                                                       </xs:element>
+                                                                                                                                 </xs:sequence>
+                                                                                                                           </xs:complexType>
+                                                                                                                     </xs:element>
+                                                                                                                     <xs:element name="ExcludedIndexes"></xs:element>
+                                                                                                                     <xs:element name="SchemaForeignKeys"></xs:element>
+                                                                                                                     <xs:element name="SchemaTriggers"></xs:element>
+                                                                                                                     <xs:element name="SchemaIndexWithTableLists"></xs:element>
+                                                                                                               </xs:sequence>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                             </xs:sequence>
+                                                                                             <xs:attribute name="NS" type="xs:string"></xs:attribute>
+                                                                                             <xs:attribute name="AS" type="xs:string"></xs:attribute>
+                                                                                       </xs:complexType>
+                                                                                 </xs:element>
+                                                                                 <xs:element name="IDColName">
+                                                                                       <xs:complexType>
+                                                                                             <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                       </xs:complexType>
+                                                                                 </xs:element>
+                                                                                 <xs:element name="PKNamePrefix">
+                                                                                       <xs:complexType>
+                                                                                             <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                       </xs:complexType>
+                                                                                 </xs:element>
+                                                                                 <xs:element name="StatsTabPrefix">
+                                                                                       <xs:complexType>
+                                                                                             <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                       </xs:complexType>
+                                                                                 </xs:element>
+                                                                                 <xs:element name="StatsInTableDB">
+                                                                                       <xs:complexType>
+                                                                                             <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                       </xs:complexType>
+                                                                                 </xs:element>
+                                                                                 <xs:element name="StatsDatabaseName">
+                                                                                       <xs:complexType>
+                                                                                             <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                       </xs:complexType>
+                                                                                 </xs:element>
+                                                                                 <xs:element name="StatsSchemaName">
+                                                                                       <xs:complexType>
+                                                                                             <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                       </xs:complexType>
+                                                                                 </xs:element>
+                                                                           </xs:sequence>
+                                                                     </xs:complexType>
+                                                               </xs:element>
+                                                               <xs:element name="TriggerMgrRule" maxOccurs="unbounded">
+                                                                     <xs:complexType>
+                                                                           <xs:sequence>
+                                                                                 <xs:element name="DMSRule">
+                                                                                       <xs:complexType>
+                                                                                             <xs:sequence>
+                                                                                                   <xs:element name="RuleBlock">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:int"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="RuleNumber">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:int"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="RuleSubscript">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:int"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="IsDisabled">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="IsBulk">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="WantMultipleActiveResultSets">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="IsManagedRule">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="SerializedParentRuleID">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="Description">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="ExpandedState">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="ForceIsNullsOff">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="UserSpecifiedRIDIndexEnabled">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="UserSpecifiedRIDIndex">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                             </xs:sequence>
+                                                                                       </xs:complexType>
+                                                                                 </xs:element>
+                                                                                 <xs:element name="TriggerManagerActionType">
+                                                                                       <xs:complexType>
+                                                                                             <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                       </xs:complexType>
+                                                                                 </xs:element>
+                                                                                 <xs:element name="DMSRuleBindingList"></xs:element>
+                                                                           </xs:sequence>
+                                                                           <xs:attribute name="NS" type="xs:string"></xs:attribute>
+                                                                           <xs:attribute name="AS" type="xs:string"></xs:attribute>
+                                                                     </xs:complexType>
+                                                               </xs:element>
+                                                               <xs:element name="RuleSubstitution" maxOccurs="unbounded">
+                                                                     <xs:complexType>
+                                                                           <xs:sequence>
+                                                                                 <xs:element name="DMSRule">
+                                                                                       <xs:complexType>
+                                                                                             <xs:sequence>
+                                                                                                   <xs:element name="RuleBlock">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:int"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="RuleNumber">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:int"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="RuleSubscript">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:int"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="IsDisabled">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="IsBulk">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="WantMultipleActiveResultSets">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="IsManagedRule">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="CommitFreq">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:int"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="SerializedParentRuleID">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="Description">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="ExpandedState">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="ForceIsNullsOff">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="UserSpecifiedRIDIndexEnabled">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="UserSpecifiedRIDIndex">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                             </xs:sequence>
+                                                                                       </xs:complexType>
+                                                                                 </xs:element>
+                                                                                 <xs:element name="TargetTableName">
+                                                                                       <xs:complexType>
+                                                                                             <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                       </xs:complexType>
+                                                                                 </xs:element>
+                                                                                 <xs:element name="WhereClauseAndSamplingContainer">
+                                                                                       <xs:complexType>
+                                                                                             <xs:sequence>
+                                                                                                   <xs:element name="WhereClause">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="WhereClauseMode">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="WantSamplePercent">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="SamplePercentage">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:int"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="WantRowLimit">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="RowLimit">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:int"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="WantDistinctSet">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="ForceInLineNullSkips">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                             </xs:sequence>
+                                                                                       </xs:complexType>
+                                                                                 </xs:element>
+                                                                                 <xs:element name="RangeOptionsContainer">
+                                                                                       <xs:complexType>
+                                                                                             <xs:sequence>
+                                                                                                   <xs:element name="RangeClause">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="RangeLow">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                                   <xs:element name="RangeHigh">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                             </xs:sequence>
+                                                                                       </xs:complexType>
+                                                                                 </xs:element>
+                                                                                 <xs:element name="DMSPickedColumnAndDataSetCollection">
+                                                                                       <xs:complexType>
+                                                                                             <xs:sequence>
+                                                                                                   <xs:element name="DMSPickedColumnAndDataSet" maxOccurs="unbounded">
+                                                                                                         <xs:complexType>
+                                                                                                               <xs:sequence>
+                                                                                                                     <xs:element name="N2KSQLServerEntity_PickedColumn">
+                                                                                                                           <xs:complexType>
+                                                                                                                                 <xs:sequence>
+                                                                                                                                       <xs:element name="N2KSQLServerEntity"></xs:element>
+                                                                                                                                       <xs:element name="ColumnName">
+                                                                                                                                             <xs:complexType>
+                                                                                                                                                   <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                             </xs:complexType>
+                                                                                                                                       </xs:element>
+                                                                                                                                       <xs:element name="ColumnConversionWrapper">
+                                                                                                                                             <xs:complexType>
+                                                                                                                                                   <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                             </xs:complexType>
+                                                                                                                                       </xs:element>
+                                                                                                                                       <xs:element name="ColumnConversionEnabled">
+                                                                                                                                             <xs:complexType>
+                                                                                                                                                   <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                             </xs:complexType>
+                                                                                                                                       </xs:element>
+                                                                                                                                       <xs:element name="OrdinalPosition">
+                                                                                                                                             <xs:complexType>
+                                                                                                                                                   <xs:attribute name="Value" type="xs:int"></xs:attribute>
+                                                                                                                                             </xs:complexType>
+                                                                                                                                       </xs:element>
+                                                                                                                                       <xs:element name="DataType">
+                                                                                                                                             <xs:complexType>
+                                                                                                                                                   <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                             </xs:complexType>
+                                                                                                                                       </xs:element>
+                                                                                                                                       <xs:element name="IsPseudoColumn">
+                                                                                                                                             <xs:complexType>
+                                                                                                                                                   <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                             </xs:complexType>
+                                                                                                                                       </xs:element>
+                                                                                                                                       <xs:element name="DisplayUndefinedTextIfDatatypeNotDefined">
+                                                                                                                                             <xs:complexType>
+                                                                                                                                                   <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                             </xs:complexType>
+                                                                                                                                       </xs:element>
+                                                                                                                                       <xs:element name="ColumnFullDataType">
+                                                                                                                                             <xs:complexType>
+                                                                                                                                                   <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                             </xs:complexType>
+                                                                                                                                       </xs:element>
+                                                                                                                                 </xs:sequence>
+                                                                                                                           </xs:complexType>
+                                                                                                                     </xs:element>
+                                                                                                                     <xs:element name="DataSet_MFNAME">
+                                                                                                                           <xs:complexType>
+                                                                                                                                 <xs:sequence>
+                                                                                                                                       <xs:element name="UpperCaseText">
+                                                                                                                                             <xs:complexType>
+                                                                                                                                                   <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                             </xs:complexType>
+                                                                                                                                       </xs:element>
+                                                                                                                                       <xs:element name="UniqueValuesOnly">
+                                                                                                                                             <xs:complexType>
+                                                                                                                                                   <xs:attribute name="Value" type="xs:string"></xs:attribute>
+                                                                                                                                             </xs:complexType>
+                                                                                                                                       </xs:element>
+                                                                                                                                 </xs:sequence>
+                                                                                                                                 <xs:attribute name="NS" type="xs:string"></xs:attribute>
+                                                                                                                                 <xs:attribute name="AS" type="xs:string"></xs:attribute>
+                                                                                                                           </xs:complexType>
+                                                                                                                     </xs:element>
+                                                                                                               </xs:sequence>
+                                                                                                         </xs:complexType>
+                                                                                                   </xs:element>
+                                                                                             </xs:sequence>
+                                                                                       </xs:complexType>
+                                                                                 </xs:element>
+                                                                           </xs:sequence>
+                                                                           <xs:attribute name="NS" type="xs:string"></xs:attribute>
+                                                                           <xs:attribute name="AS" type="xs:string"></xs:attribute>
+                                                                     </xs:complexType>
+                                                               </xs:element>
+                                                         </xs:sequence>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                       </xs:sequence>
+                                 </xs:complexType>
+                           </xs:element>
+                     </xs:sequence>
+               </xs:complexType>
+         </xs:element>
+   </xs:schema>

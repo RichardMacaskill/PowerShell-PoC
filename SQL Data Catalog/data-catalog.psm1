@@ -20,17 +20,26 @@
 
 function Use-Classification {
     param(
+        [parameter(Mandatory=$true)][string]$ServerUrl,
         [Parameter(Mandatory = $true)] $ClassificationAuthToken
     )
 
-    $classificationURL = 'http://rm-win10-sql201.testnet.red-gate.com:15156/'
+    $Script:ClassificationURL = $ServerUrl
+
     $authHeader = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
     $authHeader.Add("Authorization", "Bearer $ClassificationAuthToken")
-
-    $Script:ClassificationURL = $classificationURL
     $Script:ClassificationAuthHeader = $authHeader
 
     $Script:allTagCategories = Get-TagCategories
+
+    $expectedServerVersion = '1.5.2.9412'
+    $status = Invoke-ApiCall -Uri 'api/status' -Method Get
+    if (!$status.IsOk) {
+        Write-Error "The Data Catalog server has encountered an error. $($status.ErrorMessage)"
+    }
+    if ($status.Version -ne $expectedServerVersion) {
+        Write-Error "Expected version $($expectedServerVersion) but found version $($status.Version). Re-download this PowerShell module from the server."
+    }
 }
 
 <#
@@ -53,7 +62,7 @@ function Use-Classification {
 .EXAMPLE
   Add-RegisteredSqlServerInstance -FullyQualifiedInstanceName 'mysqlserver.mydomain.com'
 
-  Registers the default instance of SQL Server running on the "mysqlserver.mydom\ain.com" machine. Windows Authentication will be used to connect to this intance.
+  Registers the default instance of SQL Server running on the "mysqlserver.mydomain.com" machine. Windows Authentication will be used to connect to this intance.
 .EXAMPLE
   Add-RegisteredSqlServerInstance -FullyQualifiedInstanceName 'mysqlserver.mydomain.com\myinstancename' -UserId 'somebody' -Password 'myPassword'
 
@@ -139,7 +148,7 @@ function Update-RegisteredSqlServerInstance {
         }
         $PostJson = $PostData | ConvertTo-Json
 
-        Invoke-ApiCall -Uri $url -Method Post -Body $PostJson
+        Invoke-ApiCall -Uri $url -Method Patch -Body $PostJson
     }
 }
 
@@ -172,7 +181,7 @@ function Invoke-ApiCall {
         throw 'Run Use-Classification before using any other cmdlet. For help run: Get-Help Use-Classification'
     }
 
-    $Uri = $ClassificationURL + $Uri
+    $Uri = $script:ClassificationURL + "/" + $Uri
 
     try {
         return Invoke-RestMethod -Uri $Uri -Method $Method -Headers $ClassificationAuthHeader `
@@ -401,13 +410,14 @@ function Update-ColumnTags {
         $columnTagIds = $columnTags.Tags
 
         $tagCategory = $allTagCategories[$category]
+        $tagsForCategory = ArrayToNameBasedHash($tagCategory.Tags)
 
         $tagIds = New-Object System.Collections.ArrayList(, @( $columnTagIds | ForEach-Object { $_.id } ))
 
         if ($tagCategory.IsMultiValued -eq $true) {
             # clear tag category for multi tag
             if ($forceUpdate) {
-                foreach ($tagIdToRemove in $tagCategory.Tags.Values) {
+                foreach ($tagIdToRemove in $tagsForCategory.Values.id) {
                     if ($tagIds -contains $tagIdToRemove) {
                         $tagIds.Remove($tagIdToRemove)
                     }
@@ -415,8 +425,8 @@ function Update-ColumnTags {
             }
 
             foreach ($tag in $tags) {
-                $tagId = $tagCategory.Tags[$tag]
-                if ( -Not ($columnTagIds.id -contains $tagId)) {
+                $tagId = $tagsForCategory[$tag].id
+                if ( -Not ($tagIds.id -contains $tagId)) {
                     $tagIds.Add($tagId)
                 }
             }
@@ -430,8 +440,9 @@ function Update-ColumnTags {
                 Write-Error -Message $errorMessage -Category InvalidArgument
                 return
             }
+
+            $tagId = $tagsForCategory[$tags].id
             $singleValueCategory = $columnTagIds | Where-Object { $_.categoryId -eq $tagCategory.id }
-            $tagId = $tagCategory.Tags[$tags]
             if ($singleValueCategory) {
                 if ($singleValueCategory.id -eq $tagId ) {
                     return
@@ -439,7 +450,7 @@ function Update-ColumnTags {
                 else {
                     if ($forceUpdate) {
                         $tagIds.Remove($singleValueCategory.id)
-                        $tagIds.AddRange($tagId)
+                        $tagIds.Add($tagId)
                     }
                     else {
                         $errorMessage = "Error :" +
@@ -454,7 +465,7 @@ function Update-ColumnTags {
                 }
             }
             else {
-                $tagIds.AddRange($tagId)
+                $tagIds.Add($tagId)
             }
         }
 
@@ -560,13 +571,15 @@ function Import-ColumnsTags {
 
     $tagIds = New-Object System.Collections.ArrayList(, @( ))
     foreach ($category in $categories.Keys) {
+
         $tags = $categories[$category]
         $tagCategory = $allTagCategories[$category]
+        $tagsForCategory = ArrayToNameBasedHash($tagCategory.Tags)
 
         if ($tagCategory.IsMultiValued -eq $true) {
             foreach ($tag in $tags) {
-                $tagId = $tagCategory.Tags[$tag]
-                $tagIds.Add($tagCategory.Tags[$tag])
+                $tagId = $tagsForCategory[$tag].id
+                $tagIds.Add($tagId)
             }
             if ($tagIds.Count -le 0) {
                 return
@@ -578,8 +591,9 @@ function Import-ColumnsTags {
                 Write-Error -Message $errorMessage -Category InvalidArgument
                 return
             }
-            $tagId = $tagCategory.Tags[$tags]
-            $tagIds.AddRange($tagId)
+
+            $tagId = $tagsForCategory[$tags].id
+            $tagIds.Add($tagId)
         }
     }
     $url = 'api/v1.0/columns/bulk-classification'
@@ -589,6 +603,7 @@ function Import-ColumnsTags {
         FreeTextAttributes = @{ }
     }
     $body = $body | ConvertTo-Json;
+
     Invoke-ApiCall -Uri $url -Method PUT -Body $body
 }
 
@@ -866,6 +881,12 @@ function Start-InstanceScan {
     }
 }
 
+function ArrayToNameBasedHash ($items) {
+  $result = @{}
+  $items | foreach { $result[$_.Name] = $_ }
+  return $result
+}
+
 Export-ModuleMember -Function Use-Classification
 Export-ModuleMember -Function Add-RegisteredSqlServerInstance
 Export-ModuleMember -Function Update-RegisteredSqlServerInstance
@@ -880,3 +901,172 @@ Export-ModuleMember -Function Export-ClassificationCsv
 Export-ModuleMember -Function Export-ClassificationExtendedProperties
 Export-ModuleMember -Function Enable-Authorization
 Export-ModuleMember -Function Get-TagCategories
+
+
+# SIG # Begin signature block
+# MIIe2AYJKoZIhvcNAQcCoIIeyTCCHsUCAQExDzANBglghkgBZQMEAgEFADB5Bgor
+# BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCBkXzrIYH/FBgVR
+# rWw6NgJPlsiahyR2LYFUQwGwHgDv16CCGb0wggSEMIIDbKADAgECAhBCGvKUCYQZ
+# H1IKS8YkJqdLMA0GCSqGSIb3DQEBBQUAMG8xCzAJBgNVBAYTAlNFMRQwEgYDVQQK
+# EwtBZGRUcnVzdCBBQjEmMCQGA1UECxMdQWRkVHJ1c3QgRXh0ZXJuYWwgVFRQIE5l
+# dHdvcmsxIjAgBgNVBAMTGUFkZFRydXN0IEV4dGVybmFsIENBIFJvb3QwHhcNMDUw
+# NjA3MDgwOTEwWhcNMjAwNTMwMTA0ODM4WjCBlTELMAkGA1UEBhMCVVMxCzAJBgNV
+# BAgTAlVUMRcwFQYDVQQHEw5TYWx0IExha2UgQ2l0eTEeMBwGA1UEChMVVGhlIFVT
+# RVJUUlVTVCBOZXR3b3JrMSEwHwYDVQQLExhodHRwOi8vd3d3LnVzZXJ0cnVzdC5j
+# b20xHTAbBgNVBAMTFFVUTi1VU0VSRmlyc3QtT2JqZWN0MIIBIjANBgkqhkiG9w0B
+# AQEFAAOCAQ8AMIIBCgKCAQEAzqqBP6OjYXiqMQBVlRGeJw8fHN86m4JoMMBKYR3x
+# Lw76vnn3pSPvVVGWhM3b47luPjHYCiBnx/TZv5TrRwQ+As4qol2HBAn2MJ0Yipey
+# qhz8QdKhNsv7PZG659lwNfrk55DDm6Ob0zz1Epl3sbcJ4GjmHLjzlGOIamr+C3bJ
+# vvQi5Ge5qxped8GFB90NbL/uBsd3akGepw/X++6UF7f8hb6kq8QcMd3XttHk8O/f
+# Fo+yUpPXodSJoQcuv+EBEkIeGuHYlTTbZHko/7ouEcLl6FuSSPtHC8Js2q0yg0Hz
+# peVBcP1lkG36+lHE+b2WKxkELNNtp9zwf2+DZeJqq4eGdQIDAQABo4H0MIHxMB8G
+# A1UdIwQYMBaAFK29mHo0tCb3+sQmVO8DveAky1QaMB0GA1UdDgQWBBTa7WR0FJwU
+# PKvdmam9WyhNizzJ2DAOBgNVHQ8BAf8EBAMCAQYwDwYDVR0TAQH/BAUwAwEB/zAR
+# BgNVHSAECjAIMAYGBFUdIAAwRAYDVR0fBD0wOzA5oDegNYYzaHR0cDovL2NybC51
+# c2VydHJ1c3QuY29tL0FkZFRydXN0RXh0ZXJuYWxDQVJvb3QuY3JsMDUGCCsGAQUF
+# BwEBBCkwJzAlBggrBgEFBQcwAYYZaHR0cDovL29jc3AudXNlcnRydXN0LmNvbTAN
+# BgkqhkiG9w0BAQUFAAOCAQEATUIvpsGK6weAkFhGjPgZOWYqPFosbc/U2YdVjXkL
+# Eoh7QI/Vx/hLjVUWY623V9w7K73TwU8eA4dLRJvj4kBFJvMmSStqhPFUetRC2vzT
+# artmfsqe6um73AfHw5JOgzyBSZ+S1TIJ6kkuoRFxmjbSxU5otssOGyUWr2zeXXbY
+# H3KxkyaGF9sY3q9F6d/7mK8UGO2kXvaJlEXwVQRK3f8n3QZKQPa0vPHkD5kCu/1d
+# Di4owb47Xxo/lxCEvBY+2KOcYx1my1xf2j7zDwoJNSLb28A/APnmDV1n0f2gHgMr
+# 2UD3vsyHZlSApqO49Rli1dImsZgm7prLRKdFWoGVFRr1UTCCBOYwggPOoAMCAQIC
+# EGJcTZCM1UL7qy6lcz/xVBkwDQYJKoZIhvcNAQEFBQAwgZUxCzAJBgNVBAYTAlVT
+# MQswCQYDVQQIEwJVVDEXMBUGA1UEBxMOU2FsdCBMYWtlIENpdHkxHjAcBgNVBAoT
+# FVRoZSBVU0VSVFJVU1QgTmV0d29yazEhMB8GA1UECxMYaHR0cDovL3d3dy51c2Vy
+# dHJ1c3QuY29tMR0wGwYDVQQDExRVVE4tVVNFUkZpcnN0LU9iamVjdDAeFw0xMTA0
+# MjcwMDAwMDBaFw0yMDA1MzAxMDQ4MzhaMHoxCzAJBgNVBAYTAkdCMRswGQYDVQQI
+# ExJHcmVhdGVyIE1hbmNoZXN0ZXIxEDAOBgNVBAcTB1NhbGZvcmQxGjAYBgNVBAoT
+# EUNPTU9ETyBDQSBMaW1pdGVkMSAwHgYDVQQDExdDT01PRE8gVGltZSBTdGFtcGlu
+# ZyBDQTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKqC8YSpW9hxtdJd
+# K+30EyAM+Zvp0Y90Xm7u6ylI2Mi+LOsKYWDMvZKNfN10uwqeaE6qdSRzJ6438xqC
+# pW24yAlGTH6hg+niA2CkIRAnQJpZ4W2vPoKvIWlZbWPMzrH2Fpp5g5c6HQyvyX3R
+# TtjDRqGlmKpgzlXUEhHzOwtsxoi6lS7voEZFOXys6eOt6FeXX/77wgmN/o6apT9Z
+# RvzHLV2Eh/BvWCbD8EL8Vd5lvmc4Y7MRsaEl7ambvkjfTHfAqhkLtv1Kjyx5VbH+
+# WVpabVWLHEP2sVVyKYlNQD++f0kBXTybXAj7yuJ1FQWTnQhi/7oN26r4tb8QMspy
+# 6ggmzRkCAwEAAaOCAUowggFGMB8GA1UdIwQYMBaAFNrtZHQUnBQ8q92Zqb1bKE2L
+# PMnYMB0GA1UdDgQWBBRkIoa2SonJBA/QBFiSK7NuPR4nbDAOBgNVHQ8BAf8EBAMC
+# AQYwEgYDVR0TAQH/BAgwBgEB/wIBADATBgNVHSUEDDAKBggrBgEFBQcDCDARBgNV
+# HSAECjAIMAYGBFUdIAAwQgYDVR0fBDswOTA3oDWgM4YxaHR0cDovL2NybC51c2Vy
+# dHJ1c3QuY29tL1VUTi1VU0VSRmlyc3QtT2JqZWN0LmNybDB0BggrBgEFBQcBAQRo
+# MGYwPQYIKwYBBQUHMAKGMWh0dHA6Ly9jcnQudXNlcnRydXN0LmNvbS9VVE5BZGRU
+# cnVzdE9iamVjdF9DQS5jcnQwJQYIKwYBBQUHMAGGGWh0dHA6Ly9vY3NwLnVzZXJ0
+# cnVzdC5jb20wDQYJKoZIhvcNAQEFBQADggEBABHJPeEF6DtlrMl0MQO32oM4xpK6
+# /c3422ObfR6QpJjI2VhoNLXwCyFTnllG/WOF3/5HqnDkP14IlShfFPH9Iq5w5Lfx
+# sLZWn7FnuGiDXqhg25g59txJXhOnkGdL427n6/BDx9Avff+WWqcD1ptUoCPTpcKg
+# jvlP0bIGIf4hXSeMoK/ZsFLu/Mjtt5zxySY41qUy7UiXlF494D01tLDJWK/HWP9i
+# dBaSZEHayqjriwO9wU6uH5EyuOEkO3vtFGgJhpYoyTvJbCjCJWn1SmGt4Cf4U6d1
+# FbBRMbDxQf8+WiYeYH7i42o5msTq7j/mshM/VQMETQuQctTr+7yHkFGyOBkwggT+
+# MIID5qADAgECAhArc9t0YxFMWlsySvIwV3JJMA0GCSqGSIb3DQEBBQUAMHoxCzAJ
+# BgNVBAYTAkdCMRswGQYDVQQIExJHcmVhdGVyIE1hbmNoZXN0ZXIxEDAOBgNVBAcT
+# B1NhbGZvcmQxGjAYBgNVBAoTEUNPTU9ETyBDQSBMaW1pdGVkMSAwHgYDVQQDExdD
+# T01PRE8gVGltZSBTdGFtcGluZyBDQTAeFw0xOTA1MDIwMDAwMDBaFw0yMDA1MzAx
+# MDQ4MzhaMIGDMQswCQYDVQQGEwJHQjEbMBkGA1UECAwSR3JlYXRlciBNYW5jaGVz
+# dGVyMRAwDgYDVQQHDAdTYWxmb3JkMRgwFgYDVQQKDA9TZWN0aWdvIExpbWl0ZWQx
+# KzApBgNVBAMMIlNlY3RpZ28gU0hBLTEgVGltZSBTdGFtcGluZyBTaWduZXIwggEi
+# MA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC/UjaCOtx0Nw141X8WUBlm7boa
+# mdFjOJoMZrJA26eAUL9pLjYvCmc/QKFKimM1m9AZzHSqFxmRK7VVIBn7wBo6bco5
+# m4LyupWhGtg0x7iJe3CIcFFmaex3/saUcnrPJYHtNIKa3wgVNzG0ba4cvxjVDc/+
+# teHE+7FHcen67mOR7PHszlkEEXyuC2BT6irzvi8CD9BMXTETLx5pD4WbRZbCjRKL
+# Z64fr2mrBpaBAN+RfJUc5p4ZZN92yGBEL0njj39gakU5E0Qhpbr7kfpBQO1NArRL
+# f9/i4D24qvMa2EGDj38z7UEG4n2eP1OEjSja3XbGvfeOHjjNwMtgJAPeekyrAgMB
+# AAGjggF0MIIBcDAfBgNVHSMEGDAWgBRkIoa2SonJBA/QBFiSK7NuPR4nbDAdBgNV
+# HQ4EFgQUru7ZYLpe9SwBEv2OjbJVcjVGb/EwDgYDVR0PAQH/BAQDAgbAMAwGA1Ud
+# EwEB/wQCMAAwFgYDVR0lAQH/BAwwCgYIKwYBBQUHAwgwQAYDVR0gBDkwNzA1Bgwr
+# BgEEAbIxAQIBAwgwJTAjBggrBgEFBQcCARYXaHR0cHM6Ly9zZWN0aWdvLmNvbS9D
+# UFMwQgYDVR0fBDswOTA3oDWgM4YxaHR0cDovL2NybC5zZWN0aWdvLmNvbS9DT01P
+# RE9UaW1lU3RhbXBpbmdDQV8yLmNybDByBggrBgEFBQcBAQRmMGQwPQYIKwYBBQUH
+# MAKGMWh0dHA6Ly9jcnQuc2VjdGlnby5jb20vQ09NT0RPVGltZVN0YW1waW5nQ0Ff
+# Mi5jcnQwIwYIKwYBBQUHMAGGF2h0dHA6Ly9vY3NwLnNlY3RpZ28uY29tMA0GCSqG
+# SIb3DQEBBQUAA4IBAQB6f6lK0rCkHB0NnS1cxq5a3Y9FHfCeXJD2Xqxw/tPZzeQZ
+# pApDdWBqg6TDmYQgMbrW/kzPE/gQ91QJfurc0i551wdMVLe1yZ2y8PIeJBTQnMfI
+# Z6oLYre08Qbk5+QhSxkymTS5GWF3CjOQZ2zAiEqS9aFDAfOuom/Jlb2WOPeD9618
+# KB/zON+OIchxaFMty66q4jAXgyIpGLXhjInrbvh+OLuQT7lfBzQSa5fV5juRvgAX
+# IW7ibfxSee+BJbrPE9D73SvNgbZXiU7w3fMLSjTKhf8IuZZf6xET4OHFA61XHOFd
+# kga+G8g8P6Ugn2nQacHFwsk+58Vy9+obluKUr4YuMIIFYTCCBEmgAwIBAgIRAJpg
+# n5ipm8KZbIfo5gsrfJ4wDQYJKoZIhvcNAQELBQAwfTELMAkGA1UEBhMCR0IxGzAZ
+# BgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEaMBgG
+# A1UEChMRQ09NT0RPIENBIExpbWl0ZWQxIzAhBgNVBAMTGkNPTU9ETyBSU0EgQ29k
+# ZSBTaWduaW5nIENBMB4XDTE4MTIwNjAwMDAwMFoXDTIzMTIwNjIzNTk1OVowgckx
+# CzAJBgNVBAYTAkdCMRAwDgYDVQQRDAdDQjQgMFdaMRcwFQYDVQQIDA5DYW1icmlk
+# Z2VzaGlyZTESMBAGA1UEBwwJQ2FtYnJpZGdlMSAwHgYDVQQJDBdDYW1icmlkZ2Ug
+# QnVzaW5lc3MgUGFyazEZMBcGA1UECQwQTmV3bmhhbSBIb3VzZSAxMjEeMBwGA1UE
+# CgwVUmVkIEdhdGUgU29mdHdhcmUgTHRkMR4wHAYDVQQDDBVSZWQgR2F0ZSBTb2Z0
+# d2FyZSBMdGQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDh/hd0pOdC
+# UsKEwSwrEPb9UiPTp4oY8NduanyhpJBtSbGS3rONtmiCmuQzIH88wfdiiSAeV0uI
+# lfafT8dlaFIEfVfgRjVjVqIL2maAu/pwPdPNQnLVd3skVtapxTwlh7nAuuXHVXvW
+# 5b5GZVWI0d4IOoc2PqLZLMqwoWM3KQxAeEexfa04shSWl1KeSQcaD2WwOtMkPIYo
+# p+1z3+gB8STF5L6M8lsVKlhxQEtTiX7WKAnVMoq5/n3ahEU0mRIFG166wGf/Z0qN
+# LgEO/LYCIsSD93JJJMHrwjgeJ2wZwZMo+x1USyXkawQuydJ8tngM8zUpGFknj1oN
+# NmBhj4L0MSYpAgMBAAGjggGNMIIBiTAfBgNVHSMEGDAWgBQpkWD/ik366/mmarjP
+# +eZLvUnOEjAdBgNVHQ4EFgQUcMNOWd43gPAUrYobG9FOLzUEmw4wDgYDVR0PAQH/
+# BAQDAgeAMAwGA1UdEwEB/wQCMAAwEwYDVR0lBAwwCgYIKwYBBQUHAwMwEQYJYIZI
+# AYb4QgEBBAQDAgQQMEYGA1UdIAQ/MD0wOwYMKwYBBAGyMQECAQMCMCswKQYIKwYB
+# BQUHAgEWHWh0dHBzOi8vc2VjdXJlLmNvbW9kby5uZXQvQ1BTMEMGA1UdHwQ8MDow
+# OKA2oDSGMmh0dHA6Ly9jcmwuY29tb2RvY2EuY29tL0NPTU9ET1JTQUNvZGVTaWdu
+# aW5nQ0EuY3JsMHQGCCsGAQUFBwEBBGgwZjA+BggrBgEFBQcwAoYyaHR0cDovL2Ny
+# dC5jb21vZG9jYS5jb20vQ09NT0RPUlNBQ29kZVNpZ25pbmdDQS5jcnQwJAYIKwYB
+# BQUHMAGGGGh0dHA6Ly9vY3NwLmNvbW9kb2NhLmNvbTANBgkqhkiG9w0BAQsFAAOC
+# AQEAo6CgU7ULOpcpJ98jihCeKIB6Sw6Pvy6DPMeiySWtAmwDlE6HyNOeQfDwrkqu
+# u1VRjtpkGsrEeSbrte7+JRBShd8ZqWtXREWIUXhQM4Rizp8YQOISEQASEKAeR4Wo
+# vCPNbXHAqOxjDhijke7/f/Czr9GdEAgu1SpliRY5aF9yZ0butV8jwOIKdURBHyMJ
+# DlpZRe4Wk1BTfS5jo6wk8ggTbwogRg7c0d7KNoSDtEFUQzfOOWRhR8Y2Gwtdr8xN
+# YHRVsYd1qOnHZAVDWddNWg7rj0Gx76MqVQyNjDI+v8qe7A/qldxFt9BbJcL/WGGc
+# 4IosPJ2DBqLpEWGmF8POMXJn4jCCBeAwggPIoAMCAQICEC58h8wOk0pS/pT9HLfN
+# NK8wDQYJKoZIhvcNAQEMBQAwgYUxCzAJBgNVBAYTAkdCMRswGQYDVQQIExJHcmVh
+# dGVyIE1hbmNoZXN0ZXIxEDAOBgNVBAcTB1NhbGZvcmQxGjAYBgNVBAoTEUNPTU9E
+# TyBDQSBMaW1pdGVkMSswKQYDVQQDEyJDT01PRE8gUlNBIENlcnRpZmljYXRpb24g
+# QXV0aG9yaXR5MB4XDTEzMDUwOTAwMDAwMFoXDTI4MDUwODIzNTk1OVowfTELMAkG
+# A1UEBhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMH
+# U2FsZm9yZDEaMBgGA1UEChMRQ09NT0RPIENBIExpbWl0ZWQxIzAhBgNVBAMTGkNP
+# TU9ETyBSU0EgQ29kZSBTaWduaW5nIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A
+# MIIBCgKCAQEAppiQY3eRNH+K0d3pZzER68we/TEds7liVz+TvFvjnx4kMhEna7xR
+# kafPnp4ls1+BqBgPHR4gMA77YXuGCbPj/aJonRwsnb9y4+R1oOU1I47Jiu4aDGTH
+# 2EKhe7VSA0s6sI4jS0tj4CKUN3vVeZAKFBhRLOb+wRLwHD9hYQqMotz2wzCqzSgY
+# dUjBeVoIzbuMVYz31HaQOjNGUHOYXPSFSmsPgN1e1r39qS/AJfX5eNeNXxDCRFU8
+# kDwxRstwrgepCuOvwQFvkBoj4l8428YIXUezg0HwLgA3FLkSqnmSUs2HD3vYYimk
+# fjC9G7WMcrRI8uPoIfleTGJ5iwIGn3/VCwIDAQABo4IBUTCCAU0wHwYDVR0jBBgw
+# FoAUu69+Aj36pvE8hI6t7jiY7NkyMtQwHQYDVR0OBBYEFCmRYP+KTfrr+aZquM/5
+# 5ku9Sc4SMA4GA1UdDwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMBMGA1Ud
+# JQQMMAoGCCsGAQUFBwMDMBEGA1UdIAQKMAgwBgYEVR0gADBMBgNVHR8ERTBDMEGg
+# P6A9hjtodHRwOi8vY3JsLmNvbW9kb2NhLmNvbS9DT01PRE9SU0FDZXJ0aWZpY2F0
+# aW9uQXV0aG9yaXR5LmNybDBxBggrBgEFBQcBAQRlMGMwOwYIKwYBBQUHMAKGL2h0
+# dHA6Ly9jcnQuY29tb2RvY2EuY29tL0NPTU9ET1JTQUFkZFRydXN0Q0EuY3J0MCQG
+# CCsGAQUFBzABhhhodHRwOi8vb2NzcC5jb21vZG9jYS5jb20wDQYJKoZIhvcNAQEM
+# BQADggIBAAI/AjnD7vjKO4neDG1NsfFOkk+vwjgsBMzFYxGrCWOvq6LXAj/MbxnD
+# PdYaCJT/JdipiKcrEBrgm7EHIhpRHDrU4ekJv+YkdK8eexYxbiPvVFEtUgLidQgF
+# TPG3UeFRAMaH9mzuEER2V2rx31hrIapJ1Hw3Tr3/tnVUQBg2V2cRzU8C5P7z2vx1
+# F9vst/dlCSNJH0NXg+p+IHdhyE3yu2VNqPeFRQevemknZZApQIvfezpROYyoH3B5
+# rW1CIKLPDGwDjEzNcweU51qOOgS6oqF8H8tjOhWn1BUbp1JHMqn0v2RH0aofU04y
+# MHPCb7d4gp1c/0a7ayIdiAv4G6o0pvyM9d1/ZYyMMVcx0DbsR6HPy4uo7xwYWMUG
+# d8pLm1GvTAhKeo/io1Lijo7MJuSy2OU4wqjtxoGcNWupWGFKCpe0S0K2VZ2+medw
+# bVn4bSoMfxlgXwyaiGwwrFIJkBYb/yud29AgyonqKH4yjhnfe0gzHtdl+K7J+IMU
+# k3Z9ZNCOzr41ff9yMU2fnr0ebC+ojwwGUPuMJ7N2yfTm18M04oyHIYZh/r9VdOEh
+# dwMKaGy75Mmp5s9ZJet87EUOeWZo6CLNuO+YhU2WETwJitB/vCgoE/tqylSNklzN
+# wmWYBp7OSFvUtTeTRkF8B93P+kPvumdh/31J4LswfVyA4+YWOUunMYIEcTCCBG0C
+# AQEwgZIwfTELMAkGA1UEBhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3Rl
+# cjEQMA4GA1UEBxMHU2FsZm9yZDEaMBgGA1UEChMRQ09NT0RPIENBIExpbWl0ZWQx
+# IzAhBgNVBAMTGkNPTU9ETyBSU0EgQ29kZSBTaWduaW5nIENBAhEAmmCfmKmbwpls
+# h+jmCyt8njANBglghkgBZQMEAgEFAKCBhDAYBgorBgEEAYI3AgEMMQowCKACgACh
+# AoAAMBkGCSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAM
+# BgorBgEEAYI3AgEVMC8GCSqGSIb3DQEJBDEiBCDC6p6bwRaj9MdVdIqS9Y15tpA7
+# yuOQqTrg+9nkwzJ4GTANBgkqhkiG9w0BAQEFAASCAQBSYXNfNAN69TunkEX7k3BR
+# M5/5vfRJ92ofB88bIVjKfNI2R/zdi+PJpXvfYeFGX/eZOggaH2JVs5T4KtNiMDHz
+# pEbo3rYtuJQ6kjUuQ7VTCA75zx6viTqtQB+OvqU+Ro6EHhaFI1xkpyQKB66lFzJl
+# JHBHSCwdBaDu9M525KEhsY/oepvuZpbjd/lytobC8xM4804qEjwyVHaNGXLs/GYL
+# fwr5DH3RYkWKyGZUyBpD5L2N4pkHmrHZoT8roDAqnwccikjLhiDq32KNdHxq7u1D
+# 0e2YrCJGS12oSRRyE/54iF9KZRCfctfxTD2o2cBu60I9DKxwhyBBuIkNDqBFMRf4
+# oYICKDCCAiQGCSqGSIb3DQEJBjGCAhUwggIRAgEBMIGOMHoxCzAJBgNVBAYTAkdC
+# MRswGQYDVQQIExJHcmVhdGVyIE1hbmNoZXN0ZXIxEDAOBgNVBAcTB1NhbGZvcmQx
+# GjAYBgNVBAoTEUNPTU9ETyBDQSBMaW1pdGVkMSAwHgYDVQQDExdDT01PRE8gVGlt
+# ZSBTdGFtcGluZyBDQQIQK3PbdGMRTFpbMkryMFdySTAJBgUrDgMCGgUAoF0wGAYJ
+# KoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMTkwOTE2MTEx
+# MTI4WjAjBgkqhkiG9w0BCQQxFgQUktKIHWnD2OxEgLzbPzp/xx+fQ3cwDQYJKoZI
+# hvcNAQEBBQAEggEARdFrQ4fEmCIhUpnBvgDCHHDAGMcIsc6iJEEwFmtjP+7nHB84
+# hLeGoHw3xWqxqGJTmhFlUiGNxE+fOAxU6vsjb52iMc32mrlQ4bGKs4hy0zGK8Nz3
+# PKQGUMX06FyttnKX7doWFXY3rDAUnRW7PBAqMfxx8bp+fYGAN0Yuw+Gs7hfpZMQG
+# cbxBQ4dNmTGQrYjYUIfLiMX3OghZ7dTB3rRV6sVirgd79cyo/wFDQ1VZMsyG1ort
+# O3NLgE8xdR9lrVeEx8n/bCc64DoydVMTs3lxiOFH+N2bHObSkzQEiRXD8UprpeRx
+# mngklKBsvaDF5i7Ac0Hx4MO4VvNLxA+0bE4I0Q==
+# SIG # End signature block

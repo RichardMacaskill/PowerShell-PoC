@@ -14,7 +14,7 @@ $instanceName = "rm-iclone1.testnet.red-gate.com"
 $databaseName = "AdventureWorks2012"
 $authToken = "NTM2OTUxMTYyNzA4OTUxMDQwOmRiNjIyYWMxLWI1NDYtNDQzNi04OTE2LWQ1MzkxNGIzYzI5MQ=="
 
-$csvPath = "C:\Users\richard.macaskill\Documents\CSV\GC_Classification_01.csv"
+$csvPath = "C:\Users\richard.macaskill\Documents\CSV\Classification_01.csv"
 # connect to your SQL Data Catalog instance - you'll need to generate an auth token in the UI
 Use-Classification -ClassificationServer $catalogServerName -ClassificationAuthToken $authToken 
 
