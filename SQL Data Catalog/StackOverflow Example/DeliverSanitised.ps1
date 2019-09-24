@@ -5,9 +5,11 @@ $SQLCloneServer = "http://sql-clone.testnet.red-gate.com:14145"
 
 Connect-SqlClone -ServerUrl $SQLCloneServer
 
-$StackOverflowImage = Get-SqlCloneImage -Name  'StackOverflow2010-20190617142829-Cleansed'
+$StackOverflowImage = Get-SqlCloneImage -Name  'StackOverflow2010-20190916163450-Cleansed'
 
 $StackOverflowCloneName = 'StackOverflow2010 (masked)' 
+
+#$Template = Get-SqlCloneTemplate -Image $StackOverflowImage -Name "Drop Masking Tables"
 
 # I have several SQL Server instances registered on my SQL Clone Server - I want to deliver a copy to all of them
 $Destinations = Get-SqlCloneSqlServerInstance | 
@@ -16,10 +18,10 @@ Where-Object -FilterScript { $_.Server -like '*WKS*' -and $_.Instance -eq 'Dev' 
 # Start a timer
 $elapsed = [System.Diagnostics.Stopwatch]::StartNew()
 
-"Started at {0}, creating clone databases for image ""{1}""" -f $(get-date) , $ForumsImage.Name 
+"Started at {0}, creating clone databases for image ""{1}""" -f $(get-date) , $StackOverflowImage.Name 
 
 $Destinations | ForEach-Object  {
-    $StackOverflowImage | New-SqlClone -Name $StackOverflowCloneName -Location $_ | Wait-SqlCloneOperation
+    $StackOverflowImage | New-SqlClone -Name $StackOverflowCloneName -Location $_  | Wait-SqlCloneOperation
         
     "Created clone in instance {0}" -f $_.Server + '\' + $_.Instance;
 

@@ -8,4 +8,6 @@ Invoke-WebRequest -Uri 'https://rm-win10-sql201.testnet.red-gate.com:15156/power
  
 Import-Module .\data-catalog.psm1
 
+Use-Classification -ClassificationAuthToken $authToken
+
 Get-RegisteredInstances

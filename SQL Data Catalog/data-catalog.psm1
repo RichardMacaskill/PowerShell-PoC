@@ -31,6 +31,15 @@ function Use-Classification {
     $Script:ClassificationAuthHeader = $authHeader
 
     $Script:allTagCategories = Get-TagCategories
+
+    $expectedServerVersion = '1.4.7.9057'
+    $status = Invoke-ApiCall -Uri 'api/status' -Method Get
+    if (!$status.IsOk) {
+        Write-Error "The Data Catalog server has encountered an error. $($status.ErrorMessage)"
+    }
+    if ($status.Version -ne $expectedServerVersion) {
+        Write-Error "Expected version $($expectedServerVersion) but found version $($status.Version). Re-download this PowerShell module from the server."
+    }
 }
 
 <#
@@ -53,7 +62,7 @@ function Use-Classification {
 .EXAMPLE
   Add-RegisteredSqlServerInstance -FullyQualifiedInstanceName 'mysqlserver.mydomain.com'
 
-  Registers the default instance of SQL Server running on the "mysqlserver.mydom\ain.com" machine. Windows Authentication will be used to connect to this intance.
+  Registers the default instance of SQL Server running on the "mysqlserver.mydomain.com" machine. Windows Authentication will be used to connect to this intance.
 .EXAMPLE
   Add-RegisteredSqlServerInstance -FullyQualifiedInstanceName 'mysqlserver.mydomain.com\myinstancename' -UserId 'somebody' -Password 'myPassword'
 
@@ -401,13 +410,14 @@ function Update-ColumnTags {
         $columnTagIds = $columnTags.Tags
 
         $tagCategory = $allTagCategories[$category]
+        $tagsForCategory = ArrayToNameBasedHash($tagCategory.Tags)
 
         $tagIds = New-Object System.Collections.ArrayList(, @( $columnTagIds | ForEach-Object { $_.id } ))
 
         if ($tagCategory.IsMultiValued -eq $true) {
             # clear tag category for multi tag
             if ($forceUpdate) {
-                foreach ($tagIdToRemove in $tagCategory.Tags.Values) {
+                foreach ($tagIdToRemove in $tagsForCategory.Values.id) {
                     if ($tagIds -contains $tagIdToRemove) {
                         $tagIds.Remove($tagIdToRemove)
                     }
@@ -415,8 +425,8 @@ function Update-ColumnTags {
             }
 
             foreach ($tag in $tags) {
-                $tagId = $tagCategory.Tags[$tag]
-                if ( -Not ($columnTagIds.id -contains $tagId)) {
+                $tagId = $tagsForCategory[$tag].id
+                if ( -Not ($tagIds.id -contains $tagId)) {
                     $tagIds.Add($tagId)
                 }
             }
@@ -430,8 +440,9 @@ function Update-ColumnTags {
                 Write-Error -Message $errorMessage -Category InvalidArgument
                 return
             }
+
+            $tagId = $tagsForCategory[$tags].id
             $singleValueCategory = $columnTagIds | Where-Object { $_.categoryId -eq $tagCategory.id }
-            $tagId = $tagCategory.Tags[$tags]
             if ($singleValueCategory) {
                 if ($singleValueCategory.id -eq $tagId ) {
                     return
@@ -439,7 +450,7 @@ function Update-ColumnTags {
                 else {
                     if ($forceUpdate) {
                         $tagIds.Remove($singleValueCategory.id)
-                        $tagIds.AddRange($tagId)
+                        $tagIds.Add($tagId)
                     }
                     else {
                         $errorMessage = "Error :" +
@@ -454,7 +465,7 @@ function Update-ColumnTags {
                 }
             }
             else {
-                $tagIds.AddRange($tagId)
+                $tagIds.Add($tagId)
             }
         }
 
@@ -560,13 +571,15 @@ function Import-ColumnsTags {
 
     $tagIds = New-Object System.Collections.ArrayList(, @( ))
     foreach ($category in $categories.Keys) {
+
         $tags = $categories[$category]
         $tagCategory = $allTagCategories[$category]
+        $tagsForCategory = ArrayToNameBasedHash($tagCategory.Tags)
 
         if ($tagCategory.IsMultiValued -eq $true) {
             foreach ($tag in $tags) {
-                $tagId = $tagCategory.Tags[$tag]
-                $tagIds.Add($tagCategory.Tags[$tag])
+                $tagId = $tagsForCategory[$tag].id
+                $tagIds.Add($tagId)
             }
             if ($tagIds.Count -le 0) {
                 return
@@ -578,8 +591,9 @@ function Import-ColumnsTags {
                 Write-Error -Message $errorMessage -Category InvalidArgument
                 return
             }
-            $tagId = $tagCategory.Tags[$tags]
-            $tagIds.AddRange($tagId)
+
+            $tagId = $tagsForCategory[$tags].id
+            $tagIds.Add($tagId)
         }
     }
     $url = 'api/v1.0/columns/bulk-classification'
@@ -589,6 +603,7 @@ function Import-ColumnsTags {
         FreeTextAttributes = @{ }
     }
     $body = $body | ConvertTo-Json;
+
     Invoke-ApiCall -Uri $url -Method PUT -Body $body
 }
 
@@ -864,6 +879,12 @@ function Start-InstanceScan {
 
         Invoke-ApiCall -Uri $url -Method Post
     }
+}
+
+function ArrayToNameBasedHash ($items) {
+  $result = @{}
+  $items | foreach { $result[$_.Name] = $_ }
+  return $result
 }
 
 Export-ModuleMember -Function Use-Classification

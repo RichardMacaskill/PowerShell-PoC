@@ -14,7 +14,7 @@ $SQLCloneServer = "http://rm-win10-sql201.testnet.red-gate.com:14145"
 Connect-SqlClone -ServerUrl $SQLCloneServer
 
 # Reference to image
-$Image = Get-SqlCloneImage -Name  'StackOverflow2010-20190617142829-Cleansed'
+$Image = Get-SqlCloneImage -Name  'StackOverflow2010--Cleansed'
 
 $ImageSourceInstance = $Image.OriginServerName + '.testnet.red-gate.com'
 $ImageSourceDatabase = $Image.OriginDatabaseName
@@ -25,7 +25,7 @@ $Destinations = Get-SqlCloneSqlServerInstance | Where-Object -FilterScript { $_.
 $Template = Get-SqlCloneTemplate -Image $Image -Name "Drop masking tables"
 
 # Create clone Dbs for Devs 
-$CloneName = 'StackOverflow Masked for Dev - 20190724'
+$CloneName = 'StackOverflow Masked for Dev - 20190905'
 
 "Started at {0}, creating clone databases for image ""{1}""" -f $(get-date) , $Image.Name 
 
