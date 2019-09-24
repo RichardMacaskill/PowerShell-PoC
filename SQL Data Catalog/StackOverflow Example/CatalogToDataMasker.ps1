@@ -1,18 +1,22 @@
 ﻿#config
-
+$dataCatalogServer = "http://rm-win10-sql201.testnet.red-gate.com:15156"
 $dataCatalogAuthToken = "NTM2OTUxMTYyNzA4OTUxMDQwOmRiNjIyYWMxLWI1NDYtNDQzNi04OTE2LWQ1MzkxNGIzYzI5MQ=="
+
+#retrieve modules from data catalog api
+Invoke-WebRequest -Uri "$dataCatalogServer/powershell" -OutFile "datacatalog.psm1" -Headers @{"Authorization" = "Bearer $dataCatalogAuthToken" }
+ 
+#import data catalog modules
+Import-Module .\datacatalog.psm1 -Force
+Import-Module .\DataMasker.psm1 -Force   
+
+# local config
 $instanceName = 'rm-iclone1.testnet.red-gate.com'
 $databaseName = 'StackoverFlow2010'
 $inputMaskingSetPath = "\\rm-iclone1\Masking Set Files\Shell\StackOverflow2010 Automation.DMSMaskSet"
 $outputMaskingSetPath = "\\rm-iclone1\Masking Set Files\Generated\StackOverflow2010 Generated 6.DMSMaskSet"
 
-#load data from catalog and data masker file
-Invoke-WebRequest -Uri 'http://rm-win10-sql201.testnet.red-gate.com:15156/powershell' -OutFile 'datacatalog.psm1' -Headers @{"Authorization" = "Bearer $dataCatalogAuthToken" }
- 
-Import-Module .\datacatalog.psm1 -Force
-Import-Module .\DataMasker.psm1 -Force   
-
-Use-Classification -ClassificationAuthToken $dataCatalogAuthToken 
+# connect to your SQL Data Catalog instance - you'll need to generate an auth token in the UI
+Use-Classification -ClassificationAuthToken $dataCatalogAuthToken -ServerUrl $dataCatalogServer
 
 $maskingDataSetTagCategoryId = (Get-TagCategories)["Masking Data Set"].Id
 Write-Output "Getting columns"
