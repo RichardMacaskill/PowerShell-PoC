@@ -6,34 +6,38 @@
 
 <#
 .SYNOPSIS
-  Initialise authentication for SDPS.
+  Connect to SQL Data Catalog.
 .DESCRIPTION
   Allows other commandlets to authenticate with the API using $ClassificationAuthToken parameter.
+.PARAMETER ServerUrl
+  Url of the server where SQL Data Catalog is hosted.
 .PARAMETER ClassificationAuthToken
   Authentication token which can be obtained from the Web Client. Please refer to https://www.red-gate.com/data-catalog/working-with-rest-api for more information.
 .EXAMPLE
   Import-Module .\RedgateDataCatalog.psm1
-  Use-Classification -ClassificationAuthToken "auth-token"
+  $server="http://localhost:15156"
+  $authToken="NjIzODE1Mjk5MjgzNTUwMjA4OjVhNzkyNWE0LGA4OjQtNGM1ZC1hOGY4LTJhMzM2ODk0M2NaBc=="
+  Connect-SqlDataCatalog -ServerUrl $server -ClassificationAuthToken $authToken
 
   Allows other commandlets to authenticate with the API using $ClassificationAuthToken parameter.
 #>
 
-function Use-Classification {
+function Connect-SqlDataCatalog {
     param(
-        [parameter(Mandatory=$true)][string]$ServerUrl,
-        [Parameter(Mandatory = $true)] $ClassificationAuthToken
+        [Parameter(Mandatory = $true, Position = 0)][string] $ServerUrl,
+        [Parameter(Mandatory = $true, Position = 1)] $ClassificationAuthToken
     )
 
     $Script:ClassificationURL = $ServerUrl
 
-    $authHeader = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+    $authHeader = @{ }
     $authHeader.Add("Authorization", "Bearer $ClassificationAuthToken")
     $Script:ClassificationAuthHeader = $authHeader
 
-    $Script:allTagCategories = Get-TagCategories
+    $Script:allTagCategories = ArrayToNameBasedHashtable((Get-ClassificationTaxonomy).TagCategories)
 
-    $expectedServerVersion = '1.5.2.9412'
-    $status = Invoke-ApiCall -Uri 'api/status' -Method Get
+    $expectedServerVersion = '1.6.1.9770'
+    $status = InvokeApiCall -Uri 'api/status' -Method Get
     if (!$status.IsOk) {
         Write-Error "The Data Catalog server has encountered an error. $($status.ErrorMessage)"
     }
@@ -46,50 +50,43 @@ function Use-Classification {
 .SYNOPSIS
   Registers a single SQL Server instance.
 .DESCRIPTION
-  Registers a single SQL Server instance, to make it available within the SDPS classification UI.
+  Registers a single SQL Server instance to make it available within the SQL Data Catalog.
 .PARAMETER FullyQualifiedInstanceName
   The fully-qualified name of the SQL Server instance to be registered. For a named instance, this should take the form 'fully-qualified-host-name\instance-name' (e.g. "myserver.mydomain.com\myinstance"). For the default instance on a machine, just the fully-qualified name of the machine will suffice (e.g. "myserver.mydomain.com").
 .PARAMETER UserId
   Used only for SQL Server Authentication. Known also as "user name". Optional, do not provide for Windows Authentication.
 .PARAMETER Password
   Used only for SQL Server Authentication. Optional, do not provide for Windows Authentication.
-.PARAMETER Force
-  When trying to register an instance that is already registered, the default behaviour is to raise an error. Specifying the -Force parameter will suppress such an error.
 .EXAMPLE
-  Add-RegisteredSqlServerInstance -FullyQualifiedInstanceName 'mysqlserver.mydomain.com\myinstancename'
+  Register-ClassificationInstance -FullyQualifiedInstanceName 'mysqlserver.mydomain.com\myinstancename'
 
   Registers an instance of SQL Server named "myinstancename" running on the "mysqlserver.mydomain.com" machine. Windows Authentication will be used to connect to this intance.
 .EXAMPLE
-  Add-RegisteredSqlServerInstance -FullyQualifiedInstanceName 'mysqlserver.mydomain.com'
+  Register-ClassificationInstance -FullyQualifiedInstanceName 'mysqlserver.mydomain.com'
 
   Registers the default instance of SQL Server running on the "mysqlserver.mydomain.com" machine. Windows Authentication will be used to connect to this intance.
 .EXAMPLE
-  Add-RegisteredSqlServerInstance -FullyQualifiedInstanceName 'mysqlserver.mydomain.com\myinstancename' -UserId 'somebody' -Password 'myPassword'
+  Register-ClassificationInstance -FullyQualifiedInstanceName 'mysqlserver.mydomain.com\myinstancename' -UserId 'somebody' -Password 'myPassword'
 
   Registers an instance of SQL Server named "myinstancename" running on the "mysqlserver.mydomain.com" machine. SQL Server Authentication will be used to connect to this intance.
 .EXAMPLE
-  Add-RegisteredSqlServerInstance -FullyQualifiedInstanceName 'mysqlserver.mydomain.com' -Force
-
-  In the previous two examples, an error is raised if the specified SQL Server instance is already registered. Using the -Force parameter will suppress this error.
-.EXAMPLE
-  @('dbserver1.mydomain.com', 'dbserver2.mydomain.com') | Add-RegisteredSqlServerInstance -Force
+  @('dbserver1.mydomain.com', 'dbserver2.mydomain.com') | Register-ClassificationInstance
 
   Demonstrates how multiple SQL Server instances in a list can be registered.
 .EXAMPLE
-  Get-Content -Path '.\myinstances.txt' | Add-RegisteredSqlServerInstance -Force
+  Get-Content -Path '.\myinstances.txt' | Register-ClassificationInstance
 
   Demonstrates how the names of the instances to be registered can be taken from a simple text file. The file should contain one instance name per line.
 #>
 
-function Add-RegisteredSqlServerInstance {
+function Register-ClassificationInstance {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $True, Position = 0, ValueFromPipeLine = $True)]
         [string] $FullyQualifiedInstanceName,
 
         [string] $UserId = $null,
-        [string] $Password = $null,
-        [switch] $Force
+        [string] $Password = $null
     )
 
     process {
@@ -103,7 +100,7 @@ function Add-RegisteredSqlServerInstance {
         }
         $PostJson = $PostData | ConvertTo-Json
 
-        Invoke-ApiCall -Uri $AddUrl -Method Post -Body $PostJson
+        InvokeApiCall -Uri $AddUrl -Method Post -Body $PostJson | Out-Null
     }
 }
 
@@ -119,16 +116,16 @@ function Add-RegisteredSqlServerInstance {
 .PARAMETER Password
   Used only for SQL Server Authentication. Optional, do not provide for Windows Authentication.
 .EXAMPLE
-  Update-RegisteredSqlServerInstance -FullyQualifiedInstanceName 'mysqlserver.mydomain.com\myinstancename'
+  Set-ClassificationInstanceCredential -FullyQualifiedInstanceName 'mysqlserver.mydomain.com\myinstancename'
 
   Sets an authentication method to Windows Authentication for a registered instance of SQL Server named "myinstancename" running on the "mysqlserver.mydomain.com" machine.
 .EXAMPLE
-  Update-RegisteredSqlServerInstance -FullyQualifiedInstanceName 'mysqlserver.mydomain.com\myinstancename' -UserId 'somebody' -Password 'myPassword'
+  Set-ClassificationInstanceCredential -FullyQualifiedInstanceName 'mysqlserver.mydomain.com\myinstancename' -UserId 'somebody' -Password 'myPassword'
 
   Sets an authentication method to SQL Server Authentication with given userId and password for a registered instance of SQL Server named "myinstancename" running on the "mysqlserver.mydomain.com" machine.
 #>
 
-function Update-RegisteredSqlServerInstance {
+function Set-ClassificationInstanceCredential {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $True, Position = 0, ValueFromPipeLine = $True)]
@@ -139,7 +136,7 @@ function Update-RegisteredSqlServerInstance {
     )
 
     process {
-        $instanceId = Get-InstanceIdByName $FullyQualifiedInstanceName
+        $instanceId = GetInstanceIdByName $FullyQualifiedInstanceName
         $url = "api/v1.0/instances/" + $instanceId + "/update"
 
         $PostData = @{
@@ -148,28 +145,12 @@ function Update-RegisteredSqlServerInstance {
         }
         $PostJson = $PostData | ConvertTo-Json
 
-        Invoke-ApiCall -Uri $url -Method Patch -Body $PostJson
+        InvokeApiCall -Uri $url -Method Patch -Body $PostJson | Out-Null
     }
 }
 
 
-function Get-HashResult {
-    param(
-        $array,
-        $key,
-        $value
-    )
-
-    $hash = @{ }
-
-    foreach ($item in $array) {
-        $hash.Add($item.$key, $item.$value)
-    }
-    return  $hash
-}
-
-
-function Invoke-ApiCall {
+function InvokeApiCall {
     param(
         $Uri,
         $Method,
@@ -178,13 +159,13 @@ function Invoke-ApiCall {
     )
 
     if ($null -eq $ClassificationURL) {
-        throw 'Run Use-Classification before using any other cmdlet. For help run: Get-Help Use-Classification'
+        throw 'Run Connect-SqlDataCatalog before using any other cmdlet. For help run: Get-Help Connect-SqlDataCatalog'
     }
 
     $Uri = $script:ClassificationURL + "/" + $Uri
 
     try {
-        return Invoke-RestMethod -Uri $Uri -Method $Method -Headers $ClassificationAuthHeader `
+        Invoke-RestMethod -Uri $Uri -Method $Method -Headers $ClassificationAuthHeader `
             -Body $Body -ContentType 'application/json; charset=utf-8' -OutFile $OutFile
     }
     catch {
@@ -208,71 +189,66 @@ function Invoke-ApiCall {
 
 <#
 .SYNOPSIS
-  Gets all tag catrgories and its tags.
+  Gets taxonomy.
 .DESCRIPTION
-  Gets all tag catrgories and its tags hashtable with tagcategory name as key and its id, name and tags as value.
+  Gets taxonomy: tag categories with tags, as well as free-text attributes.
 .EXAMPLE
-  Get-TagCategories
+  Get-ClassificationTaxonomy
 
-  Gets all tag catrgories and its tags.
+  Gets all tag categories and their tags, as well as free-text attributes.
 #>
-function Get-TagCategories {
+function Get-ClassificationTaxonomy {
     $url = "api/v1.0/tagcategories"
-    $tagcategories = Invoke-ApiCall -Uri $url -Method Get
+    $tagCategories = InvokeApiCall -Uri $url -Method Get
 
-    $hash = @{ }
+    $url = "api/v1.0/taxonomy/freetextattributes"
+    $freeTextAttributes = InvokeApiCall -Uri $url -Method Get
 
-    foreach ($tagcategory in $tagcategories) {
-        $hash.Add($tagcategory.name, $tagcategory)
+    $taxonomy = [pscustomobject]@{
+        TagCategories      = $tagCategories;
+        FreeTextAttributes = $freeTextAttributes
     }
-    return  $hash
+
+    return $taxonomy
 }
-
-function Get-Tags {
-    [CmdletBinding()]
-    param(
-        [Parameter(ValueFromPipeline)] [string] $tagCategoryId
-    )
-
-    $url = "api/v1.0/tagcategories/" + $tagCategoryId + '/tags'
-    $tags = Invoke-ApiCall -Uri $url -Method Get
-    return  Get-HashResult -array $tags -key 'name' -value 'id'
-}
-
 
 <#
 .SYNOPSIS
-  Gets all registered SQL Server instance.
+  Gets all registered SQL Server instances.
 .DESCRIPTION
-  Gets all registered SQL Server instance as hashtable with fully-qualified name of the SQL Server instance as key and id as value.
+  Gets all registered SQL Server instances.
 .EXAMPLE
-  Get-RegisteredInstances
+  Get-ClassificationInstance
 
-  Gets all registered SQL Server instance.
-
+  Gets all registered SQL Server instances.
 #>
-function Get-RegisteredInstances {
+function Get-ClassificationInstance {
     $url = "api/v1.0/instances"
-    $instances = Invoke-ApiCall -Uri $url -Method Get
+    $instances = InvokeApiCall -Uri $url -Method Get
 
-    $hash = @{ }
+    $result = @()
 
     foreach ($instance in $instances) {
-        $hash.Add($instance.instance.name, $instance.instance.id)
+        $result += [pscustomobject]@{
+            InstanceId = $instance.instance.id;
+            Name       = $instance.instance.name
+        }
     }
-    return  $hash
+    return $result
 }
 
-function Get-InstanceIdByName {
+function GetInstanceIdByName {
     param(
         $instanceName
     )
-    $instances = Get-RegisteredInstances
-    if (!$instances.ContainsKey($instanceName)) {
+
+    $instances = @( Get-ClassificationInstance | Where-Object { $_.Name -eq $instanceName })
+
+    if ($instances.Length -eq 0) {
         Write-Error "Instance $instanceName not found."
-        return
     }
-    return $instances[$instanceName]
+
+    return $instances[0].InstanceId
 }
 
 <#
@@ -284,21 +260,22 @@ function Get-InstanceIdByName {
 .PARAMETER InstanceName
   The fully-qualified name of the SQL Server instance. For a named instance, this should take the form 'fully-qualified-host-name\instance-name' (e.g. "myserver.mydomain.com\myinstance"). For the default instance on a machine, just the fully-qualified name of the machine will suffice (e.g. "myserver.mydomain.com").
 .EXAMPLE
-  Get-Databases -instanceName "sqlserver\sql2016"
+  Get-ClassificationDatabase -instanceName "sqlserver\sql2016"
 
   Fetches all databases from instance "sqlserver\sql2016".
 #>
-function Get-Databases {
+function Get-ClassificationDatabase {
     [CmdletBinding()]
     param(
-        [Parameter(ValueFromPipeline)] [string] $instanceName
+        [Parameter(Mandatory = $True, Position = 0, ValueFromPipeLine = $True)]
+        [string] $instanceName
     )
-    $instanceId = Get-InstanceIdByName $instanceName
+    $instanceId = GetInstanceIdByName $instanceName
 
     $url =
     "api/v1.0/instances/" + $instanceId +
     "/databases"
-    $databaseResult = Invoke-ApiCall -Uri $url -Method Get
+    $databaseResult = InvokeApiCall -Uri $url -Method Get
     return $databaseResult.database
 }
 
@@ -308,52 +285,56 @@ function Get-Databases {
 .DESCRIPTION
   Gets all columns for a given database.
 
-  # Available column properties:
-  # - ColumnName
-  # - TableName
-  # - SchemaName
-  # - Description
-  # - InformationType
-  # - SensitivityLabel
-  # - Tags
-  # - FreeTextAttributes
-  # - TableRowCount
-  # - DataType
+  Available column properties:
+  - ColumnName
+  - TableName
+  - SchemaName
+  - Description
+  - InformationType
+  - SensitivityLabel
+  - Tags
+  - FreeTextAttributes
+  - TableRowCount
+  - DataType
 
 .PARAMETER InstanceName
   The fully-qualified name of the SQL Server instance. For a named instance, this should take the form 'fully-qualified-host-name\instance-name' (e.g. "myserver.mydomain.com\myinstance"). For the default instance on a machine, just the fully-qualified name of the machine will suffice (e.g. "myserver.mydomain.com").
 .PARAMETER DatabaseName
   Database name to fetch columns from.
 .EXAMPLE
-  Get-Columns -instanceName "sqlserver\sql2016" -databaseName "WideWorldImporters"
+  Get-ClassificationColumn -instanceName "sqlserver\sql2016" -databaseName "WideWorldImporters"
 
   Fetches all columns from instance "sqlserver\sql2016" database "WideWorldImporters".
 #>
-function Get-Columns {
+function Get-ClassificationColumn {
     [CmdletBinding()]
     param(
-        [Parameter(ValueFromPipeline)] [string] $instanceName,
-        [Parameter(ValueFromPipeline)] [string] $databaseName
+        [Parameter(Mandatory = $True, Position = 0, ValueFromPipeLine = $True)]
+        [string] $instanceName,
+
+        [Parameter(Mandatory = $True, Position = 1, ValueFromPipeLine = $True)]
+        [string] $databaseName
     )
-    $instanceId = Get-InstanceIdByName $instanceName
+    $instanceId = GetInstanceIdByName $instanceName
 
     $url =
     "api/v1.0/instances/" + $instanceId +
     "/databases/" + [uri]::EscapeDataString($databaseName) +
     "/columns"
-    $columnResult = Invoke-ApiCall -Uri $url -Method Get
+    $columnResult = InvokeApiCall -Uri $url -Method Get
 
     foreach ($classifiedColumn in $columnResult.ClassifiedColumns) {
         $classifiedColumn | Add-Member NoteProperty 'InstanceId' $instanceId
+        $classifiedColumn | Add-Member NoteProperty 'InstanceName' $instanceName
         $classifiedColumn | Add-Member NoteProperty 'DatabaseName' $databaseName
     }
     return $columnResult.ClassifiedColumns
 }
 
-function Get-ColumnTags {
+function GetColumnTags {
     [CmdletBinding()]
     param(
-        [Parameter(ValueFromPipeline)] [object] $column
+        [Parameter(Mandatory = $True, Position = 0, ValueFromPipeline)] [object] $column
     )
 
     $url =
@@ -364,14 +345,17 @@ function Get-ColumnTags {
     "/columns/" + [uri]::EscapeDataString($column.columnName) +
     "/tags"
 
-    return Invoke-ApiCall -Uri $url -Method GET
+    return InvokeApiCall -Uri $url -Method GET
 }
 
 <#
 .SYNOPSIS
-  Update column with the tags specified.
+  Add tags to a column for a given category.
 .DESCRIPTION
   Update column with the tags specified. Only one tag category will be updated.
+
+  - For a single-tag category, it will throw an error if the column has been assigned with a different tag.
+  - For a multi-tag category, tags provided will be added to already assigned tags.
 .PARAMETER Column
   Column to update tags.
 .PARAMETER Category
@@ -379,38 +363,74 @@ function Get-ColumnTags {
 .PARAMETER Tags
   Names of tags e.g. @("Confidential - GDPR")
   Can be used with multi tags e.g. @("GDPR", "HIPPA")
-.PARAMETER ForceUpdate
-  Switch to force update column tag.
-  When used: will remove any existing tags in that category on that column before assigning the given tags.
-  When not used:
-     For sigle tag category, if a tag is provided, will throw error if the column has been assigned with different tag.
-     For multi tag category, tags provided will be added to existing assigned tags.
 .EXAMPLE
-  Import-Module .\RedgateDataCatalog.psm1
-  Use-Classification -ClassificationAuthToken "auth-token"
-  $allColumns = Get-Columns -instanceName "sqlserver\sql2016" -databaseName "WideWorldImporters"
-
+  $allColumns = Get-ClassificationColumn -instanceName "sqlserver\sql2016" -databaseName "WideWorldImporters"
   $emailColumns  = $allColumns | Where-Object {$_.ColumnName -like "email"}
-  $emailColumns | Update-ColumnTags -category "Sensitivity" -tags @("Confidential - GDPR")
-  $emailColumns | Update-ColumnTags -category "Information Type" -tags @("Contact Info")
+  $emailColumns | Add-ClassificationColumnTag -category "Sensitivity" -tags @("Confidential - GDPR")
+  $emailColumns | Add-ClassificationColumnTag -category "Information Type" -tags @("Contact Info")
 
-  Updates all columns with name like email to  Sensitivity - "Confidential - GDPR" and "Information Type" - "Contact Info".
+  Updates all columns with name like email to "Sensitivity": "Confidential - GDPR" and "Information Type": "Contact Info".
 #>
-function Update-ColumnTags {
+function Add-ClassificationColumnTag {
     [CmdletBinding()]
     param(
-        [Parameter(ValueFromPipeline)] [object] $column,
+        [Parameter(ValueFromPipeline, Mandatory = $true)] [object] $column,
+        [Parameter(Mandatory = $true)] [string] $category,
+        [string[]] $tags
+    )
+    process {
+        UpdateColumnTagsInternal -column $column -category $category -tags $tags
+    }
+}
+
+<#
+.SYNOPSIS
+  Update column with the tags specified (with override).
+.DESCRIPTION
+  Update column with the tags specified. Only one tag category will be updated.
+  It removes any existing tags in that category on that column before assigning the given tags.
+.PARAMETER Column
+  Column to update tags.
+.PARAMETER Category
+  Name of tag category e.g. "Sensitivity".
+.PARAMETER Tags
+  Names of tags e.g. @("Confidential - GDPR")
+  Can be used with multi tags e.g. @("GDPR", "HIPPA")
+.EXAMPLE
+  $allColumns = Get-ClassificationColumn -instanceName "sqlserver\sql2016" -databaseName "WideWorldImporters"
+  $emailColumns  = $allColumns | Where-Object {$_.ColumnName -like "email"}
+  $emailColumns | Set-ClassificationColumnTag -category "Sensitivity" -tags @("Confidential - GDPR")
+  $emailColumns | Set-ClassificationColumnTag -category "Information Type" -tags @("Contact Info")
+
+  Updates all columns with name like email to "Sensitivity": "Confidential - GDPR" and "Information Type": "Contact Info".
+#>
+function Set-ClassificationColumnTag {
+    [CmdletBinding()]
+    param(
+        [Parameter(ValueFromPipeline, Mandatory = $true)] [object] $column,
+        [Parameter(Mandatory = $true)] [string] $category,
+        [string[]] $tags
+    )
+    process {
+        UpdateColumnTagsInternal -column $column -category $category -tags $tags -forceUpdate
+    }
+}
+
+function UpdateColumnTagsInternal {
+    [CmdletBinding()]
+    param(
+        [Parameter(ValueFromPipeline, Mandatory = $true)] [object] $column,
         [Parameter(Mandatory = $true)] [string] $category,
         [string[]] $tags,
         [switch] $forceUpdate
     )
 
     process {
-        $columnTags = $column | Get-ColumnTags
+        $columnTags = $column | GetColumnTags
         $columnTagIds = $columnTags.Tags
 
         $tagCategory = $allTagCategories[$category]
-        $tagsForCategory = ArrayToNameBasedHash($tagCategory.Tags)
+        $tagsForCategory = ArrayToNameBasedHashtable($tagCategory.Tags)
 
         $tagIds = New-Object System.Collections.ArrayList(, @( $columnTagIds | ForEach-Object { $_.id } ))
 
@@ -450,15 +470,15 @@ function Update-ColumnTags {
                 else {
                     if ($forceUpdate) {
                         $tagIds.Remove($singleValueCategory.id)
-                        $tagIds.Add($tagId)
+                        $tagIds.Add($tagId) | Out-Null
                     }
                     else {
                         $errorMessage = "Error :" +
                         " database: " + $column.databaseName +
-                        " schema: " + $column.schemaName +
-                        " table: " + $column.tableName +
-                        " column: " + $column.columnName +
-                        " Has already been assigned to " + $tagCategory.Name
+                        ", schema: " + $column.schemaName +
+                        ", table: " + $column.tableName +
+                        ", column: " + $column.columnName +
+                        " - category '" + $tagCategory.Name + "' already assigned."
                         Write-Error -Message $errorMessage -Category InvalidArgument
                         return
                     }
@@ -469,11 +489,11 @@ function Update-ColumnTags {
             }
         }
 
-        Update-ColumnWithTagIds -column $column -tagIds $tagIds.ToArray()
+        UpdateColumnWithTagIds -column $column -tagIds $tagIds.ToArray()
     }
 }
 
-function Update-ColumnWithTagIds {
+function UpdateColumnWithTagIds {
     [CmdletBinding()]
     param(
         [Parameter(ValueFromPipeline, Mandatory = $true)] [object] $column,
@@ -491,30 +511,29 @@ function Update-ColumnWithTagIds {
             TagIds = $tagIds
         }
         $body = $body | ConvertTo-Json;
-        Invoke-ApiCall -Uri $url -Method PUT -Body $body
+        InvokeApiCall -Uri $url -Method PUT -Body $body | Out-Null
     }
 }
 
 <#
 .SYNOPSIS
-  Copy classification across database with same schema.
+  Copy classification across databases with the same schema.
 .DESCRIPTION
-  Copy classification across database with same schema.
+  Copy classification across databases with the same schema. The classification is stored in SQL Data Catalog only, no live database is modified.
 .PARAMETER SourceInstanceName
   The fully-qualified name of the source SQL Server instance. For a named instance, this should take the form 'fully-qualified-host-name\instance-name' (e.g. "myserver.mydomain.com\myinstance"). For the default instance on a machine, just the fully-qualified name of the machine will suffice (e.g. "myserver.mydomain.com").
 .PARAMETER SourceDatabaseName
   Source database name.
 .PARAMETER DestinationInstanceName
   The fully-qualified name of the destination SQL Server instance. For a named instance, this should take the form 'fully-qualified-host-name\instance-name' (e.g. "myserver.mydomain.com\myinstance"). For the default instance on a machine, just the fully-qualified name of the machine will suffice (e.g. "myserver.mydomain.com").
-.PARAMETER SourceDatabaseName
+.PARAMETER DestinationDatabaseName
   Destination database name.
 .EXAMPLE
-  Import-Module .\RedgateDataCatalog.psm1
-  Use-Classification -ClassificationAuthToken "auth-token"
+  Copy-Classification -sourceInstanceName "(local)\MSSQL2017" -sourceDatabaseName "sourceDB" -destinationInstanceName "(local)\MSSQL2017" -destinationDatabaseName "destinationDB"
 
-  Copy-DatabaseClassification -sourceInstanceName "(local)\MSSQL2017" -sourceDatabaseName "sourceDB" -destinationInstanceName "(local)\MSSQL2017" -destinationDatabaseName "destinationDB"
+  Duplicates classification for the source database and assigns it to the target database.
 #>
-function Copy-DatabaseClassification {
+function Copy-Classification {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)] [string] $sourceInstanceName,
@@ -522,18 +541,18 @@ function Copy-DatabaseClassification {
         [Parameter(Mandatory = $true)] [string] $destinationInstanceName,
         [Parameter(Mandatory = $true)] [string] $destinationDatabaseName
     )
-    $classifiedColumns = Get-Columns -instanceName $sourceInstanceName -databaseName $sourceDatabaseName
-    $destinationInstanceId = Get-InstanceIdByName $destinationInstanceName
+    $classifiedColumns = Get-ClassificationColumn -instanceName $sourceInstanceName -databaseName $sourceDatabaseName
+    $destinationInstanceId = GetInstanceIdByName $destinationInstanceName
     foreach ($column in $classifiedColumns) {
         $column.instanceId = $destinationInstanceId
         $column.databaseName = $destinationDatabaseName
         if ($null -eq $column.tags.id) {
-            $tagIds = New-Object System.Collections.ArrayList(, @()) 
+            $tagIds = New-Object System.Collections.ArrayList(, @())
         }
         else {
             $tagIds = $column.tags.id
         }
-        Update-ColumnWithTagIds -column $column -tagIds $tagIds
+        UpdateColumnWithTagIds -column $column -tagIds $tagIds | Out-Null
     }
 }
 
@@ -545,24 +564,23 @@ function Copy-DatabaseClassification {
 .PARAMETER Columns
   Array of columns to bulk update.
 .PARAMETER Categories
-  Array of Category with its tags e.g.
+  Hashtable of categories with their tags e.g.
   $categories = @{
-    "Sensitivity" =  @("Confidential - GDPR")
+    "Sensitivity" = @("Confidential - GDPR")
     "Information Type" = @("Contact Info")
   }
 .EXAMPLE
-  Import-Module .\RedgateDataCatalog.psm1
-  Use-Classification -ClassificationAuthToken "auth-token"
-  $allColumns = Get-Columns -instanceName "sqlserver\sql2016" -databaseName "WideWorldImporters"
-
+  $allColumns = Get-ClassificationColumn -instanceName "sqlserver\sql2016" -databaseName "WideWorldImporters"
   $peopleTableColumns = $allColumns | Where-Object {$_.SchemaName -eq "Application" -and $_.TableName -eq "People" }
-  $categories = @{
+  $tagCategories = @{
     "Sensitivity" =  @("Confidential - GDPR")
     "Information Type" = @("Contact Info")
   }
-  Import-ColumnsTags -columns $peopleTableColumns -categories $categories
+  Set-Classification -columns $peopleTableColumns -categories $tagCategories
+
+  Overwrites all tag categories for given columns.
 #>
-function Import-ColumnsTags {
+function Set-Classification {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)] [object[]] $columns,
@@ -574,12 +592,12 @@ function Import-ColumnsTags {
 
         $tags = $categories[$category]
         $tagCategory = $allTagCategories[$category]
-        $tagsForCategory = ArrayToNameBasedHash($tagCategory.Tags)
+        $tagsForCategory = ArrayToNameBasedHashtable($tagCategory.Tags)
 
         if ($tagCategory.IsMultiValued -eq $true) {
             foreach ($tag in $tags) {
                 $tagId = $tagsForCategory[$tag].id
-                $tagIds.Add($tagId)
+                $tagIds.Add($tagId) | Out-Null
             }
             if ($tagIds.Count -le 0) {
                 return
@@ -593,7 +611,7 @@ function Import-ColumnsTags {
             }
 
             $tagId = $tagsForCategory[$tags].id
-            $tagIds.Add($tagId)
+            $tagIds.Add($tagId) | Out-Null
         }
     }
     $url = 'api/v1.0/columns/bulk-classification'
@@ -604,48 +622,56 @@ function Import-ColumnsTags {
     }
     $body = $body | ConvertTo-Json;
 
-    Invoke-ApiCall -Uri $url -Method PUT -Body $body
+    InvokeApiCall -Uri $url -Method PUT -Body $body | Out-Null
 }
 
 <#
 .SYNOPSIS
-  Export classification in CSV format.
+  Export classification to a file.
+.DESCRIPTION
+  Export classification to a file in a CSV format.
 .PARAMETER InstanceName
   The fully-qualified name of the SQL Server instance. For a named instance, this should take the form 'fully-qualified-host-name\instance-name' (e.g. "myserver.mydomain.com\myinstance"). For the default instance on a machine, just the fully-qualified name of the machine will suffice (e.g. "myserver.mydomain.com").
 .PARAMETER DatabaseName
   Optional parameter. Database name to fetch columns from. If not specified, all columns on the instance are exported.
-.PARAMETER exportFile
-  Specifies the csv file. Enter a path and file name. If the path is omitted, the default is the current location.
+.PARAMETER ExportFile
+  Specifies the output file. Enter a path and file name. If the path is omitted, the default is the current location.
   If the file exists, it will be overwritten.
+.PARAMETER Format
+  Specifies the output format. Currently supported: csv, zip.
 .EXAMPLE
-  Import-Module .\RedgateDataCatalog.psm1
-  Use-Classification -ClassificationAuthToken "auth-token"
-  Export-ClassificationCsv -instanceName "sqlserver\sql2016" -databaseName "WideWorldImporters" -exportFile "WideWorldImporters.csv"
-  Export-ClassificationCsv -instanceName "sqlserver\sql2016" -exportFile "sql2016.csv"
+  Export-Classification -instanceName "sqlserver\sql2016" -exportFile "sql2016.csv" -format 'csv'
+
+  Exports file with classification for all columns from the given instance in the CSV format.
+.EXAMPLE
+  Export-Classification -instanceName "sqlserver\sql2016" -databaseName "WideWorldImporters" -exportFile "WideWorldImporters.zip" -format 'zip'
+
+  Exports file with classification for all columns from the given database in the compressed CSV format.
 #>
-function Export-ClassificationCsv {
+function Export-Classification {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)] [string] $instanceName,
         [string] $databaseName,
-        [Parameter(Mandatory = $true)] [string] $exportFile
+        [Parameter(Mandatory = $true)] [string] $exportFile,
+        [Parameter(Mandatory = $true)][ValidateSet("csv", "zip")] [string] $format
     )
-    $instanceId = Get-InstanceIdByName $instanceName
+    $instanceId = GetInstanceIdByName $instanceName
     if ($databaseName) {
         $url =
         "api/v1.0/instances/" + $instanceId +
         "/databases/" + [uri]::EscapeDataString($databaseName) +
-        "/columns/all?format=csv"
+        "/columns/all?format=$format"
     }
     else {
         $url =
         "api/v1.0/instances/" + $instanceId +
-        "/columns/all?format=csv"
+        "/columns/all?format=$format"
     }
-    Invoke-ApiCall -Uri $url -Method Get -OutFile $exportFile
+    InvokeApiCall -Uri $url -Method Get -OutFile $exportFile
 }
 
-function Update-Classification {
+function UpdateClassificationInternal {
     [CmdletBinding()]
     param(
         [Parameter(ValueFromPipeline = $True, ValueFromPipelineByPropertyName = $True)] $cmd,
@@ -676,16 +702,18 @@ function Update-Classification {
               EXEC sp_addextendedproperty @name = @name, @level0type = 'schema', @level0name = @level0name, @level1type = 'table',
                   @level1name = @level1name, @level2type = 'column', @level2name = @level2name, @value = @value"
         }
-        $cmd.ExecuteNonQuery()
+        $cmd.ExecuteNonQuery() | Out-Null
     }
     catch {
-        Write-Host $_.Exception.Message
+        Write-Output $_.Exception.Message
     }
 }
 
 <#
 .SYNOPSIS
-  Push sensitivity label and information type for columns of a given database from Data Catalog to the database's extended properties.
+  Push sensitivity label and information type for columns to the live database's extended properties.
+.DESCRIPTION
+  Push sensitivity label and information type for columns of a given database from SQL Data Catalog to the live database's extended properties.
 .PARAMETER instanceName
   Fully qualified domain name of the instance
 .PARAMETER databaseName
@@ -698,11 +726,15 @@ function Update-Classification {
   Use this flag to overwrite any existing classification stored in extended properties by the classification from the SQL Data Catalog.
   Note that any unassigned classifications in Data Catalog will also remove the classifications in extended properties.
 .EXAMPLE
-  Import-Module .\RedgateDataCatalog.psm1
-  Use-Classification -ClassificationAuthToken "auth-token"
-  Export-ClassificationExtendedProperties -instanceName "sqlserver\sql2016" -databaseName "WideWorldImporters" -user "admin" -password "P@ssword123" -forceUpdate
+  Update-ClassificationInLiveDatabase -instanceName "sqlserver\sql2016" -databaseName "WideWorldImporters" -user "admin" -password "P@ssword123"
+
+  Sets the classification in the provided database with the values stored in SQL Data Catalog, but only for columns that don't have it set.
+.EXAMPLE
+  Update-ClassificationInLiveDatabase -instanceName "sqlserver\sql2016" -databaseName "WideWorldImporters" -user "admin" -password "P@ssword123" -forceUpdate
+
+  Overwrites the classification in the provided database with values stored in SQL Data Catalog.
 #>
-function Export-ClassificationExtendedProperties {
+function Update-ClassificationInLiveDatabase {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)] [string] $instanceName,
@@ -741,7 +773,7 @@ function Export-ClassificationExtendedProperties {
     else {
         $credentials = "User ID=$userName; Password=$password"
     }
-    $classifiedColumns = Get-Columns -instanceName $instanceName -databaseName $databaseName
+    $classifiedColumns = Get-ClassificationColumn -instanceName $instanceName -databaseName $databaseName
 
     $connection = New-Object System.Data.SqlClient.SqlConnection
     $connection.ConnectionString = "Server=$instanceName; Database=$databaseName; $credentials"
@@ -754,37 +786,38 @@ function Export-ClassificationExtendedProperties {
     $exists = $cmd.ExecuteScalar()
     if ($null -eq $exists) {
         $connection.Close()
-        Write-Host "Database does not support extended properties"
+        Write-Output "Database does not support extended properties"
         return
     }
-    $cmd.Parameters.AddWithValue("@level0type", 'Schema')
-    $cmd.Parameters.AddWithValue("@level1type", 'Table')
-    $cmd.Parameters.AddWithValue("@level2type", 'Column')
-    $cmd.Parameters.AddWithValue("@value", $null)
-    $cmd.Parameters.AddWithValue("@name", '')
-    $cmd.Parameters.AddWithValue("@level0name", '')
-    $cmd.Parameters.AddWithValue("@level1name", '')
-    $cmd.Parameters.AddWithValue("@level2name", '')
-
+    $null = . {
+        $cmd.Parameters.AddWithValue("@level0type", 'Schema')
+        $cmd.Parameters.AddWithValue("@level1type", 'Table')
+        $cmd.Parameters.AddWithValue("@level2type", 'Column')
+        $cmd.Parameters.AddWithValue("@value", $null)
+        $cmd.Parameters.AddWithValue("@name", '')
+        $cmd.Parameters.AddWithValue("@level0name", '')
+        $cmd.Parameters.AddWithValue("@level1name", '')
+        $cmd.Parameters.AddWithValue("@level2name", '')
+    }
     Foreach ($col in $classifiedColumns) {
         $cmd.Parameters["@level0name"].Value = $col.schemaName
         $cmd.Parameters["@level1name"].Value = $col.tableName
         $cmd.Parameters["@level2name"].Value = $col.columnName
 
         if ($forceUpdate -eq $true) {
-            Update-Classification -cmd $cmd -name 'sys_information_type_name' -value $col.informationType
+            UpdateClassificationInternal -cmd $cmd -name 'sys_information_type_name' -value $col.informationType
             if ([string]::IsNullOrEmpty($col.informationType)) {
-                Update-Classification -cmd $cmd -name 'sys_information_type_id'
+                UpdateClassificationInternal -cmd $cmd -name 'sys_information_type_id'
             }
             else {
-                Update-Classification -cmd $cmd -name 'sys_information_type_id' -value $infoTypes[$col.informationType]
+                UpdateClassificationInternal -cmd $cmd -name 'sys_information_type_id' -value $infoTypes[$col.informationType]
             }
-            Update-Classification -cmd $cmd -name 'sys_sensitivity_label_name' -value $col.sensitivityLabel
+            UpdateClassificationInternal -cmd $cmd -name 'sys_sensitivity_label_name' -value $col.sensitivityLabel
             if ([string]::IsNullOrEmpty($col.sensitivityLabel)) {
-                Update-Classification -cmd $cmd -name 'sys_sensitivity_label_id'
+                UpdateClassificationInternal -cmd $cmd -name 'sys_sensitivity_label_id'
             }
             else {
-                Update-Classification -cmd $cmd -name 'sys_sensitivity_label_id' -value $sensitivityLabels[$col.sensitivityLabel]
+                UpdateClassificationInternal -cmd $cmd -name 'sys_sensitivity_label_id' -value $sensitivityLabels[$col.sensitivityLabel]
             }
         }
         else {
@@ -802,7 +835,7 @@ function Export-ClassificationExtendedProperties {
                     $cmd.ExecuteNonQuery()
                 }
                 catch {
-                    Write-Host $_.Exception.Message
+                    Write-Output $_.Exception.Message
                 }
             }
 
@@ -820,7 +853,7 @@ function Export-ClassificationExtendedProperties {
                     $cmd.ExecuteNonQuery()
                 }
                 catch {
-                    Write-Host $_.Exception.Message
+                    Write-Output $_.Exception.Message
                 }
             }
         }
@@ -830,15 +863,17 @@ function Export-ClassificationExtendedProperties {
 
 <#
 .SYNOPSIS
-  Enables authorization using Active Directory groups and users.
+  Enables authorization in SQL Data Catalog.
+.DESCRIPTION
+  Enables authorization in SQL Data Catalog based on Active Directory groups and users.
 .PARAMETER fullAccessActiveDirectoryUserOrGroup
   Active Directory user or group that will be granted full access to the Data Catalog.
 .EXAMPLE
-  Import-Module .\RedgateDataCatalog.psm1
-  Use-Classification -ClassificationAuthToken "auth-token"
-  Enable-Authorization -fullAccessActiveDirectoryUserOrGroup "SqlDataCatalog-FullAccess"
+  Enable-SqlDataCatalogAuthorization -fullAccessActiveDirectoryUserOrGroup "SqlDataCatalog-Admins"
+
+  Enables authorization in SQL Data Catalog granting full access to the Active Directory "SqlDataCatalog-Admins" group.
 #>
-function Enable-Authorization {
+function Enable-SqlDataCatalogAuthorization {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)] [string] $fullAccessActiveDirectoryUserOrGroup
@@ -849,7 +884,7 @@ function Enable-Authorization {
         ActiveDirectoryPrincipal = $fullAccessActiveDirectoryUserOrGroup
         Role                     = 1
     } | ConvertTo-Json
-    Invoke-ApiCall -Uri $url -Method PUT -Body $body
+    InvokeApiCall -Uri $url -Method PUT -Body $body | Out-Null
 }
 
 
@@ -857,16 +892,16 @@ function Enable-Authorization {
 .SYNOPSIS
   Start scan of a registered instance.
 .DESCRIPTION
-  Scans the instance for new databases.
+  Scans the instance for new databases. Updates data stored in SQL Data Catalog based on metadata read from the live instance provided.
 .PARAMETER FullyQualifiedInstanceName
   The fully-qualified name of the SQL Server instance to be registered. For a named instance, this should take the form 'fully-qualified-host-name\instance-name' (e.g. "myserver.mydomain.com\myinstance"). For the default instance on a machine, just the fully-qualified name of the machine will suffice (e.g. "myserver.mydomain.com").
 .EXAMPLE
-  Start-InstanceScan -FullyQualifiedInstanceName 'mysqlserver.mydomain.com\myinstancename'
+  Start-ClassificationInstanceScan -FullyQualifiedInstanceName 'mysqlserver.mydomain.com\myinstancename'
 
-  Update instance "myinstancename" running on the "mysqlserver.mydomain.com" machine. Windows Authentication will be used to connect to this intance.
+  Start a scan of a live instance "myinstancename" running on the "mysqlserver.mydomain.com" machine, which results in updating data about this instance stored in SQL Data Catalog.
 #>
 
-function Start-InstanceScan {
+function Start-ClassificationInstanceScan {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $True, Position = 0, ValueFromPipeLine = $True)]
@@ -874,40 +909,41 @@ function Start-InstanceScan {
     )
 
     process {
-        $instanceId = Get-InstanceIdByName $FullyQualifiedInstanceName
+        $instanceId = GetInstanceIdByName $FullyQualifiedInstanceName
         $url = "api/v1.0/instances/" + $instanceId + "/scan"
 
-        Invoke-ApiCall -Uri $url -Method Post
+        InvokeApiCall -Uri $url -Method Post | Out-Null
     }
 }
 
-function ArrayToNameBasedHash ($items) {
-  $result = @{}
-  $items | foreach { $result[$_.Name] = $_ }
-  return $result
+function ArrayToNameBasedHashtable ($items) {
+    $result = @{ }
+    $items | ForEach-Object { $result[$_.Name] = $_ }
+    return $result
 }
 
-Export-ModuleMember -Function Use-Classification
-Export-ModuleMember -Function Add-RegisteredSqlServerInstance
-Export-ModuleMember -Function Update-RegisteredSqlServerInstance
-Export-ModuleMember -Function Start-InstanceScan
-Export-ModuleMember -Function Get-RegisteredInstances
-Export-ModuleMember -Function Get-Databases
-Export-ModuleMember -Function Get-Columns
-Export-ModuleMember -Function Update-ColumnTags
-Export-ModuleMember -Function Import-ColumnsTags
-Export-ModuleMember -Function Copy-DatabaseClassification
-Export-ModuleMember -Function Export-ClassificationCsv
-Export-ModuleMember -Function Export-ClassificationExtendedProperties
-Export-ModuleMember -Function Enable-Authorization
-Export-ModuleMember -Function Get-TagCategories
+Export-ModuleMember -Function Connect-SqlDataCatalog
+Export-ModuleMember -Function Register-ClassificationInstance
+Export-ModuleMember -Function Set-ClassificationInstanceCredential
+Export-ModuleMember -Function Start-ClassificationInstanceScan
+Export-ModuleMember -Function Get-ClassificationInstance
+Export-ModuleMember -Function Get-ClassificationDatabase
+Export-ModuleMember -Function Get-ClassificationColumn
+Export-ModuleMember -Function Add-ClassificationColumnTag
+Export-ModuleMember -Function Set-ClassificationColumnTag
+Export-ModuleMember -Function Set-Classification
+Export-ModuleMember -Function Copy-Classification
+Export-ModuleMember -Function Export-Classification
+Export-ModuleMember -Function Update-ClassificationInLiveDatabase
+Export-ModuleMember -Function Enable-SqlDataCatalogAuthorization
+Export-ModuleMember -Function Get-ClassificationTaxonomy
 
 
 # SIG # Begin signature block
 # MIIe2AYJKoZIhvcNAQcCoIIeyTCCHsUCAQExDzANBglghkgBZQMEAgEFADB5Bgor
 # BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
-# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCBkXzrIYH/FBgVR
-# rWw6NgJPlsiahyR2LYFUQwGwHgDv16CCGb0wggSEMIIDbKADAgECAhBCGvKUCYQZ
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCCGCSmL3Ok9hUcA
+# 79YTaIlBPcAzoyR8vzIbPViPyzblaqCCGb0wggSEMIIDbKADAgECAhBCGvKUCYQZ
 # H1IKS8YkJqdLMA0GCSqGSIb3DQEBBQUAMG8xCzAJBgNVBAYTAlNFMRQwEgYDVQQK
 # EwtBZGRUcnVzdCBBQjEmMCQGA1UECxMdQWRkVHJ1c3QgRXh0ZXJuYWwgVFRQIE5l
 # dHdvcmsxIjAgBgNVBAMTGUFkZFRydXN0IEV4dGVybmFsIENBIFJvb3QwHhcNMDUw
@@ -1050,23 +1086,23 @@ Export-ModuleMember -Function Get-TagCategories
 # IzAhBgNVBAMTGkNPTU9ETyBSU0EgQ29kZSBTaWduaW5nIENBAhEAmmCfmKmbwpls
 # h+jmCyt8njANBglghkgBZQMEAgEFAKCBhDAYBgorBgEEAYI3AgEMMQowCKACgACh
 # AoAAMBkGCSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAM
-# BgorBgEEAYI3AgEVMC8GCSqGSIb3DQEJBDEiBCDC6p6bwRaj9MdVdIqS9Y15tpA7
-# yuOQqTrg+9nkwzJ4GTANBgkqhkiG9w0BAQEFAASCAQBSYXNfNAN69TunkEX7k3BR
-# M5/5vfRJ92ofB88bIVjKfNI2R/zdi+PJpXvfYeFGX/eZOggaH2JVs5T4KtNiMDHz
-# pEbo3rYtuJQ6kjUuQ7VTCA75zx6viTqtQB+OvqU+Ro6EHhaFI1xkpyQKB66lFzJl
-# JHBHSCwdBaDu9M525KEhsY/oepvuZpbjd/lytobC8xM4804qEjwyVHaNGXLs/GYL
-# fwr5DH3RYkWKyGZUyBpD5L2N4pkHmrHZoT8roDAqnwccikjLhiDq32KNdHxq7u1D
-# 0e2YrCJGS12oSRRyE/54iF9KZRCfctfxTD2o2cBu60I9DKxwhyBBuIkNDqBFMRf4
+# BgorBgEEAYI3AgEVMC8GCSqGSIb3DQEJBDEiBCAgj6kHcX3FUh6tGwE1EWABFW+0
+# /J9d/DWvXORitJyx4zANBgkqhkiG9w0BAQEFAASCAQA85Vedqz4ka9Wtz1uOdXvP
+# XerkWMjTfhHulICtyiSGAjhSXgE6+BwY0uxJqhEchxFf+epvIHE7fXYccJEQrhx7
+# 2B8d88J3CInR2BB9qtvvYXe98DtAku+OImdfKWPoM4vCN4dEqfMz7713bq0P1yMw
+# 3Ay0F7lNKYwO2uCrofcmbD7ivosISROWmR9bN+EG5n5hPCnVHjsKlDVFd8Er1s/E
+# 3qUwLoe7/1PdSLg8/IiiuKjWlveEjkxAvrxMawzvQeTHJhhYum35yanRCZyuWUiw
+# lfrX9HCJlaPsLxn7lzwraAWgIVtxNcDdN6G6xhawfBspWSBZZUxIumfSb9uDYN/h
 # oYICKDCCAiQGCSqGSIb3DQEJBjGCAhUwggIRAgEBMIGOMHoxCzAJBgNVBAYTAkdC
 # MRswGQYDVQQIExJHcmVhdGVyIE1hbmNoZXN0ZXIxEDAOBgNVBAcTB1NhbGZvcmQx
 # GjAYBgNVBAoTEUNPTU9ETyBDQSBMaW1pdGVkMSAwHgYDVQQDExdDT01PRE8gVGlt
 # ZSBTdGFtcGluZyBDQQIQK3PbdGMRTFpbMkryMFdySTAJBgUrDgMCGgUAoF0wGAYJ
-# KoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMTkwOTE2MTEx
-# MTI4WjAjBgkqhkiG9w0BCQQxFgQUktKIHWnD2OxEgLzbPzp/xx+fQ3cwDQYJKoZI
-# hvcNAQEBBQAEggEARdFrQ4fEmCIhUpnBvgDCHHDAGMcIsc6iJEEwFmtjP+7nHB84
-# hLeGoHw3xWqxqGJTmhFlUiGNxE+fOAxU6vsjb52iMc32mrlQ4bGKs4hy0zGK8Nz3
-# PKQGUMX06FyttnKX7doWFXY3rDAUnRW7PBAqMfxx8bp+fYGAN0Yuw+Gs7hfpZMQG
-# cbxBQ4dNmTGQrYjYUIfLiMX3OghZ7dTB3rRV6sVirgd79cyo/wFDQ1VZMsyG1ort
-# O3NLgE8xdR9lrVeEx8n/bCc64DoydVMTs3lxiOFH+N2bHObSkzQEiRXD8UprpeRx
-# mngklKBsvaDF5i7Ac0Hx4MO4VvNLxA+0bE4I0Q==
+# KoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMTkwOTMwMDcy
+# MDQwWjAjBgkqhkiG9w0BCQQxFgQUXAtqx7R8hnzrOASoQpjEh3n6fyowDQYJKoZI
+# hvcNAQEBBQAEggEArMTqo7NV1mEPilm5cVS9r27Q69FihH8zxIP2Zv0z9pyfKWEm
+# MzoJ/kaqhIGKypdILVqBDaPfZaQDA3ZMTpW7owBk3uMKjVTyRMeZxNx/KpQT71dG
+# QGhjrruJZvV+4r4ilAzPYM4JagBcWmSjBXEUC7cpwQihNVlu/R67iVgpXD/ftKrr
+# c6om73H/gegXfwYnBiLJCSCZ/WCNOeqQgvxlaVruh2EsZoB5KvSTi/o3HAWAYKE5
+# srbJzysm9iPdeJ/5fx3YgkycJlUK8e6jcMblagMZtybASxjEm/66Xb/EiUuawaPH
+# FrvacrGLWK4h4aWigfq4sf4qwK7n07780WnLqQ==
 # SIG # End signature block

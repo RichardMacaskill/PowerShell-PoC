@@ -13,15 +13,15 @@ Import-Module .\DataMasker.psm1 -Force
 $instanceName = 'rm-iclone1.testnet.red-gate.com'
 $databaseName = 'StackoverFlow2010'
 $inputMaskingSetPath = "\\rm-iclone1\Masking Set Files\Shell\StackOverflow2010 Automation.DMSMaskSet"
-$outputMaskingSetPath = "\\rm-iclone1\Masking Set Files\Generated\StackOverflow2010 Generated 6.DMSMaskSet"
+$outputMaskingSetPath = "\\rm-iclone1\Masking Set Files\Generated\StackOverflow2010 Generated.DMSMaskSet"
 
 # connect to your SQL Data Catalog instance - you'll need to generate an auth token in the UI
-Use-Classification -ClassificationAuthToken $dataCatalogAuthToken -ServerUrl $dataCatalogServer
+Connect-SqlDataCatalog  -ClassificationAuthToken $dataCatalogAuthToken -ServerUrl $dataCatalogServer
 
-$maskingDataSetTagCategoryId = (Get-TagCategories)["Masking Data Set"].Id
+$maskingDataSetTagCategoryId = ((Get-ClassificationTaxonomy).TagCategories | Where-Object { $_.Name -eq "Masking Data Set" }).id
 Write-Output "Getting columns"
 
-$allColumns = Get-Columns -instanceName $instanceName -databaseName $databaseName
+$allColumns = Get-ClassificationColumn -instanceName $instanceName -databaseName $databaseName
 
 # Filter on sensitivity label text match for GDPR 
 #$maskableColumns = $allColumns | Where-Object { $_.sensitivityLabel -like "*GDPR*" }
@@ -60,13 +60,17 @@ foreach($schema in $schemas){
                         #update the column's plan type & comments in the controller based on sensitivity level
                         $sensitivity = $allColumns | Where-Object {$_.schemaName -like $schema -and $_.tableName -like $table -and $_.columnName -like $column} | Select-Object -ExpandProperty sensitivityLabel -First 1
                         $maskingSet = Update-PlanInformation -MaskingSet $maskingSet -Schema $schema -Table $table -Column $column -Sensitivity $sensitivity
-
-                        #add the column to a masking rule if a data set label has been selected
+                       
+                       #add the column to a masking rule if a data set label has been selected
                         $dataSetLabel = $allColumns | Where-Object {$_.schemaName -like $schema -and $_.tableName -like $table -and $_.columnName -like $column} | Select-Object -ExpandProperty tags | Where-Object {$_.categoryId -eq $maskingDataSetTagCategoryId} | Select-Object -ExpandProperty name
+                        
                         if($dataSetLabel){
                             #construct info for each classified column by modifying a template, to add to this table's substitution rule
+                             Write-Output "Generating masking xml for column $column in table $table."
+                            #construct info for each classified column by modifying a template, to add to this table"s substitution rule
                             $columnXml = Format-ColumnInfo -MaskingSet $maskingSet -Schema $schema -Table $table -Column $column
                         
+                            
                             #if we can find a data set to use, add it to the column 
                             #and add the column to the substitution rule
                             $dataSetXml = Get-DataSet -DataSetLabel $dataSetLabel
@@ -74,7 +78,7 @@ foreach($schema in $schemas){
                                 $substitutionRuleXml = Add-ColumnToSubstitutionRule -SubstitutionRule $substitutionRuleXml -Column $columnXml -DataSet $dataSetXml
                                 $haveFoundColumnsWithDataSets = $true
                             } else {
-                               # Write-Output "Data set $dataSetLabel doesn't exist for column $schema.$table.$column. Skipping."
+                                Write-Output "Data set $dataSetLabel doesn't exist for column $schema.$table.$column. Skipping."
                             }
                         }
                     }
@@ -88,5 +92,7 @@ foreach($schema in $schemas){
         }
     }
 }
-
 $maskingSet.Save($outputMaskingSetPath)
+
+Write-Output "Masking set generated as $outputMaskingSetPath\n" 
+Get-ChildItem $outputMaskingSetPath

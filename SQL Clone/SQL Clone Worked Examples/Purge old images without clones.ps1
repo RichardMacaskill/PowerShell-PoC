@@ -8,13 +8,17 @@ foreach ($image in $oldImages)
 {
     $clones = Get-SqlClone | Where-Object {$_.ParentImageId -eq $image.Id}
     
-    if (!($clones -eq $null))
+    if (!($null -eq $clones))
     {
         "Will not remove image {0} because it has {1} dependent clone(s)." -f $image.Name, $clones.Count
     }
     else
     {
+       
+        if ($image.Name -like '*Advent*')
+        {
         Remove-SqlCloneImage -Image $image
         "Removed image {0}." -f $image.Name
+        }
     }
 }
