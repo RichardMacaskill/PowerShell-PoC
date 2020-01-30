@@ -1,5 +1,5 @@
 <#
-  For more information and a worked example refer to https://www.red-gate.com/data-catalog/classify-with-powershell .
+  For more information and worked examples refer to https://www.red-gate.com/data-catalog/automation .
 #>
 
 #Requires -Version 5.1
@@ -8,42 +8,54 @@
 .SYNOPSIS
   Connect to SQL Data Catalog.
 .DESCRIPTION
-  Allows other commandlets to authenticate with the API using $ClassificationAuthToken parameter.
+  Allows other commandlets to authenticate with the API.
+  This cmdlet should be called once, before any other functions are called.
+  This function takes an auth token as a parameter and temporarily stores it,
+  to allow the other functions to authenticate with the API.
 .PARAMETER ServerUrl
   Url of the server where SQL Data Catalog is hosted.
-.PARAMETER ClassificationAuthToken
+.PARAMETER AuthToken
   Authentication token which can be obtained from the Web Client. Please refer to https://www.red-gate.com/data-catalog/working-with-rest-api for more information.
 .EXAMPLE
   Import-Module .\RedgateDataCatalog.psm1
   $server="http://localhost:15156"
   $authToken="NjIzODE1Mjk5MjgzNTUwMjA4OjVhNzkyNWE0LGA4OjQtNGM1ZC1hOGY4LTJhMzM2ODk0M2NaBc=="
-  Connect-SqlDataCatalog -ServerUrl $server -ClassificationAuthToken $authToken
+  Connect-SqlDataCatalog -ServerUrl $server -AuthToken $authToken
 
-  Allows other commandlets to authenticate with the API using $ClassificationAuthToken parameter.
+  Allows other commandlets to authenticate with the API using $AuthToken parameter.
 #>
 
 function Connect-SqlDataCatalog {
     param(
-        [Parameter(Mandatory = $true, Position = 0)][string] $ServerUrl,
-        [Parameter(Mandatory = $true, Position = 1)] $ClassificationAuthToken
+        [Alias("Url")]
+        [Parameter(Mandatory, Position = 0)][uri] $ServerUrl,
+        [Alias("ClassificationAuthToken", "Token")]
+        [Parameter(Mandatory, Position = 1)] $AuthToken
     )
 
     $Script:ClassificationURL = $ServerUrl
+    $expectedServerVersion = '1.7.1.12717'
 
-    $authHeader = @{ }
-    $authHeader.Add("Authorization", "Bearer $ClassificationAuthToken")
-    $Script:ClassificationAuthHeader = $authHeader
+    $OsInfo = [Environment]::OSVersion.VersionString
+    $PowerShellVersion = $PSVersionTable.PSVersion
+    $PowerShellInfo = "$($PSVersionTable.PSEdition), $PSSessionApplicationName"
 
-    $Script:allTagCategories = ArrayToNameBasedHashtable((Get-ClassificationTaxonomy).TagCategories)
+    $UserAgent = "SqlDataCatalog-PSModule ($OsInfo) SqlDataCatalog-WebAPI/$expectedServerVersion PowerShell/$PowerShellVersion ($PowerShellInfo)"
 
-    $expectedServerVersion = '1.6.1.9770'
+    $Script:ClassificationHeader = @{
+        'Authorization' = "Bearer $AuthToken"
+        'User-Agent' = $UserAgent
+    }
+
     $status = InvokeApiCall -Uri 'api/status' -Method Get
     if (!$status.IsOk) {
-        Write-Error "The Data Catalog server has encountered an error. $($status.ErrorMessage)"
+        throw "The Data Catalog server has encountered an error. $($status.ErrorMessage)"
     }
     if ($status.Version -ne $expectedServerVersion) {
-        Write-Error "Expected version $($expectedServerVersion) but found version $($status.Version). Re-download this PowerShell module from the server."
+        throw "Expected version $($expectedServerVersion) but found version $($status.Version). Re-download this PowerShell module from the server."
     }
+
+    $Script:allTagCategories = ArrayToNameBasedHashtable((Get-ClassificationTaxonomy).TagCategories)
 }
 
 <#
@@ -82,7 +94,8 @@ function Connect-SqlDataCatalog {
 function Register-ClassificationInstance {
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory = $True, Position = 0, ValueFromPipeLine = $True)]
+        [Alias("InstanceName", "Name")]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeLine)]
         [string] $FullyQualifiedInstanceName,
 
         [string] $UserId = $null,
@@ -128,7 +141,8 @@ function Register-ClassificationInstance {
 function Set-ClassificationInstanceCredential {
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory = $True, Position = 0, ValueFromPipeLine = $True)]
+        [Alias("InstanceName", "Name")]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeLine)]
         [string] $FullyQualifiedInstanceName,
 
         [string] $UserId = $null,
@@ -155,18 +169,29 @@ function InvokeApiCall {
         $Uri,
         $Method,
         $Body,
-        $OutFile
+        $OutFile,
+        [switch] $ForLocation
     )
 
-    if ($null -eq $ClassificationURL) {
+    if ($null -eq $Script:ClassificationURL) {
         throw 'Run Connect-SqlDataCatalog before using any other cmdlet. For help run: Get-Help Connect-SqlDataCatalog'
     }
 
-    $Uri = $script:ClassificationURL + "/" + $Uri
+    $Uri = [uri]::new($Script:ClassificationURL, $Uri)
 
     try {
-        Invoke-RestMethod -Uri $Uri -Method $Method -Headers $ClassificationAuthHeader `
-            -Body $Body -ContentType 'application/json; charset=utf-8' -OutFile $OutFile
+        if (-not $ForLocation) {
+            Invoke-RestMethod -Uri $Uri -Method $Method -Headers $Script:ClassificationHeader `
+                -Body $Body -ContentType 'application/json; charset=utf-8' -OutFile $OutFile
+        }
+        else {
+            $result = Invoke-WebRequest -Uri $Uri -Method $Method -Headers $Script:ClassificationHeader `
+                -Body $Body -ContentType 'application/json; charset=utf-8' -UseBasicParsing
+
+            if ($result.StatusDescription -eq "Accepted") {
+                $result.Headers.Location
+            }
+        }
     }
     catch {
         $ErrorObject = $_.Exception
@@ -177,11 +202,16 @@ function InvokeApiCall {
             $reader.BaseStream.Position = 0
             $reader.DiscardBufferedData()
             $responseBody = $reader.ReadToEnd();
-            Write-Error $responseBody
+            if ($Response.StatusDescription -eq 'Unauthorized') {
+                throw 'SQL Data Catalog server is not able to authorize you. Check if the Auth Token provided is valid.'
+            }
+            Write-Error "$($ErrorObject.Message) $responseBody"
         }
-
-        if ($ErrorObject) {
+        elseif ($ErrorObject) {
             Write-Error $ErrorObject
+        }
+        else {
+            Write-Error $_
         }
     }
 }
@@ -198,10 +228,10 @@ function InvokeApiCall {
   Gets all tag categories and their tags, as well as free-text attributes.
 #>
 function Get-ClassificationTaxonomy {
-    $url = "api/v1.0/tagcategories"
+    $url = "api/v1.0/taxonomy/tag-categories"
     $tagCategories = InvokeApiCall -Uri $url -Method Get
 
-    $url = "api/v1.0/taxonomy/freetextattributes"
+    $url = "api/v1.0/taxonomy/free-text-attributes"
     $freeTextAttributes = InvokeApiCall -Uri $url -Method Get
 
     $taxonomy = [pscustomobject]@{
@@ -226,15 +256,12 @@ function Get-ClassificationInstance {
     $url = "api/v1.0/instances"
     $instances = InvokeApiCall -Uri $url -Method Get
 
-    $result = @()
-
     foreach ($instance in $instances) {
-        $result += [pscustomobject]@{
+        [pscustomobject]@{
             InstanceId = $instance.instance.id;
             Name       = $instance.instance.name
         }
     }
-    return $result
 }
 
 function GetInstanceIdByName {
@@ -245,7 +272,8 @@ function GetInstanceIdByName {
     $instances = @( Get-ClassificationInstance | Where-Object { $_.Name -eq $instanceName })
 
     if ($instances.Length -eq 0) {
-        Write-Error "Instance $instanceName not found."
+        Write-Error "Instance '$instanceName' not found."
+        return
     }
 
     return $instances[0].InstanceId
@@ -267,10 +295,10 @@ function GetInstanceIdByName {
 function Get-ClassificationDatabase {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory = $True, Position = 0, ValueFromPipeLine = $True)]
-        [string] $instanceName
+        [Parameter(Mandatory, Position = 0, ValueFromPipeLine)]
+        [string] $InstanceName
     )
-    $instanceId = GetInstanceIdByName $instanceName
+    $instanceId = GetInstanceIdByName $InstanceName
 
     $url =
     "api/v1.0/instances/" + $instanceId +
@@ -309,13 +337,13 @@ function Get-ClassificationDatabase {
 function Get-ClassificationColumn {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory = $True, Position = 0, ValueFromPipeLine = $True)]
-        [string] $instanceName,
+        [Parameter(Mandatory, Position = 0, ValueFromPipelineByPropertyName)]
+        [string] $InstanceName,
 
-        [Parameter(Mandatory = $True, Position = 1, ValueFromPipeLine = $True)]
-        [string] $databaseName
+        [Parameter(Mandatory, Position = 1, ValueFromPipelineByPropertyName)]
+        [string] $DatabaseName
     )
-    $instanceId = GetInstanceIdByName $instanceName
+    $instanceId = GetInstanceIdByName $InstanceName
 
     $url =
     "api/v1.0/instances/" + $instanceId +
@@ -325,8 +353,8 @@ function Get-ClassificationColumn {
 
     foreach ($classifiedColumn in $columnResult.ClassifiedColumns) {
         $classifiedColumn | Add-Member NoteProperty 'InstanceId' $instanceId
-        $classifiedColumn | Add-Member NoteProperty 'InstanceName' $instanceName
-        $classifiedColumn | Add-Member NoteProperty 'DatabaseName' $databaseName
+        $classifiedColumn | Add-Member NoteProperty 'InstanceName' $InstanceName
+        $classifiedColumn | Add-Member NoteProperty 'DatabaseName' $DatabaseName
     }
     return $columnResult.ClassifiedColumns
 }
@@ -334,7 +362,7 @@ function Get-ClassificationColumn {
 function GetColumnTags {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory = $True, Position = 0, ValueFromPipeline)] [object] $column
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline)] [object] $column
     )
 
     $url =
@@ -374,12 +402,12 @@ function GetColumnTags {
 function Add-ClassificationColumnTag {
     [CmdletBinding()]
     param(
-        [Parameter(ValueFromPipeline, Mandatory = $true)] [object] $column,
-        [Parameter(Mandatory = $true)] [string] $category,
-        [string[]] $tags
+        [Parameter(ValueFromPipeline, Mandatory)] [object] $Column,
+        [Parameter(Mandatory)] [string] $Category,
+        [string[]] $Tags
     )
     process {
-        UpdateColumnTagsInternal -column $column -category $category -tags $tags
+        UpdateColumnTagsInternal -column $Column -category $Category -tags $Tags
     }
 }
 
@@ -407,31 +435,36 @@ function Add-ClassificationColumnTag {
 function Set-ClassificationColumnTag {
     [CmdletBinding()]
     param(
-        [Parameter(ValueFromPipeline, Mandatory = $true)] [object] $column,
-        [Parameter(Mandatory = $true)] [string] $category,
-        [string[]] $tags
+        [Parameter(ValueFromPipeline, Mandatory)] [object] $Column,
+        [Parameter(Mandatory)] [string] $Category,
+        [string[]] $Tags
     )
     process {
-        UpdateColumnTagsInternal -column $column -category $category -tags $tags -forceUpdate
+        UpdateColumnTagsInternal -column $Column -category $Category -tags $Tags -forceUpdate
     }
 }
 
 function UpdateColumnTagsInternal {
     [CmdletBinding()]
     param(
-        [Parameter(ValueFromPipeline, Mandatory = $true)] [object] $column,
-        [Parameter(Mandatory = $true)] [string] $category,
+        [Parameter(ValueFromPipeline, Mandatory)] [object] $column,
+        [Parameter(Mandatory)] [string] $category,
         [string[]] $tags,
         [switch] $forceUpdate
     )
+    begin {
+        $tagCategory = $Script:allTagCategories[$category]
+        if (-not $tagCategory) {
+            $errorMessage = "Cannot find a tag category '" + $category + "'. Make sure that your taxonomy contains it. If you added this tag just a moment ago, rerun Connect-SqlDataCatalog."
+            Write-Error -Message $errorMessage -Category InvalidArgument
+            return
+        }
+        $tagsForCategory = ArrayToNameBasedHashtable($tagCategory.Tags)
+    }
 
     process {
         $columnTags = $column | GetColumnTags
         $columnTagIds = $columnTags.Tags
-
-        $tagCategory = $allTagCategories[$category]
-        $tagsForCategory = ArrayToNameBasedHashtable($tagCategory.Tags)
-
         $tagIds = New-Object System.Collections.ArrayList(, @( $columnTagIds | ForEach-Object { $_.id } ))
 
         if ($tagCategory.IsMultiValued -eq $true) {
@@ -446,22 +479,32 @@ function UpdateColumnTagsInternal {
 
             foreach ($tag in $tags) {
                 $tagId = $tagsForCategory[$tag].id
+                if (-not $tagId) {
+                    $errorMessage = "Cannot find a tag '" + $tag + "' in category '" + $tagCategory.Name + "'. Make sure that your taxonomy contains it. If you added this tag just a moment ago, rerun Connect-SqlDataCatalog."
+                    Write-Error -Message $errorMessage -Category InvalidArgument
+                    return
+                }
                 if ( -Not ($tagIds.id -contains $tagId)) {
-                    $tagIds.Add($tagId)
+                    $tagIds.Add($tagId) | Out-Null
                 }
             }
-            if ($tagIds.Count -le 0) {
+            if ($tagIds.Count -eq 0) {
                 return
             }
         }
         else {
             if ($tags.Count -gt 1) {
-                $errorMessage = "Tag category: " + $tagCategory.Name + " can accept only one tag"
+                $errorMessage = "Tag category '" + $tagCategory.Name + "' can accept only a single tag."
                 Write-Error -Message $errorMessage -Category InvalidArgument
                 return
             }
 
             $tagId = $tagsForCategory[$tags].id
+            if (-not $tagId) {
+                $errorMessage = "Cannot find a tag '" + $tags + "' in category '" + $tagCategory.Name + "'. Make sure that your taxonomy contains it. If you added this tag just a moment ago, rerun Connect-SqlDataCatalog."
+                Write-Error -Message $errorMessage -Category InvalidArgument
+                return
+            }
             $singleValueCategory = $columnTagIds | Where-Object { $_.categoryId -eq $tagCategory.id }
             if ($singleValueCategory) {
                 if ($singleValueCategory.id -eq $tagId ) {
@@ -485,7 +528,7 @@ function UpdateColumnTagsInternal {
                 }
             }
             else {
-                $tagIds.Add($tagId)
+                $tagIds.Add($tagId) | Out-Null
             }
         }
 
@@ -496,7 +539,7 @@ function UpdateColumnTagsInternal {
 function UpdateColumnWithTagIds {
     [CmdletBinding()]
     param(
-        [Parameter(ValueFromPipeline, Mandatory = $true)] [object] $column,
+        [Parameter(ValueFromPipeline, Mandatory)] [object] $column,
         [string[]] $tagIds
     )
     process {
@@ -536,16 +579,16 @@ function UpdateColumnWithTagIds {
 function Copy-Classification {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory = $true)] [string] $sourceInstanceName,
-        [Parameter(Mandatory = $true)] [string] $sourceDatabaseName,
-        [Parameter(Mandatory = $true)] [string] $destinationInstanceName,
-        [Parameter(Mandatory = $true)] [string] $destinationDatabaseName
+        [Parameter(Mandatory)] [string] $SourceInstanceName,
+        [Parameter(Mandatory)] [string] $SourceDatabaseName,
+        [Parameter(Mandatory)] [string] $DestinationInstanceName,
+        [Parameter(Mandatory)] [string] $DestinationDatabaseName
     )
-    $classifiedColumns = Get-ClassificationColumn -instanceName $sourceInstanceName -databaseName $sourceDatabaseName
-    $destinationInstanceId = GetInstanceIdByName $destinationInstanceName
+    $classifiedColumns = Get-ClassificationColumn -instanceName $SourceInstanceName -databaseName $SourceDatabaseName
+    $destinationInstanceId = GetInstanceIdByName $DestinationInstanceName
     foreach ($column in $classifiedColumns) {
         $column.instanceId = $destinationInstanceId
-        $column.databaseName = $destinationDatabaseName
+        $column.databaseName = $DestinationDatabaseName
         if ($null -eq $column.tags.id) {
             $tagIds = New-Object System.Collections.ArrayList(, @())
         }
@@ -553,6 +596,9 @@ function Copy-Classification {
             $tagIds = $column.tags.id
         }
         UpdateColumnWithTagIds -column $column -tagIds $tagIds | Out-Null
+
+        $percentComplete = [int]($i++ * 100 / $classifiedColumns.Length)
+        Write-Progress -Activity "Copying classification in progress" -Status "$percentComplete% Complete" -PercentComplete $percentComplete;
     }
 }
 
@@ -560,7 +606,7 @@ function Copy-Classification {
 .SYNOPSIS
   Bulk update columns with tags supplied.
 .DESCRIPTION
-  Bulk update columns with tags supplied, will overwrite existing tags.
+  Bulk assigns a collection of tags to a collection of columns, clearing or overwriting any existing tags.
 .PARAMETER Columns
   Array of columns to bulk update.
 .PARAMETER Categories
@@ -583,40 +629,48 @@ function Copy-Classification {
 function Set-Classification {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory = $true)] [object[]] $columns,
-        [Parameter(Mandatory = $true)] [hashtable] $categories
+        [object[]] $Columns,
+        [Parameter(Mandatory)] [hashtable] $Categories
     )
+
+    if (-not $Columns) {
+        return
+    }
 
     $tagIds = New-Object System.Collections.ArrayList(, @( ))
     foreach ($category in $categories.Keys) {
 
-        $tags = $categories[$category]
-        $tagCategory = $allTagCategories[$category]
+        $tags = $Categories[$category]
+        $tagCategory = $Script:allTagCategories[$category]
+        if (-not $tagCategory) {
+            $errorMessage = "Cannot find a tag category '" + $category + "'. Make sure that your taxonomy contains it. If you added this tag just a moment ago, rerun Connect-SqlDataCatalog."
+            Write-Error -Message $errorMessage -Category InvalidArgument
+            return
+        }
         $tagsForCategory = ArrayToNameBasedHashtable($tagCategory.Tags)
 
-        if ($tagCategory.IsMultiValued -eq $true) {
-            foreach ($tag in $tags) {
-                $tagId = $tagsForCategory[$tag].id
-                $tagIds.Add($tagId) | Out-Null
-            }
-            if ($tagIds.Count -le 0) {
-                return
-            }
-        }
-        else {
-            if ($tags.Count -gt 1) {
-                $errorMessage = "Tag category: " + $tagCategory.Name + " can accept only one tag"
+        foreach ($tag in $tags) {
+            $tagId = $tagsForCategory[$tag].id
+            if (-not $tagId) {
+                $errorMessage = "Cannot find a tag '" + $tag + "' in category '" + $category + "'. Make sure that your taxonomy contains it. If you added this tag just a moment ago, rerun Connect-SqlDataCatalog."
                 Write-Error -Message $errorMessage -Category InvalidArgument
                 return
             }
-
-            $tagId = $tagsForCategory[$tags].id
             $tagIds.Add($tagId) | Out-Null
+        }
+
+        if ($tagIds.Count -eq 0) {
+            return
+        }
+        if ($tagCategory.IsMultiValued -eq $false -and $tags.Count -gt 1) {
+            $errorMessage = "Tag category '" + $tagCategory.Name + "' can accept only a single tag."
+            Write-Error -Message $errorMessage -Category InvalidArgument
+            return
         }
     }
     $url = 'api/v1.0/columns/bulk-classification'
     $body = @{
-        ColumnIdentifiers  = $columns
+        ColumnIdentifiers  = $Columns
         TagIds             = $tagIds.ToArray()
         FreeTextAttributes = @{ }
     }
@@ -651,30 +705,30 @@ function Set-Classification {
 function Export-Classification {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory = $true)] [string] $instanceName,
-        [string] $databaseName,
-        [Parameter(Mandatory = $true)] [string] $exportFile,
-        [Parameter(Mandatory = $true)][ValidateSet("csv", "zip")] [string] $format
+        [Parameter(Mandatory)] [string] $InstanceName,
+        [string] $DatabaseName,
+        [Parameter(Mandatory)] [string] $ExportFile,
+        [Parameter(Mandatory)][ValidateSet("csv", "zip")] [string] $Format
     )
-    $instanceId = GetInstanceIdByName $instanceName
-    if ($databaseName) {
+    $instanceId = GetInstanceIdByName $InstanceName
+    if ($DatabaseName) {
         $url =
         "api/v1.0/instances/" + $instanceId +
         "/databases/" + [uri]::EscapeDataString($databaseName) +
-        "/columns/all?format=$format"
+        "/columns/export?format=$Format"
     }
     else {
         $url =
         "api/v1.0/instances/" + $instanceId +
-        "/columns/all?format=$format"
+        "/columns/export?format=$Format"
     }
-    InvokeApiCall -Uri $url -Method Get -OutFile $exportFile
+    InvokeApiCall -Uri $url -Method Get -OutFile $ExportFile
 }
 
 function UpdateClassificationInternal {
     [CmdletBinding()]
     param(
-        [Parameter(ValueFromPipeline = $True, ValueFromPipelineByPropertyName = $True)] $cmd,
+        [Parameter(ValueFromPipeline, ValueFromPipelineByPropertyName)] $cmd,
         [string] $name,
         [string] $value = $null
     )
@@ -711,20 +765,23 @@ function UpdateClassificationInternal {
 
 <#
 .SYNOPSIS
-  Push sensitivity label and information type for columns to the live database's extended properties.
+  Push sensitivity label and information type for columns to the live database.
 .DESCRIPTION
-  Push sensitivity label and information type for columns of a given database from SQL Data Catalog to the live database's extended properties.
-.PARAMETER instanceName
+  Push sensitivity label and information type for columns of a given database from SQL Data Catalog to the live database.
+  It uses the ADD SENSITIVITY CLASSIFICATION syntax, on versions where that is supported.
+  Otherwise it pushes to the database's extended properties.
+.PARAMETER InstanceName
   Fully qualified domain name of the instance
-.PARAMETER databaseName
+.PARAMETER DatabaseName
   Name of the database
-.PARAMETER userName
+.PARAMETER UserName
   User name. Do not use this parameter for Windows Authentication
-.PARAMETER password
+.PARAMETER Password
   Password. Do not use this parameter for Windows Authentication
-.PARAMETER forceUpdate
+.PARAMETER ForceUpdate
   Use this flag to overwrite any existing classification stored in extended properties by the classification from the SQL Data Catalog.
   Note that any unassigned classifications in Data Catalog will also remove the classifications in extended properties.
+  This parameter has no effect when using the ADD SENSITIVITY CLASSIFICATION syntax.
 .EXAMPLE
   Update-ClassificationInLiveDatabase -instanceName "sqlserver\sql2016" -databaseName "WideWorldImporters" -user "admin" -password "P@ssword123"
 
@@ -737,55 +794,80 @@ function UpdateClassificationInternal {
 function Update-ClassificationInLiveDatabase {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory = $true)] [string] $instanceName,
-        [Parameter(Mandatory = $true)] [string] $databaseName,
-        [string] $userName = $null,
-        [string] $password = $null,
-        [switch] $forceUpdate
+        [Parameter(Mandatory)] [string] $InstanceName,
+        [Parameter(Mandatory)] [string] $DatabaseName,
+        [string] $UserName = $null,
+        [string] $Password = $null,
+        [switch] $ForceUpdate
     )
 
-    $infoTypes = @{ }
-    $infoTypes.Add("Banking", "8A462631-4130-0A31-9A52-C6A9CA125F92")
-    $infoTypes.Add("Contact Info", "5C503E21-22C6-81FA-620B-F369B8EC38D1")
-    $infoTypes.Add("Credentials", "C64ABA7B-3A3E-95B6-535D-3BC535DA5A59")
-    $infoTypes.Add("Credit Card", "D22FA6E9-5EE4-3BDE-4C2B-A409604C4646")
-    $infoTypes.Add("Date Of Birth", "3DE7CC52-710D-4E96-7E20-4D5188D2590C")
-    $infoTypes.Add("Financial", "C44193E1-0E58-4B2A-9001-F7D6E7BC1373")
-    $infoTypes.Add("Health", "6E2C5B18-97CF-3073-27AB-F12F87493DA7")
-    $infoTypes.Add("Name", "57845286-7598-22F5-9659-15B24AEB125E")
-    $infoTypes.Add("National ID", "6F5A11A7-08B1-19C3-59E5-8C89CF4F8444")
-    $infoTypes.Add("Networking", "B40AD280-0F6A-6CA8-11BA-2F1A08651FCF")
-    $infoTypes.Add("SSN", "D936EC2C-04A4-9CF7-44C2-378A96456C61")
-    $infoTypes.Add("Other", "9C5B4809-0CCC-0637-6547-91A6F8BB609D")
-
-    $sensitivityLabels = @{ }
-    $sensitivityLabels.Add("Public", "1866CA45-1973-4C28-9D12-04D407F147AD")
-    $sensitivityLabels.Add("General", "684A0DB2-D514-49D8-8C0C-DF84A7B083EB")
-    $sensitivityLabels.Add("Confidential", "331F0B13-76B5-2F1B-A77B-DEF5A73C73C2")
-    $sensitivityLabels.Add("Confidential - GDPR", "989ADC05-3F3F-0588-A635-F475B994915B")
-    $sensitivityLabels.Add("Highly Confidential", "B82CE05B-60A9-4CF3-8A8A-D6A0BB76E903")
-    $sensitivityLabels.Add("Highly Confidential - GDPR", "3302AE7F-B8AC-46BC-97F8-378828781EFD")
-
     $credentials = ""
-    if ([string]::IsNullOrEmpty($userName)) {
+    if ([string]::IsNullOrEmpty($UserName)) {
         $credentials = "Integrated Security=True"
     }
     else {
-        $credentials = "User ID=$userName; Password=$password"
+        $credentials = "User ID=$UserName; Password=$Password"
     }
-    $classifiedColumns = Get-ClassificationColumn -instanceName $instanceName -databaseName $databaseName
 
     $connection = New-Object System.Data.SqlClient.SqlConnection
-    $connection.ConnectionString = "Server=$instanceName; Database=$databaseName; $credentials"
-    $connection.Open()
+    $connection.ConnectionString = "Server=$InstanceName; Database=$DatabaseName; $credentials"
+    try {
+        $connection.Open()
 
-    $cmd = New-Object System.Data.SqlClient.SqlCommand
+        $cmd = New-Object System.Data.SqlClient.SqlCommand
+        $cmd.Connection = $connection
 
-    $cmd.Connection = $connection
+        $cmd.CommandText = "SELECT SERVERPROPERTY('productVersion')"
+        $version = $cmd.ExecuteScalar()
+        $cmd.CommandText = "SELECT SERVERPROPERTY('edition')"
+        $edition = $cmd.ExecuteScalar().ToLower()
+
+        if (($version.StartsWith("15.")) -Or ($edition -like '*azure*')) {
+            UpdateClassificationInLiveDatabaseSensitivityClassification -InstanceName $InstanceName -DatabaseName $DatabaseName -Cmd $cmd
+        }
+        else {
+            UpdateClassificationInLiveDatabaseExtendedProperties -InstanceName $InstanceName -DatabaseName $DatabaseName -Cmd $cmd -ForceUpdate:$ForceUpdate
+        }
+    }
+    finally {
+        $connection.Close()
+    }
+}
+
+$infoTypes = @{ }
+$infoTypes.Add("Banking", "8A462631-4130-0A31-9A52-C6A9CA125F92")
+$infoTypes.Add("Contact Info", "5C503E21-22C6-81FA-620B-F369B8EC38D1")
+$infoTypes.Add("Credentials", "C64ABA7B-3A3E-95B6-535D-3BC535DA5A59")
+$infoTypes.Add("Credit Card", "D22FA6E9-5EE4-3BDE-4C2B-A409604C4646")
+$infoTypes.Add("Date Of Birth", "3DE7CC52-710D-4E96-7E20-4D5188D2590C")
+$infoTypes.Add("Financial", "C44193E1-0E58-4B2A-9001-F7D6E7BC1373")
+$infoTypes.Add("Health", "6E2C5B18-97CF-3073-27AB-F12F87493DA7")
+$infoTypes.Add("Name", "57845286-7598-22F5-9659-15B24AEB125E")
+$infoTypes.Add("National ID", "6F5A11A7-08B1-19C3-59E5-8C89CF4F8444")
+$infoTypes.Add("Networking", "B40AD280-0F6A-6CA8-11BA-2F1A08651FCF")
+$infoTypes.Add("SSN", "D936EC2C-04A4-9CF7-44C2-378A96456C61")
+$infoTypes.Add("Other", "9C5B4809-0CCC-0637-6547-91A6F8BB609D")
+
+$sensitivityLabels = @{ }
+$sensitivityLabels.Add("Public", "1866CA45-1973-4C28-9D12-04D407F147AD")
+$sensitivityLabels.Add("General", "684A0DB2-D514-49D8-8C0C-DF84A7B083EB")
+$sensitivityLabels.Add("Confidential", "331F0B13-76B5-2F1B-A77B-DEF5A73C73C2")
+$sensitivityLabels.Add("Confidential - GDPR", "989ADC05-3F3F-0588-A635-F475B994915B")
+$sensitivityLabels.Add("Highly Confidential", "B82CE05B-60A9-4CF3-8A8A-D6A0BB76E903")
+$sensitivityLabels.Add("Highly Confidential - GDPR", "3302AE7F-B8AC-46BC-97F8-378828781EFD")
+
+function UpdateClassificationInLiveDatabaseExtendedProperties {
+    param(
+        [Parameter(Mandatory)] [string] $InstanceName,
+        [Parameter(Mandatory)] [string] $DatabaseName,
+        [Parameter(Mandatory)] [System.Data.SqlClient.SqlCommand] $Cmd,
+        [switch] $ForceUpdate
+    )
+    $classifiedColumns = Get-ClassificationColumn -instanceName $InstanceName -databaseName $DatabaseName
+
     $cmd.CommandText = "SELECT 1 FROM sys.all_objects WHERE type = 'P' AND name = 'sp_addextendedproperty'"
     $exists = $cmd.ExecuteScalar()
     if ($null -eq $exists) {
-        $connection.Close()
         Write-Output "Database does not support extended properties"
         return
     }
@@ -799,12 +881,12 @@ function Update-ClassificationInLiveDatabase {
         $cmd.Parameters.AddWithValue("@level1name", '')
         $cmd.Parameters.AddWithValue("@level2name", '')
     }
-    Foreach ($col in $classifiedColumns) {
+    foreach ($col in $classifiedColumns) {
         $cmd.Parameters["@level0name"].Value = $col.schemaName
         $cmd.Parameters["@level1name"].Value = $col.tableName
         $cmd.Parameters["@level2name"].Value = $col.columnName
 
-        if ($forceUpdate -eq $true) {
+        if ($ForceUpdate -eq $true) {
             UpdateClassificationInternal -cmd $cmd -name 'sys_information_type_name' -value $col.informationType
             if ([string]::IsNullOrEmpty($col.informationType)) {
                 UpdateClassificationInternal -cmd $cmd -name 'sys_information_type_id'
@@ -857,8 +939,77 @@ function Update-ClassificationInLiveDatabase {
                 }
             }
         }
+
+        $percentComplete = [int]($i++ * 100 / $classifiedColumns.Length)
+        Write-Progress -Activity "Updating classification in live database in progress" -Status "$percentComplete% Complete" -PercentComplete $percentComplete
     }
-    $connection.Close()
+}
+
+function UpdateClassificationInLiveDatabaseSensitivityClassification {
+    param(
+        [Parameter(Mandatory)] [string] $InstanceName,
+        [Parameter(Mandatory)] [string] $DatabaseName,
+        [Parameter(Mandatory)] [System.Data.SqlClient.SqlCommand] $Cmd
+    )
+    $classifiedColumns = Get-ClassificationColumn -instanceName $InstanceName -databaseName $DatabaseName
+
+    $cmd.CommandType = [System.Data.CommandType]::Text
+
+    foreach ($col in $classifiedColumns) {
+        $schemaName = EscapeSqlName -Name $col.schemaName
+        $tableName = EscapeSqlName -Name $col.tableName
+        $columnName = EscapeSqlName -Name $col.columnName
+
+        $classificationFields = @()
+
+        if (-Not [string]::IsNullOrEmpty($col.informationType)) {
+            $informationTypeName = EscapeSqlString -String $col.informationType
+            $classificationFields += , "INFORMATION_TYPE = '$informationTypeName'"
+            $informationTypeId = $infoTypes[$col.informationType]
+            if (-Not ($Null -eq $informationTypeId)) {
+                $classificationFields += , "INFORMATION_TYPE_ID = '$informationTypeId'"
+            }
+        }
+
+        if (-Not [string]::IsNullOrEmpty($col.sensitivityLabel)) {
+            $labelName = EscapeSqlString -String $col.sensitivityLabel
+            $classificationFields += , "LABEL = '$labelName'"
+            $labelId = $sensitivityLabels[$col.sensitivityLabel]
+            if (-Not ($Null -eq $labelId)) {
+                $classificationFields += , "LABEL_ID = '$labelId'"
+            }
+        }
+
+        if ($classificationFields.Count -eq 0) {
+            $cmd.CommandText = "DROP SENSITIVITY CLASSIFICATION FROM $schemaName.$tableName.$columnName"
+        }
+        else {
+            $cmd.CommandText = "ADD SENSITIVITY CLASSIFICATION TO $schemaName.$tableName.$columnName WITH ("
+            $cmd.CommandText += $classificationFields -join ","
+            $cmd.CommandText += ")"
+        }
+
+        $cmd.ExecuteNonQuery() | Out-Null
+
+        $percentComplete = [int]($i++ * 100 / $classifiedColumns.Length)
+        Write-Progress -Activity "Updating classification in live database in progress" -Status "$percentComplete% Complete" -PercentComplete $percentComplete
+    }
+}
+
+function EscapeSqlName {
+    param(
+        [Parameter(Mandatory)] [string] $Name
+    )
+
+    return "[" + $Name.replace(']', ']]') + "]"
+}
+
+function EscapeSqlString {
+    param(
+        [Parameter(Mandatory)] [string] $String
+    )
+
+    return $String.replace('''', '''''')
 }
 
 <#
@@ -866,7 +1017,7 @@ function Update-ClassificationInLiveDatabase {
   Enables authorization in SQL Data Catalog.
 .DESCRIPTION
   Enables authorization in SQL Data Catalog based on Active Directory groups and users.
-.PARAMETER fullAccessActiveDirectoryUserOrGroup
+.PARAMETER FullAccessActiveDirectoryUserOrGroup
   Active Directory user or group that will be granted full access to the Data Catalog.
 .EXAMPLE
   Enable-SqlDataCatalogAuthorization -fullAccessActiveDirectoryUserOrGroup "SqlDataCatalog-Admins"
@@ -876,13 +1027,13 @@ function Update-ClassificationInLiveDatabase {
 function Enable-SqlDataCatalogAuthorization {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory = $true)] [string] $fullAccessActiveDirectoryUserOrGroup
+        [Parameter(Mandatory)] [string] $FullAccessActiveDirectoryUserOrGroup
     )
 
     $url = "api/v1.0/permissions"
     $body = @{
-        ActiveDirectoryPrincipal = $fullAccessActiveDirectoryUserOrGroup
-        Role                     = 1
+        ActiveDirectoryPrincipal = $FullAccessActiveDirectoryUserOrGroup
+        Role                     = 'Admin'
     } | ConvertTo-Json
     InvokeApiCall -Uri $url -Method PUT -Body $body | Out-Null
 }
@@ -904,7 +1055,8 @@ function Enable-SqlDataCatalogAuthorization {
 function Start-ClassificationInstanceScan {
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory = $True, Position = 0, ValueFromPipeLine = $True)]
+        [Alias("InstanceName", "Name")]
+        [Parameter(Mandatory, Position = 0, ValueFromPipeLine)]
         [string] $FullyQualifiedInstanceName
     )
 
@@ -912,8 +1064,47 @@ function Start-ClassificationInstanceScan {
         $instanceId = GetInstanceIdByName $FullyQualifiedInstanceName
         $url = "api/v1.0/instances/" + $instanceId + "/scan"
 
-        InvokeApiCall -Uri $url -Method Post | Out-Null
+        $result = InvokeApiCall -Uri $url -Method Post -ForLocation
+        return $result
     }
+}
+
+<#
+.SYNOPSIS
+  Wait for an operation to complete
+.DESCRIPTION
+  Waits until the timeout number of seconds for the provided operation status url to change status to say that the operation is finished.
+.PARAMETER Url
+  The Url returned when an operation was accepted by Sql Data Catalog
+.PARAMETER TimeoutInSeconds
+  The maximum number of seconds to wait for the operation to be marked as finished.
+.EXAMPLE
+  Start-ClassificationInstanceScan -FullyQualifiedInstanceName 'mysqlserver.mydomain.com\myinstancename' | Wait-SqlDataCatalogOperation
+
+  Start a scan and wait for it to finish.
+#>
+function Wait-SqlDataCatalogOperation {
+  [CmdletBinding()]
+  [OutputType([String])]
+  param (
+    [Parameter(Mandatory, Position = 0, ValueFromPipeLine)]
+    [string] $Url,
+    $TimeoutInSeconds
+  )
+
+  process {
+    $TimeEnd = (Get-Date).AddSeconds($TimeoutInSeconds)
+    Do {
+      Start-Sleep -Seconds 1
+      $result = InvokeApiCall -Uri $Url -Method Get
+      if ($result.status -eq "Succeeded" -or $result.status -eq "Failed") {
+        return $result.status
+      }
+    }
+    Until ((Get-Date) -ge $TimeEnd)
+
+    return "Timeout"
+  }
 }
 
 function ArrayToNameBasedHashtable ($items) {
@@ -937,13 +1128,14 @@ Export-ModuleMember -Function Export-Classification
 Export-ModuleMember -Function Update-ClassificationInLiveDatabase
 Export-ModuleMember -Function Enable-SqlDataCatalogAuthorization
 Export-ModuleMember -Function Get-ClassificationTaxonomy
+Export-ModuleMember -Function Wait-SqlDataCatalogOperation
 
 
 # SIG # Begin signature block
 # MIIe2AYJKoZIhvcNAQcCoIIeyTCCHsUCAQExDzANBglghkgBZQMEAgEFADB5Bgor
 # BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
-# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCCGCSmL3Ok9hUcA
-# 79YTaIlBPcAzoyR8vzIbPViPyzblaqCCGb0wggSEMIIDbKADAgECAhBCGvKUCYQZ
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCDLS35ItOdPnHXA
+# tfR79wp2q1aX1wWmspkFNxxoBCQSE6CCGb0wggSEMIIDbKADAgECAhBCGvKUCYQZ
 # H1IKS8YkJqdLMA0GCSqGSIb3DQEBBQUAMG8xCzAJBgNVBAYTAlNFMRQwEgYDVQQK
 # EwtBZGRUcnVzdCBBQjEmMCQGA1UECxMdQWRkVHJ1c3QgRXh0ZXJuYWwgVFRQIE5l
 # dHdvcmsxIjAgBgNVBAMTGUFkZFRydXN0IEV4dGVybmFsIENBIFJvb3QwHhcNMDUw
@@ -1086,23 +1278,23 @@ Export-ModuleMember -Function Get-ClassificationTaxonomy
 # IzAhBgNVBAMTGkNPTU9ETyBSU0EgQ29kZSBTaWduaW5nIENBAhEAmmCfmKmbwpls
 # h+jmCyt8njANBglghkgBZQMEAgEFAKCBhDAYBgorBgEEAYI3AgEMMQowCKACgACh
 # AoAAMBkGCSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwGCisGAQQBgjcCAQsxDjAM
-# BgorBgEEAYI3AgEVMC8GCSqGSIb3DQEJBDEiBCAgj6kHcX3FUh6tGwE1EWABFW+0
-# /J9d/DWvXORitJyx4zANBgkqhkiG9w0BAQEFAASCAQA85Vedqz4ka9Wtz1uOdXvP
-# XerkWMjTfhHulICtyiSGAjhSXgE6+BwY0uxJqhEchxFf+epvIHE7fXYccJEQrhx7
-# 2B8d88J3CInR2BB9qtvvYXe98DtAku+OImdfKWPoM4vCN4dEqfMz7713bq0P1yMw
-# 3Ay0F7lNKYwO2uCrofcmbD7ivosISROWmR9bN+EG5n5hPCnVHjsKlDVFd8Er1s/E
-# 3qUwLoe7/1PdSLg8/IiiuKjWlveEjkxAvrxMawzvQeTHJhhYum35yanRCZyuWUiw
-# lfrX9HCJlaPsLxn7lzwraAWgIVtxNcDdN6G6xhawfBspWSBZZUxIumfSb9uDYN/h
+# BgorBgEEAYI3AgEVMC8GCSqGSIb3DQEJBDEiBCB8vNlFAXMbXz+eLkKaRhe0OG3Q
+# /YdEa61Q2TLkWNMcSDANBgkqhkiG9w0BAQEFAASCAQCDZnU+DHDOauk4zCMyDFvx
+# f2cvyGz9uWQlXom91sPM3ppKJv+gtrFpTjTtCL5UKbABvWEAtXXCfvZQgI/3sC2h
+# 7p8B1C6isnd0wt7qmb4+55hqZrJNUYRn93sDEMPW/HbPHwjD0WtSeRGrg+3o4Vvd
+# JqMzx7XtEp0qdgt+hvkDlDwO+A/2FrTJHW65oTkzrVnqt6fVhpE5RSmfPKoT6arT
+# jKYhh4vyMxbBgY/MC9qlcz215CDRdlGPn6fiHIlg0S3KjMWvBTe/eEH6r4n50B4X
+# 6Byyea+5K5U3dP4vlivdwNMxEEZAbLK/P1O4FImZCtvcWOVpJLzDgJw4ayDNOMmU
 # oYICKDCCAiQGCSqGSIb3DQEJBjGCAhUwggIRAgEBMIGOMHoxCzAJBgNVBAYTAkdC
 # MRswGQYDVQQIExJHcmVhdGVyIE1hbmNoZXN0ZXIxEDAOBgNVBAcTB1NhbGZvcmQx
 # GjAYBgNVBAoTEUNPTU9ETyBDQSBMaW1pdGVkMSAwHgYDVQQDExdDT01PRE8gVGlt
 # ZSBTdGFtcGluZyBDQQIQK3PbdGMRTFpbMkryMFdySTAJBgUrDgMCGgUAoF0wGAYJ
-# KoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMTkwOTMwMDcy
-# MDQwWjAjBgkqhkiG9w0BCQQxFgQUXAtqx7R8hnzrOASoQpjEh3n6fyowDQYJKoZI
-# hvcNAQEBBQAEggEArMTqo7NV1mEPilm5cVS9r27Q69FihH8zxIP2Zv0z9pyfKWEm
-# MzoJ/kaqhIGKypdILVqBDaPfZaQDA3ZMTpW7owBk3uMKjVTyRMeZxNx/KpQT71dG
-# QGhjrruJZvV+4r4ilAzPYM4JagBcWmSjBXEUC7cpwQihNVlu/R67iVgpXD/ftKrr
-# c6om73H/gegXfwYnBiLJCSCZ/WCNOeqQgvxlaVruh2EsZoB5KvSTi/o3HAWAYKE5
-# srbJzysm9iPdeJ/5fx3YgkycJlUK8e6jcMblagMZtybASxjEm/66Xb/EiUuawaPH
-# FrvacrGLWK4h4aWigfq4sf4qwK7n07780WnLqQ==
+# KoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjAwMTIwMTQ1
+# ODU1WjAjBgkqhkiG9w0BCQQxFgQUrg7zlbTpaLwyuApJqCAc1tsbPiowDQYJKoZI
+# hvcNAQEBBQAEggEAfq9m+xzccKM7Uy91jbrUTlcj/i/vg51FA88BqqBqWW5g1KR0
+# BL5AsUsU0f5oWuTByiLMy/mDbkm2wbUwujgGASrTjVU0GELU3Qs7nhm9jbdaZh4y
+# BpieBXqtZsFcCtWHfB2VnErJpeIWplh71EyOh+zcmNrMnKw+luvfrhBq7w50cbSP
+# 7UcBBcB69x5Qett6KdE6QUnsRdsS6KX9U85tut1GFVXmE3uQcj286NUU7wDyqFbl
+# ciYOm075D0MnmWKrprfPe4Hkrb6nhkuUBbQTr6pIR9VkvUsS7F+wOMIG1X3L/a4z
+# Gkx6841sS9KnzE+/O6u+Z81yAtlXSOTKf+JDdQ==
 # SIG # End signature block
