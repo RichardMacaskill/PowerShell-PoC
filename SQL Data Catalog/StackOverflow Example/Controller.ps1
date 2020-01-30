@@ -13,8 +13,8 @@ $SqlServerInstance = Get-SqlCloneSqlServerInstance -MachineName 'rm-iclone1' -In
 $ImageDestination = Get-SqlCloneImageLocation -Path '\\rm-iclone1.testnet.red-gate.com\SQL Clone Images'
 
 $MaskingSet = New-SqlCloneMask -Path "\\rm-iclone1\Masking Set Files\Generated\StackOverflow2010 Generated.DMSMaskSet"
- 
-$ImageOperation = New-SqlCloneImage -Name "StackOverflow2010-$(Get-Date -Format yyyyMMddHHmmss)-Cleansed" `
+
+$ImageOperation = New-SqlCloneImage -Name "StackOverflow2010-$(Get-Date -Format yyyyMMdd)-Cleansed" `
     -SqlServerInstance $SqlServerInstance `
     -DatabaseName 'StackOverflow2010-Small' `
     -Destination $ImageDestination `
